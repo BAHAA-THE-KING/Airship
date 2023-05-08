@@ -1,6 +1,6 @@
 import "./style.css";
 import * as THREE from "three";
-import Cube from "./scripts/Cube";
+import Cube from "./scripts/Cube.js";
 
 let width=window.innerWidth;
 let height=window.innerHeight;
@@ -38,8 +38,19 @@ const light = new THREE.PointLight(0xffffff, 1, 100);
 light.position.set(0, 0, 10);
 scene.add(light);
 
+/*
 let cube=new Cube(1,1,1,0xFF0000);
 scene.add(cube.mesh);
+*/
+
+// Create a new cube using the Cube class
+let cube = new Cube(0, 0, -5, 1, 0xff0000);
+
+// Add the cube to the scene
+cube.addToScene(scene);
+
+// Rotate the cube
+cube.rotate(0.01, 0.01, 0);
 
 //Animate
 const clock = new THREE.Clock();
