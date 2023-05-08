@@ -1,7 +1,7 @@
 import "./style.css";
 import * as THREE from "three";
 import Cube from "./scripts/Cube.js";
-
+import addOrbitControls from './scripts/OrbitControls.js';
 let width=window.innerWidth;
 let height=window.innerHeight;
 
@@ -19,6 +19,9 @@ const renderer=new THREE.WebGL1Renderer({canvas:can});
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(width,height);
 renderer.render(scene,camera);
+
+// Add OrbitControls to the camera
+const controls = addOrbitControls(camera, renderer);
 
 window.onresize=function(){
                            width=window.innerWidth;
@@ -44,7 +47,7 @@ scene.add(cube.mesh);
 */
 
 // Create a new cube using the Cube class
-let cube = new Cube(0, 0, -5, 1, 0xff0000);
+let cube = new Cube(0, 0, 0, 1, 0xff0000);
 
 // Add the cube to the scene
 cube.addToScene(scene);
@@ -61,7 +64,7 @@ function animate(){
         oldElapsedTime = elapsedTime;
 
         renderer.render(scene,camera);
-
+        controls.update();
         requestAnimationFrame(animate);
         }
 animate();
