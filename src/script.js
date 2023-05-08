@@ -2,6 +2,7 @@ import "./style.css";
 import * as THREE from "three";
 import Cube from "./scripts/Cube.js";
 import addOrbitControls from './scripts/OrbitControls.js';
+import Skybox from "./scripts/Skybox";
 let width=window.innerWidth;
 let height=window.innerHeight;
 
@@ -22,6 +23,20 @@ renderer.render(scene,camera);
 
 // Add OrbitControls to the camera
 const controls = addOrbitControls(camera, renderer);
+
+// Create a new skybox using the Skybox class
+const skybox = new Skybox([
+        'textures/skybox/front.jpg',
+        'textures/skybox/back.jpg',
+        'textures/skybox/top.jpg',
+        'textures/skybox/bottom.jpg',
+        'textures/skybox/right.jpg',
+        'textures/skybox/left.jpg',
+      ],scene);
+      
+//    skybox.update(camera);
+      
+
 
 window.onresize=function(){
                            width=window.innerWidth;

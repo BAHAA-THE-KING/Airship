@@ -1,7 +1,4 @@
 import * as THREE from "three";
-
-// Cube.js
-
 class Cube {
      constructor(x, y, z, size, color) {
        this.geometry = new THREE.BoxGeometry(size, size, size);

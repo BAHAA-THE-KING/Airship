@@ -1,5 +1,3 @@
-// OrbitControls.js
-
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export default function addOrbitControls(camera, renderer) {
@@ -9,6 +7,6 @@ export default function addOrbitControls(camera, renderer) {
   controls.screenSpacePanning = false;
   controls.minDistance = 1;
   controls.maxDistance = 100;
-  controls.maxPolarAngle = Math.PI / 2;
+//   controls.maxPolarAngle = Math.PI / 2;
   return controls;
 }
