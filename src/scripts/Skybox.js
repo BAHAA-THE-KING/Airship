@@ -15,8 +15,6 @@ class Skybox {
         textureUrls[5],
       ]);
       scene.background = environmentMap;
-
-
     }
   
    
