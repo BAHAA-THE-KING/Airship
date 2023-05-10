@@ -7,6 +7,5 @@ export default function addOrbitControls(camera, renderer) {
   controls.screenSpacePanning = false;
   controls.minDistance = 1;
   controls.maxDistance = 400;
-//   controls.maxPolarAngle = Math.PI / 2;
   return controls;
-}
+};

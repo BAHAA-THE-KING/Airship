@@ -1,29 +1,43 @@
 import "./style.css";
 import * as THREE from "three";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import Cube from "./scripts/Cube.js";
-import Lights from "./scripts/lights";
-import addOrbitControls from './scripts/OrbitControls.js';
+import addOrbitControls from './scripts/OrbitControls';
+import Cube from "./scripts/Cube";
+import Lights from "./scripts/Lights";
 import Skybox from "./scripts/Skybox";
-// import modelUrl from '/models/Fox/glTF/Fox.gltf';
-let width=window.innerWidth;
-let height=window.innerHeight;
+import Floor from "./scripts/Floor";
 
-const can=document.querySelector("#can");
+//Initiate Renderer
+let width = window.innerWidth;
+let height = window.innerHeight;
 
-can.setAttribute("width",width);
-can.setAttribute("height",height);
+const can = document.querySelector("#can");
 
-const camera=new THREE.PerspectiveCamera(45,width/height,0.1,1000);
-camera.position.set(0, 0, 5);
+can.setAttribute("width", width);
+can.setAttribute("height", height);
 
-const scene=new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+camera.position.set(10, 10, 5);
 
-const renderer=new THREE.WebGL1Renderer({canvas:can});
+const scene = new THREE.Scene();
+
+const renderer = new THREE.WebGL1Renderer({ canvas: can });
+
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(width,height);
-renderer.render(scene,camera);
+renderer.setSize(width, height);
+renderer.render(scene, camera);
+window.onresize = function () {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        can.setAttribute("width", width);
+        can.setAttribute("height", height);
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(window.devicePixelRatio);
+};
 
 // Add OrbitControls to the camera
 const controls = addOrbitControls(camera, renderer);
@@ -36,31 +50,12 @@ const skybox = new Skybox([
         'textures/skybox/ny.jpg',
         'textures/skybox/pz.jpg',
         'textures/skybox/nz.jpg',
-      ],scene);
-      
-
-      
-
-
-window.onresize=function(){
-                           width=window.innerWidth;
-                           height=window.innerHeight;
-                           can.setAttribute("width",width);
-                           can.setAttribute("height",height);
-
-                           camera.aspect=width/height;
-                           camera.updateProjectionMatrix();
-
-                           renderer.setSize(width,height);
-                           renderer.setPixelRatio(window.devicePixelRatio);
-                           };
+], scene);
 
 /**
  * lights
  */
-let lights = new Lights(scene); 
-
-
+let lights = new Lights(scene);
 
 /**
  * Objects 
@@ -68,47 +63,23 @@ let lights = new Lights(scene);
 
 
 // Create a new cube using the Cube class
-let cube = new Cube(0, 0, 0, 1, 0xffffff);
-let material = new THREE.MeshStandardMaterial();
-const sphere = new THREE.Mesh(new THREE.SphereBufferGeometry(0.5,20,20),
-material
-);
-sphere.position.set(2,0,0);
+const floor = new Floor(10000, "white");
+floor.addToScene(scene);
 
-const torus = new THREE.Mesh(new THREE.TorusBufferGeometry(0.3,0.2,16,32),
-material
-);
-torus.position.set(-2,0,0);
-
-const plane = new THREE.Mesh(new THREE.PlaneBufferGeometry(20,20),
-material
-);
-plane.rotation.x = Math.PI / 2 + Math.PI   ;
-plane.position.set(0,-1,0);   
-plane.material.side = THREE.DoubleSide;  
-scene.add(plane,sphere,torus);       
-plane.material.roughness = 0.4 ;
-
-
-
-// Add the cube to the scen e
-cube.addToScene(scene);
-
-// Rotate the cube
+const cube = new Cube(1, 0xffffff);
 cube.rotate(0.01, 0.01, 0);
-
-
+cube.addToScene(scene);
 
 //Animate
 const clock = new THREE.Clock();
 let oldElapsedTime = 0;
-function animate(){
+function animate() {
         const elapsedTime = clock.getElapsedTime();
         const deltaTime = elapsedTime - oldElapsedTime;
         oldElapsedTime = elapsedTime;
 
-        renderer.render(scene,camera);
         controls.update();
+        renderer.render(scene, camera);
         requestAnimationFrame(animate);
-        }
+}
 animate();
