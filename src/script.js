@@ -9,7 +9,7 @@ import Skybox from "./scripts/Skybox";
 // import modelUrl from '/models/Fox/glTF/Fox.gltf';
 let width=window.innerWidth;
 let height=window.innerHeight;
-let model;
+
 const can=document.querySelector("#can");
 
 can.setAttribute("width",width);
@@ -30,12 +30,12 @@ const controls = addOrbitControls(camera, renderer);
 
 // Create a new skybox using the Skybox class
 const skybox = new Skybox([
-        'textures/skybox/front.jpg',
-        'textures/skybox/back.jpg',
-        'textures/skybox/top.jpg',
-        'textures/skybox/bottom.jpg',
-        'textures/skybox/right.jpg',
-        'textures/skybox/left.jpg',
+        'textures/skybox/px.jpg',
+        'textures/skybox/nx.jpg',
+        'textures/skybox/py.jpg',
+        'textures/skybox/ny.jpg',
+        'textures/skybox/pz.jpg',
+        'textures/skybox/nz.jpg',
       ],scene);
       
 
@@ -97,33 +97,6 @@ cube.addToScene(scene);
 // Rotate the cube
 cube.rotate(0.01, 0.01, 0);
 
-// Create a new loader
-// const loader = new GLTFLoader();
-
-// Load the model
-
-
-// loader.load("/models/Fox/glTF/Fox.gltf", function ( gltf ) {
-
-// 	 scene.add( gltf.scene );
-
-// }, undefined, function ( error ) {
-
-// 	console.error( error );
-
-// } );
-
-//   function (gltf) {
-//     // Create a new mesh from the loaded model
-//     const mesh = gltf.scene.children[0];
-//     mesh.position.set(0, 0, -5);
-//     scene.add(mesh);
-//   },
-//   undefined,
-//   function (error) {
-//     console.error(error);
-//   }
-// );
 
 
 //Animate
