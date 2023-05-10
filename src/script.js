@@ -1,11 +1,15 @@
 import "./style.css";
 import * as THREE from "three";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 import Cube from "./scripts/Cube.js";
+import Lights from "./scripts/lights";
 import addOrbitControls from './scripts/OrbitControls.js';
 import Skybox from "./scripts/Skybox";
+// import modelUrl from '/models/Fox/glTF/Fox.gltf';
 let width=window.innerWidth;
 let height=window.innerHeight;
-
+let model;
 const can=document.querySelector("#can");
 
 can.setAttribute("width",width);
@@ -34,7 +38,7 @@ const skybox = new Skybox([
         'textures/skybox/left.jpg',
       ],scene);
       
-//    skybox.update(camera);
+
       
 
 
@@ -51,24 +55,76 @@ window.onresize=function(){
                            renderer.setPixelRatio(window.devicePixelRatio);
                            };
 
-//Code
-const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(0, 0, 10);
-scene.add(light);
+/**
+ * lights
+ */
+let lights = new Lights(scene); 
 
-/*
-let cube=new Cube(1,1,1,0xFF0000);
-scene.add(cube.mesh);
-*/
+
+
+/**
+ * Objects 
+ */
+
 
 // Create a new cube using the Cube class
-let cube = new Cube(0, 0, 0, 1, 0xff0000);
+let cube = new Cube(0, 0, 0, 1, 0xffffff);
+let material = new THREE.MeshStandardMaterial();
+const sphere = new THREE.Mesh(new THREE.SphereBufferGeometry(0.5,20,20),
+material
+);
+sphere.position.set(2,0,0);
 
-// Add the cube to the scene
+const torus = new THREE.Mesh(new THREE.TorusBufferGeometry(0.3,0.2,16,32),
+material
+);
+torus.position.set(-2,0,0);
+
+const plane = new THREE.Mesh(new THREE.PlaneBufferGeometry(20,20),
+material
+);
+plane.rotation.x = Math.PI / 2 + Math.PI   ;
+plane.position.set(0,-1,0);   
+plane.material.side = THREE.DoubleSide;  
+scene.add(plane,sphere,torus);       
+plane.material.roughness = 0.4 ;
+
+
+
+// Add the cube to the scen e
 cube.addToScene(scene);
 
 // Rotate the cube
 cube.rotate(0.01, 0.01, 0);
+
+// Create a new loader
+// const loader = new GLTFLoader();
+
+// Load the model
+
+
+// loader.load("/models/Fox/glTF/Fox.gltf", function ( gltf ) {
+
+// 	 scene.add( gltf.scene );
+
+// }, undefined, function ( error ) {
+
+// 	console.error( error );
+
+// } );
+
+//   function (gltf) {
+//     // Create a new mesh from the loaded model
+//     const mesh = gltf.scene.children[0];
+//     mesh.position.set(0, 0, -5);
+//     scene.add(mesh);
+//   },
+//   undefined,
+//   function (error) {
+//     console.error(error);
+//   }
+// );
+
 
 //Animate
 const clock = new THREE.Clock();
