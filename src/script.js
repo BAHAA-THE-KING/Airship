@@ -1,11 +1,11 @@
 import "./style.css";
 import * as THREE from "three";
-
 import addOrbitControls from './scripts/OrbitControls';
 import Cube from "./scripts/Cube";
 import Lights from "./scripts/Lights";
 import Skybox from "./scripts/Skybox";
 import Floor from "./scripts/Floor";
+import createCity from "./scripts/city/city";
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -69,6 +69,11 @@ floor.addToScene(scene);
 const cube = new Cube(1, 0xffffff);
 cube.rotate(0.01, 0.01, 0);
 cube.addToScene(scene);
+
+
+// Load city by calling 'createCity' function
+
+createCity(scene);
 
 //Animate
 const clock = new THREE.Clock();
