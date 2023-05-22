@@ -64,7 +64,7 @@ let lights = new Lights(scene);
 
 // Create a new cube using the Cube class
 const floor = new Floor(10000, "white");
-floor.addToScene(scene);
+//floor.addToScene(scene);
 
 const cube = new Cube(1, 0xffffff);
 cube.rotate(0.01, 0.01, 0);

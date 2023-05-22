@@ -1,25 +1,47 @@
 import * as THREE from "three";
 
 export default class Road {
-  constructor(length, width, color) {
+  constructor(length, width, texturePath) {
     this.length = length;
     this.width = width;
-    this.color = color;
+    this.texturePath = texturePath;
 
-    this.geometry = new THREE.PlaneGeometry(length, width);
-    this.material = new THREE.MeshPhongMaterial({ color: color });
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    // Create road surface
+    this.surfaceTexture = new THREE.TextureLoader().load(texturePath);
+    this.surfaceTexture.repeat.set(5, 1);
+    this.surfaceMaterial = new THREE.MeshPhongMaterial({ map: this.surfaceTexture });
+
+    // Create road lines
+    this.lineGeometry = new THREE.BoxGeometry(length, 0.01, 0.1);
+    this.lineMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    this.line1 = new THREE.Mesh(this.lineGeometry, this.lineMaterial);
+    this.line2 = new THREE.Mesh(this.lineGeometry, this.lineMaterial);
+
+    // Position and rotate road lines
+    this.line1.position.set(0, 0.02, -width/4);
+    this.line2.position.set(0, 0.02, width/4);
+    this.line1.rotation.set(Math.PI/2, 0, 0);
+    this.line2.rotation.set(Math.PI/2, 0, 0);
+
+    // Create a group to hold the road surface and lines
+    this.group = new THREE.Group();
+    this.group.add(this.surfaceMesh);
+    this.group.add(this.line1);
+    this.group.add(this.line2);
+
+    
   }
 
   setPosition(x, y, z) {
-    this.mesh.position.set(x, y, z);
+    this.group.position.set(x, y, z);
   }
 
   setRotation(x, y, z) {
-    this.mesh.rotation.set(x, y, z);
+    this.group.rotation.set(x, y, z);
   }
 
   addToScene(scene) {
-    scene.add(this.mesh);
+    scene.add(this.group)
   }
+
 }
