@@ -3,37 +3,10 @@ import { Color } from "three";
 import Building from "./Building";
 import Road from "./Road";
 import Street from "./streets";
-import { loadModels } from "./models";
 
 
 
-  const modelPaths = [
-    "/textures/city/models/football_stadium/scene.gltf",
-     "/textures/city/models/beech_tree/scene.gltf",
-     "/textures/city/models/street_model/scene.gltf",
-
-  ];
-
-  const modelPositions = [
-    new THREE.Vector3(-50, 0.1, -400),
-    new THREE.Vector3(50, 0, 0),
-    new THREE.Vector3(300, -4.5, 25)
-  ];
-
-  const modelScales = [
-    new THREE.Vector3(2, 2, 2),
-    new THREE.Vector3(10, 10, 10),
-    new THREE.Vector3(7, 1, 1)
-  ];
-
-  const modelRotation = [
-    new THREE.Vector3(Math.PI /2, Math.PI, Math.PI),
-    new THREE.Vector3(Math.PI  /2, Math.PI, Math.PI), // flip the second model
-    new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2)
-  ];
 export default function createCity(scene) {
-
-  loadModels(scene, modelPaths,modelPositions,modelScales,modelRotation);
 
     // Create a plane for the ground
     const groundGeometry = new THREE.PlaneGeometry(2000, 2000);
@@ -96,10 +69,10 @@ export default function createCity(scene) {
         buildings2.addToScene(scene);
         
        
-          }
-
+            
+    
         }
 
-
+      }
 
     }

@@ -10,6 +10,8 @@ export default class Road {
     this.surfaceTexture = new THREE.TextureLoader().load(texturePath);
     this.surfaceTexture.repeat.set(5, 1);
     this.surfaceMaterial = new THREE.MeshPhongMaterial({ map: this.surfaceTexture });
+    this.surfaceGeometry = new THREE.BoxGeometry(length, 0.01, width);
+    this.surfaceMesh = new THREE.Mesh(this.surfaceGeometry, this.surfaceMaterial);
 
     // Create road lines
     this.lineGeometry = new THREE.BoxGeometry(length, 0.01, 0.1);
@@ -28,8 +30,6 @@ export default class Road {
     this.group.add(this.surfaceMesh);
     this.group.add(this.line1);
     this.group.add(this.line2);
-
-    
   }
 
   setPosition(x, y, z) {
@@ -43,5 +43,4 @@ export default class Road {
   addToScene(scene) {
     scene.add(this.group)
   }
-
 }
