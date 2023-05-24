@@ -1,0 +1,11 @@
+Model Information:
+* title:	European Buildings Asset Pack 3
+* source:	https://sketchfab.com/3d-models/european-buildings-asset-pack-3-b4fe252345214a3ea1abc834af42944d
+* author:	EddyNL (https://sketchfab.com/EddyNL)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "European Buildings Asset Pack 3" (https://sketchfab.com/3d-models/european-buildings-asset-pack-3-b4fe252345214a3ea1abc834af42944d) by EddyNL (https://sketchfab.com/EddyNL) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

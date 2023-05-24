@@ -68,9 +68,7 @@ export default function createCity(scene) {
         );
         buildings2.addToScene(scene);
         
-       
-            
-    
+      
         }
 
       }

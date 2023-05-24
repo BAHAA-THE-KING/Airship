@@ -7,7 +7,8 @@ import Skybox from "./scripts/Skybox";
 import Floor from "./scripts/Floor";
 import createCity from "./scripts/city/city";
 import { loadModels } from "./scripts/city/models";
-import "./scripts/city/models";
+
+
 //Initiate Renderer
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -81,22 +82,27 @@ const modelPaths = [
         "/textures/city/models/football_stadium/scene.gltf",
          "/textures/city/models/beech_tree/scene.gltf",
         //  "/textures/city/models/street_model/scene.gltf",
-         "/textures/city/models/stylized_tree/scene.gltf"
+         "/textures/city/models/stylized_tree/scene.gltf",
+         "/textures/city/models/european_buildings_asset_pack_3/scene.gltf"
+
       ];
       
       const modelPositions = [
-        new THREE.Vector3(-50, 30, -400),
-        new THREE.Vector3(50, 30, 0),
+        new THREE.Vector3(-50,0.1, -400),
+        new THREE.Vector3(50, 0.1, 20),
         // new THREE.Vector3(300, 30, 25),
-        new THREE.Vector3(10, 30, 0),
+        new THREE.Vector3(10, 0, 20),
+        new THREE.Vector3(500, 0.1, 10)
+        
       
       ];
       
       const modelScales = [
         new THREE.Vector3(2, 2, 2),
-        new THREE.Vector3(10, 10, 10),
+        new THREE.Vector3(4, 4, 4),
         // new THREE.Vector3(7, 1, 1),
-        new THREE.Vector3(10, 10, 10),
+        new THREE.Vector3(20, 20, 20),
+        new THREE.Vector3(4, 4, 4),
 
       ];
       
@@ -104,6 +110,7 @@ const modelPaths = [
         new THREE.Vector3(Math.PI /2, Math.PI, Math.PI),
         new THREE.Vector3(Math.PI  /2, Math.PI, Math.PI), // flip the second model
         // new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
+        new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
         new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
 
       ];
