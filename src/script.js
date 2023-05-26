@@ -69,7 +69,7 @@ const floor = new Floor(10000, "white");
 
 const cube = new Cube(1, 0xffffff);
 cube.rotate(0.01, 0.01, 0);
-cube.addToScene(scene);
+// cube.addToScene(scene);
 
 
 // Load city by calling 'createCity' function

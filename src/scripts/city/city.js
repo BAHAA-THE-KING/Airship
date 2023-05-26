@@ -3,7 +3,7 @@ import { Color } from "three";
 import Building from "./Building";
 import Road from "./Road";
 import Street from "./streets";
-import { loadModels } from "./models";
+import { loadLamps, loadModels } from "./models";
 import { loadTree } from "./models";
 
 
@@ -13,46 +13,48 @@ export default function createCity(scene) {
     //Load Models
   const modelPaths = [
     "/textures/city/models/football_stadium/scene.gltf",
-    "/textures/city/models/beech_tree/scene.gltf",
-    "/textures/city/models/street_lamp/scene.gltf",
-    "/textures/city/models/stylized_tree/scene.gltf",
+    // "/textures/city/models/beech_tree/scene.gltf",
+    "/textures/city/models/sidewalk/scene.gltf",
     "/textures/city/models/european_buildings_asset_pack_3/scene.gltf"
 
   ];
 
   const modelPositions = [
-    new THREE.Vector3(-50,0.1, -400),
-    new THREE.Vector3(50, 0.1, 20),
-    new THREE.Vector3(20, 0.1, 35), // lamp,
-    new THREE.Vector3(10, 0, 20),
-    new THREE.Vector3(500, 0.1, 10)
+    new THREE.Vector3(-50,0.1, -600),
+    // new THREE.Vector3(50, 0.1, 20),
+    new THREE.Vector3(295, -2, 20),
+    new THREE.Vector3(900, 0.1, 10)
     
 
   ];
 
   const modelScales = [
     new THREE.Vector3(2, 2, 2),
-    new THREE.Vector3(4, 4, 4),
-    new THREE.Vector3(0.6, 0.6, 0.6),
-    new THREE.Vector3(20, 20, 20),
+    // new THREE.Vector3(4, 4, 4),
+    new THREE.Vector3(2, 15, 3),
     new THREE.Vector3(4, 4, 4),
 
   ];
 
   const modelRotation = [
     new THREE.Vector3(Math.PI /2, Math.PI, Math.PI),
-    new THREE.Vector3(Math.PI  /2, Math.PI, Math.PI), // flip the second model
-    new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
-    new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
+    // new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
+    new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI),
     new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
 
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
-  const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
+  
+  // Load Trees
 
+  const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
   const modelScale = 50;
   loadTree(scene, modelPath, modelScale);
+  // Load Trees
 
+  const modelPath2 = "/textures/city/models/street_lamp/scene.gltf";
+  const modelScale2 = 0.6;
+  // loadLamps(scene, modelPath2, modelScale2)
 
     // Create a plane for the ground
     const groundGeometry = new THREE.PlaneGeometry(2000, 2000);
@@ -80,9 +82,9 @@ export default function createCity(scene) {
     ];
 
     const numRows = 6;
-    const numCols = 10;
+    const numCols = 20;
     const buildingWidth = 15;
-    const buildingDepth = 20;
+    const buildingDepth = 30;
 
     let heightIndex = 0;
     let textureIndex = 0;
@@ -97,7 +99,7 @@ export default function createCity(scene) {
         textureIndex = (textureIndex +1) % buildingTextures.length; // cycle through the texture array
 
         building.setPosition(
-          (col - (numCols - 1) / 2) * buildingWidth *3,
+          (col - (numCols - 1) / 2) * buildingWidth *4,
           building.getHeight() / 2, // update the y position to use the new height of the building
           (row - (numRows - 1) / 2) * buildingDepth * 10
         );
@@ -114,7 +116,16 @@ export default function createCity(scene) {
         );
         buildings2.addToScene(scene);
         
-      
+
+        const texturePath = '/textures/city/asphalt.jpg';
+
+        const road = new Road(800, 50, texturePath); // Create a road with a length of 10, width of 5, and texture from the given path        
+        scene.add(road.group); // Add the road group to the scene
+
+        road.setPosition(-300, 0.5, 0); // Set the position of the road
+        road.setRotation(0, 0, 0); // Set the rotation of the road
+
+          
         }
 
       }
