@@ -23,22 +23,32 @@ export default class Road {
     const surfaceMesh = new THREE.Mesh(surfaceGeometry, this.surfaceMaterial);
 
     // Create road lines
-    const lineGeometry = new THREE.BoxGeometry(length, 0.5, 5);
-    const lineMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const lineGeometry = new THREE.BoxGeometry(length, 0.5, 0.22);
+    const lineMaterial = new THREE.MeshPhongMaterial({ color: 0xa8680d });
     this.line1 = new THREE.Mesh(lineGeometry, lineMaterial);
     this.line2 = new THREE.Mesh(lineGeometry, lineMaterial);
+    this.line3 = new THREE.Mesh(lineGeometry, lineMaterial);
+    this.line4 = new THREE.Mesh(lineGeometry, lineMaterial);
 
     // Position and rotate road lines
-    this.line1.position.set(0, 0.02, -width/4);
-    this.line2.position.set(0, 0.02, width/4);
-    this.line1.rotation.set(Math.PI/2, Math.PI/2, 0);
-    this.line2.rotation.set(Math.PI/2, Math.PI/2, 0);
+    this.line1.rotation.set(Math.PI * 2, 0, 0);
+    this.line2.rotation.set(Math.PI * 2, 0, 0);
+    this.line3.rotation.set(Math.PI * 2, 0, 0);
+    this.line4.rotation.set(Math.PI * 2, 0, 0);
+    
+    this.line1.position.set(-0.10, 0.02, 10);
+    this.line2.position.set(-0.14, 0.02, -5);
+    this.line3.position.set(0.9, 0.02, -5);
+    this.line4.position.set(0.5, 0.02, -5);
 
     // Create a group to hold the road surface and lines
     this.group = new THREE.Group();
     this.group.add(surfaceMesh);
     this.group.add(this.line1);
     this.group.add(this.line2);
+
+    this.group.add(this.line3);
+    this.group.add(this.line4);
   }
 
   setPosition(x, y, z) {

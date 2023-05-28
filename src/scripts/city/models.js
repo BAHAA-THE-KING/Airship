@@ -21,7 +21,7 @@ export function loadModels(scene, modelPaths, modelPositions, modelScales, model
   }
 
   
-  export function loadTree(scene, modelPath, modelScale) {
+  export function loadTrees(scene, modelPath, modelScale) {
     const positions = [
       new THREE.Vector3(10, 0, -40),
       new THREE.Vector3(50, 0, -40),
@@ -30,7 +30,14 @@ export function loadModels(scene, modelPaths, modelPositions, modelScales, model
       new THREE.Vector3(200, 0, -40),
       new THREE.Vector3(250, 0, -40),
       new THREE.Vector3(330, 0, -40),
-      new THREE.Vector3(345, 0, -40),
+      new THREE.Vector3(355, 0, -40),
+      new THREE.Vector3(370, 0, -40),
+      new THREE.Vector3(500, 0, -40),
+      new THREE.Vector3(440, 0, -40),
+      new THREE.Vector3(480, 0, -40),
+      new THREE.Vector3(510, 0, -40),
+      new THREE.Vector3(550, 0, -40),
+      new THREE.Vector3(610, 0, -40),
 
       new THREE.Vector3(-10, 0, -40),
       new THREE.Vector3(-50, 0, -40),
@@ -44,12 +51,96 @@ export function loadModels(scene, modelPaths, modelPositions, modelScales, model
       new THREE.Vector3(-450, 0, -40),
       new THREE.Vector3(-500, 0, -40),
       new THREE.Vector3(-550, 0, -40),
-      new THREE.Vector3(-600, 0, -40)
+      new THREE.Vector3(-600, 0, -40),
+      new THREE.Vector3(-650, 0, -40),
+      new THREE.Vector3(-710, 0, -40),
+      new THREE.Vector3(-760, 0, -40),
+      new THREE.Vector3(-820, 0, -40),
+      new THREE.Vector3(-880, 0, -40),
+      new THREE.Vector3(-915, 0, -40),
+      new THREE.Vector3(-980, 0, -40),
+      new THREE.Vector3(-1020, 0, -40),
+
+// another line
+
+      new THREE.Vector3(10, 0, -250),
+      new THREE.Vector3(90, 0, -250),
+      new THREE.Vector3(170, 0, -250),
+      new THREE.Vector3(260, 0, -250),
+      new THREE.Vector3(350, 0, -250),
+      new THREE.Vector3(410, 0, -250),
+      new THREE.Vector3(500, 0, -250),
+      new THREE.Vector3(590, 0, -250),
+      new THREE.Vector3(-90, 0, -250),
+      new THREE.Vector3(-200, 0, -250),
+      new THREE.Vector3(-300, 0, -250),
+      new THREE.Vector3(-400, 0, -250),
+      new THREE.Vector3(-500, 0, -250),
+      new THREE.Vector3(-600, 0, -250),
+      new THREE.Vector3(-700, 0, -250),
+
+
+
+      new THREE.Vector3(10, 0, -350),
+      new THREE.Vector3(90, 0, -350),
+      new THREE.Vector3(170, 0, -350),
+      new THREE.Vector3(260, 0, -350),
+      new THREE.Vector3(350, 0, -350),
+      new THREE.Vector3(410, 0, -350),
+      new THREE.Vector3(500, 0, -350),
+      new THREE.Vector3(590, 0, -350),
+      new THREE.Vector3(-90, 0, -350),
+      new THREE.Vector3(-200, 0, -350),
+      new THREE.Vector3(-300, 0, -350),
+      new THREE.Vector3(-400, 0, -350),
+      new THREE.Vector3(-500, 0, -350),
+      new THREE.Vector3(-600, 0, -350),
+      new THREE.Vector3(-700, 0, -350),
+
+      
+
+      // another line
+
+      new THREE.Vector3(10, 0, 250),
+      new THREE.Vector3(90, 0, 250),
+      new THREE.Vector3(170, 0, 250),
+      new THREE.Vector3(260, 0, 250),
+      new THREE.Vector3(350, 0, 250),
+      new THREE.Vector3(410, 0, 250),
+      new THREE.Vector3(500, 0, 250),
+      new THREE.Vector3(590, 0, 250),
+      new THREE.Vector3(-90, 0, 250),
+      new THREE.Vector3(-200, 0, 250),
+      new THREE.Vector3(-300, 0, 250),
+      new THREE.Vector3(-400, 0, 250),
+      new THREE.Vector3(-500, 0, 250),
+      new THREE.Vector3(-600, 0, 250),
+      new THREE.Vector3(-700, 0, 250),
+
+
+
+      new THREE.Vector3(10, 0, 350),
+      new THREE.Vector3(90, 0, 350),
+      new THREE.Vector3(170, 0, 350),
+      new THREE.Vector3(260, 0, 350),
+      new THREE.Vector3(350, 0, 350),
+      new THREE.Vector3(410, 0, 350),
+      new THREE.Vector3(500, 0, 350),
+      new THREE.Vector3(590, 0, 350),
+      new THREE.Vector3(-90, 0, 350),
+      new THREE.Vector3(-200, 0,350),
+      new THREE.Vector3(-300, 0, 350),
+      new THREE.Vector3(-400, 0, 350),
+      new THREE.Vector3(-500, 0, 350),
+      new THREE.Vector3(-600, 0, 350),
+      new THREE.Vector3(-700, 0, 350),     
+
+
     ];
     
     const scale = [new THREE.Vector3(50, 50, 50)];
     
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 61; i++) {
       loader.load(
         modelPath,
         function (gltf) {
