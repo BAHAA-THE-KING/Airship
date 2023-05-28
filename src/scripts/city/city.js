@@ -26,6 +26,7 @@ export default function createCity(scene) {
     "/textures/city/models/european_buildings_asset_pack_3/scene.gltf",
     "/textures/city/models/city/scene.gltf",
     "/textures/city/models/imaginary_city_i/scene.gltf",
+    "/textures/city/models/tommy_gta_vice_city/scene.gltf",
 
 
   ];
@@ -46,6 +47,7 @@ export default function createCity(scene) {
     new THREE.Vector3(900, 0.1, 10),
     new THREE.Vector3(-780, 5, 110),
     new THREE.Vector3(10, 5, 1350),
+    new THREE.Vector3(10, 1, 2),
 
     
 
@@ -66,6 +68,7 @@ export default function createCity(scene) {
     new THREE.Vector3(4, 4, 4),
     new THREE.Vector3(0.1, 0.1, 0.1),
     new THREE.Vector3(1.5, 1.5, 1.5),
+    new THREE.Vector3(10, 10, 10),
     
   ];
 
@@ -81,6 +84,7 @@ export default function createCity(scene) {
     new THREE.Vector3(Math.PI /2 , Math.PI   , Math.PI /2),
     new THREE.Vector3(Math.PI /2 , Math.PI   , Math.PI /2),
 
+    new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
     new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
     new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
     new THREE.Vector3(Math.PI /2 , Math.PI  , Math.PI/2),
