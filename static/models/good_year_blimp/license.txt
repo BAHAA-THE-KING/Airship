@@ -1,0 +1,11 @@
+Model Information:
+* title:	Good Year Blimp
+* source:	https://sketchfab.com/3d-models/good-year-blimp-2a3016d4c5f64f4597f975a661b83818
+* author:	Decentralized (https://sketchfab.com/decentralized13)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Good Year Blimp" (https://sketchfab.com/3d-models/good-year-blimp-2a3016d4c5f64f4597f975a661b83818) by Decentralized (https://sketchfab.com/decentralized13) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

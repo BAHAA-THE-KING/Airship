@@ -35,7 +35,7 @@ export default class Road {
     this.line2.rotation.set(Math.PI * 2, 0, 0);
     this.line3.rotation.set(Math.PI * 2, 0, 0);
     this.line4.rotation.set(Math.PI * 2, 0, 0);
-    
+
     this.line1.position.set(-0.10, 0.02, 10);
     this.line2.position.set(-0.14, 0.02, -5);
     this.line3.position.set(0.9, 0.02, -5);

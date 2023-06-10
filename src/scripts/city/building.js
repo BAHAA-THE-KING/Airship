@@ -26,7 +26,7 @@ export default class Building {
       sideMaterial, // front
       sideMaterial, // back
     ]);
-  } 
+  }
 
   setPosition(x, y, z) {
     this.mesh.position.set(x, y, z);
