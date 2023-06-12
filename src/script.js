@@ -6,6 +6,7 @@ import Lights from "./scripts/Lights";
 import Skybox from "./scripts/Skybox";
 import Floor from "./scripts/Floor";
 import createCity from "./scripts/city/city";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 
 //Initiate Renderer
@@ -17,7 +18,7 @@ const can = document.querySelector("#can");
 can.setAttribute("width", width);
 can.setAttribute("height", height);
 
-const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
 camera.position.set(10, 10, 5);
 
 const scene = new THREE.Scene();
@@ -76,7 +77,22 @@ cube.rotate(0.01, 0.01, 0);
 
 createCity(scene);
 
-
+let loader = new GLTFLoader();
+loader.load("/models/good_year_blimp/good year blimp.gltf", (gltf) => {
+        let blimp = gltf.scene;
+        blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
+        let bx = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 1, 1),
+                new THREE.MeshBasicMaterial({
+                        color: "#FF0000"
+                })
+        );
+        bx.position.x = 0;
+        bx.position.y = 100;
+        bx.position.z = 0;
+        scene.add(bx);
+        scene.add(blimp);
+});
 //Animate
 const clock = new THREE.Clock();
 let oldElapsedTime = 0;
