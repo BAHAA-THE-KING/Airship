@@ -6,6 +6,6 @@ export default function addOrbitControls(camera, renderer) {
   controls.dampingFactor = 0.05;
   controls.screenSpacePanning = false;
   controls.minDistance = 1;
-  controls.maxDistance = 400;
+  controls.maxDistance = 1000;
   return controls;
 };
