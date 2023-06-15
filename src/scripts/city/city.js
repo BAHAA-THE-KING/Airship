@@ -125,7 +125,7 @@ export default function createCity(scene) {
 
 
   const numRows = 6;
-  const numCols = 12;
+  const numCols = 15;
   const buildingWidth = 60;
   const buildingDepth = 38;
 

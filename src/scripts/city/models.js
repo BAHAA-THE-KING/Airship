@@ -3,21 +3,23 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const loader = new GLTFLoader();
 
-export function loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation) {
+export async function loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation) {
+  for (let i = 0; i < modelPaths.length; i++) {
+    const path = modelPaths[i];
+    const position = modelPositions[i];
+    const scale = modelScales[i];
+    const rotation = modelRotation[i];
 
-  modelPaths.forEach((path, index) => {
-    loader.load(path, function (gltf) {
-      const mesh = gltf.scene.children[0];
-      mesh.position.copy(modelPositions[index]);
-      mesh.rotation.set(modelRotation[index].x, modelRotation[index].y, modelRotation[index].z);
-      mesh.scale.set(modelScales[index].x, modelScales[index].y, modelScales[index].z);
-      scene.add(mesh);
-    }, undefined, function (error) {
-      console.error(error);
+    const gltf = await new Promise((resolve, reject) => {
+      loader.load(path, resolve, undefined, reject);
     });
-  });
 
-
+    const mesh = gltf.scene.children[0];
+    mesh.position.copy(position);
+    mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+    mesh.scale.set(scale.x, scale.y, scale.z);
+    scene.add(mesh);
+  }
 }
 
 
