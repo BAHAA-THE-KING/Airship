@@ -107,48 +107,67 @@ export default function createCity(scene) {
   scene.add(groundMesh);
 
   const buildingHeights = [50, 80, 65, 66, 55, 75, 70, 40];
-  const buildingTextures = [
-    "/textures/city/apartments4.png",
-    "/textures/city/apartments9.png",
-    "/textures/city/apartments2.png",
-    "/textures/city/building_office13.png",
-    "/textures/city/skyscraper2.jpeg",
-    "/textures/city/skyscraper1.jpg",
-    "/textures/city/shop_front8.png",
-    "/textures/city/apartment_block6.png",
-    "/textures/city/building_house1.png",
-    "/textures/city/building_jmu.png",
-    "/textures/city/building_modern.png",
-  ];
-  const numRows = 6;
-  const numCols = 15;
-  const buildingWidth = 60;
-  const buildingDepth = 38;
-  let heightIndex = 0;
-  let textureIndex = 0;
-  const buildingPromises = []; // array to store promises for each Building instance
-  for (let row = 0; row < numRows; row++) {
-    for (let col = 0; col < numCols; col++) {
-      const buildingHeight = buildingHeights[heightIndex];
-      const buildingTexture = buildingTextures[textureIndex];
-      const building = new Building(buildingWidth, buildingHeight, buildingDepth, buildingTexture);
-      heightIndex = (heightIndex + 1) % buildingHeights.length; // cycle through the height array
-      textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
-      buildingPromises.push(new Promise((resolve, reject) => {
+const buildingTextures = [
+  "/textures/city/apartments4.png",
+  "/textures/city/apartments9.png",
+  "/textures/city/apartments2.png",
+  "/textures/city/building_office13.png",
+  "/textures/city/skyscraper2.jpeg",
+  "/textures/city/skyscraper1.jpg",
+  "/textures/city/shop_front8.png",
+  "/textures/city/apartment_block6.png",
+  "/textures/city/building_house1.png",
+  "/textures/city/building_jmu.png",
+  "/textures/city/building_modern.png",
+];
+const numRows = 6;
+const numCols = 15;
+const buildingWidth = 60;
+const buildingDepth = 38;
+const buildingPromises = []; // array to store promises for each Building instance
+let heightIndex = 0;
+let textureIndex = 0;
+
+// Define a function that returns a Promise that resolves when the Building is loaded
+function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture) {
+  return new Promise((resolve, reject) => {
+    const building = new Building(buildingWidth, buildingHeight, buildingDepth, buildingTexture);
+    building.load().then(() => {
+      resolve(building);
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+}
+
+for (let row = 0; row < numRows; row++) {
+  for (let col = 0; col < numCols; col++) {
+    const buildingHeight = buildingHeights[heightIndex];
+    const buildingTexture = buildingTextures[textureIndex];
+
+    // Load the Building and add it to the scene
+    const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture)
+      .then((building) => {
         building.setPosition(
-          (col - (numCols - 1) / 2) * buildingWidth  * 1.6,
-          building.getHeight() / 2, // update the y position to use the new height of the building
+          (col - (numCols - 1) / 2) * buildingWidth * 1.6,
+          building.getHeight() / 2,
           (row - (numRows - 1) / 2) * buildingDepth * 5
         );
         building.addToScene(scene);
-        resolve();
-      }));
-    }
-  }
-  Promise.all(buildingPromises).then(() => {
-    console.log("All buildings loaded");
-  });
+      })
+      .catch((err) => {
+        console.error("Failed to create building", err);
+      });
 
+    buildingPromises.push(buildingPromise);
+    heightIndex = (heightIndex + 1) % buildingHeights.length; // cycle through the height array
+    textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
+  }
+}
+
+Promise.all(buildingPromises).then(() => {
+  console.log("All buildings loaded");
+});
 
       // Load road1
       const texturePath = '/textures/city/asphalt.jpg';
