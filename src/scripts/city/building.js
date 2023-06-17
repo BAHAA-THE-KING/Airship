@@ -42,24 +42,24 @@ export default class Building {
       this.texture = texture;
       const materialWithTexture = new THREE.MeshPhongMaterial({ map: texture });
       const materialWithoutTexture = new THREE.MeshPhongMaterial({ color: 0xe0e0e0 });
-      const materialArray = [
-        materialWithTexture,
-        materialWithTexture,
-        materialWithTexture,
-        materialWithTexture,
-        materialWithoutTexture,
-        materialWithoutTexture,
+
+      const materials = [
+        materialWithoutTexture, // right
+        materialWithoutTexture, // left
+        new THREE.MeshPhongMaterial({ color: 0xffffff }), // top
+        new THREE.MeshPhongMaterial({ color: 0xffffff }), // bottom
+        materialWithTexture, // front
+        materialWithTexture, // back
       ];
 
-      // Only apply texture to the sides of the building
-      const faceIndices = ["5", "4", "0", "1"]; // right, left, front, back
-      for (let i = 0; i < 4; i++) {
-        const materialIndex = parseInt(faceIndices[i]);
-        materialArray[materialIndex] = materialWithTexture;
+      const faceIndices = [4, 5, 0, 1]; // right, left, top, bottom
+      for (let i = 0; i < faceIndices.length; i++) {
+        const materialIndex = faceIndices[i];
+        materials[materialIndex] = materialWithTexture;
       }
 
       const geometry = new THREE.BoxGeometry(width, height, depth);
-      this.mesh = new THREE.Mesh(geometry, materialArray);
+      this.mesh = new THREE.Mesh(geometry, materials);
       this.loaded = true;
       return this;
     }).catch((error) => {
