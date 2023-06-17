@@ -3,7 +3,7 @@ import { Color } from "three";
 import Building from "./Building";
 import Road from "./Road";
 import Street from "./streets";
-import { loadLamps, loadModels } from "./models";
+import { loadModels } from "./models";
 import { loadTrees } from "./models";
 
 
@@ -90,11 +90,11 @@ export default function createCity(scene) {
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
 
-  // Load Trees
+  // // Load Trees
 
-  const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
-  const modelScale = 25;
-  loadTrees(scene, modelPath, modelScale);
+  // const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
+  // const modelScale = 25;
+  // loadTrees(scene, modelPath, modelScale);
   
 
   // Create a plane for the ground
@@ -119,34 +119,35 @@ export default function createCity(scene) {
     "/textures/city/building_house1.png",
     "/textures/city/building_jmu.png",
     "/textures/city/building_modern.png",
-
   ];
-
-
-
   const numRows = 6;
   const numCols = 15;
   const buildingWidth = 60;
   const buildingDepth = 38;
-
   let heightIndex = 0;
   let textureIndex = 0;
-
+  const buildingPromises = []; // array to store promises for each Building instance
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
       const buildingHeight = buildingHeights[heightIndex];
       const buildingTexture = buildingTextures[textureIndex];
-
       const building = new Building(buildingWidth, buildingHeight, buildingDepth, buildingTexture);
       heightIndex = (heightIndex + 1) % buildingHeights.length; // cycle through the height array
       textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
-
-      building.setPosition(
-        (col - (numCols - 1) / 2) * buildingWidth  * 1.6,
-        building.getHeight() / 2, // update the y position to use the new height of the building
-        (row - (numRows - 1) / 2) * buildingDepth * 5
-      );
-      building.addToScene(scene);
+      buildingPromises.push(new Promise((resolve, reject) => {
+        building.setPosition(
+          (col - (numCols - 1) / 2) * buildingWidth  * 1.6,
+          building.getHeight() / 2, // update the y position to use the new height of the building
+          (row - (numRows - 1) / 2) * buildingDepth * 5
+        );
+        building.addToScene(scene);
+        resolve();
+      }));
+    }
+  }
+  Promise.all(buildingPromises).then(() => {
+    console.log("All buildings loaded");
+  });
 
 
       // Load road1
@@ -204,6 +205,4 @@ export default function createCity(scene) {
 
 
     }
-  }
 
-}
