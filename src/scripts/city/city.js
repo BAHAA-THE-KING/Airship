@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Color } from "three";
-import Building from "./Building";
+import Building from "./building";
 import Road from "./Road";
 import Street from "./streets";
 import { loadModels } from "./models";
@@ -106,7 +106,6 @@ export default function createCity(scene) {
   groundMesh.rotation.x = -Math.PI / 2; // Rotate the plane to lie flat on the ground
   scene.add(groundMesh);
 
-  const buildingHeights = [50, 80, 65, 66, 55, 75, 70, 40];
 const buildingTextures = [
   "/textures/city/apartments4.png",
   "/textures/city/apartments9.png",
@@ -142,7 +141,7 @@ function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingText
 
 for (let row = 0; row < numRows; row++) {
   for (let col = 0; col < numCols; col++) {
-    const buildingHeight = buildingHeights[heightIndex];
+    const buildingHeight = Math.random()*50+70;
     const buildingTexture = buildingTextures[textureIndex];
 
     // Load the Building and add it to the scene
@@ -160,7 +159,6 @@ for (let row = 0; row < numRows; row++) {
       });
 
     buildingPromises.push(buildingPromise);
-    heightIndex = (heightIndex + 1) % buildingHeights.length; // cycle through the height array
     textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
   }
 }
