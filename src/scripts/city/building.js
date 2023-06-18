@@ -41,7 +41,7 @@ export default class Building {
       const materials = [
         materialWithoutTexture, // right
         materialWithoutTexture, // left
-        new THREE.MeshStandardMaterial({ color: 0xffffff }), // top
+        new THREE.MeshStandardMaterial({ color: 0xd0cfd1 }), // top
         new THREE.MeshStandardMaterial({ color: 0xffffff }), // bottom
         materialWithTexture, // front
         materialWithTexture, // back

@@ -8,81 +8,52 @@ import { loadTrees } from "./models";
 export default function createCity(scene) {
   //Load Models
   const modelPaths = [
+    //Football Stadium
     "/textures/city/models/football_stadium/scene.gltf",
-    "/textures/city/models/sidewalk/scene.gltf",
-    "/textures/city/models/sidewalk/scene.gltf",//2
-    "/textures/city/models/sidewalk/scene.gltf",//3
-    "/textures/city/models/sidewalk/scene.gltf",//4
-    "/textures/city/models/sidewalk/scene.gltf",//4
-    "/textures/city/models/sidewalk/scene.gltf",//4
-    "/textures/city/models/sidewalk/scene.gltf",//4
-    "/textures/city/models/sidewalk/scene.gltf",//4
+    //Extra building
     "/textures/city/models/european_buildings_asset_pack_3/scene.gltf",
-    "/textures/city/models/city/scene.gltf",
+    //Little City
     "/textures/city/models/imaginary_city_i/scene.gltf",
+    //Tommy
     "/textures/city/models/tommy_gta_vice_city/scene.gltf",
   ];
   const modelPositions = [
+    //Football Stadium
     new THREE.Vector3(-50, 0.1, -900),
-    //sidewalk
-    new THREE.Vector3(-50, -2, 33),//1
-    new THREE.Vector3(-50, -2, 360),
-    new THREE.Vector3(-50, -2, -342),
-    new THREE.Vector3(-50, -2, -391),
-    new THREE.Vector3(-50, -2, 551),
-    new THREE.Vector3(-50, -2, -15),//1
-    new THREE.Vector3(-50, -2, 408),
-    new THREE.Vector3(-50, -2, -535),
+    //Extra building
     new THREE.Vector3(990, 0.1, 10),
-    new THREE.Vector3(-780, 5, 110),
+    //Little City
     new THREE.Vector3(10, 5, 1250 ),
+    //Tommy
     new THREE.Vector3(10, 1, 10),
   ];
   const modelScales = [
+    //Football Stadium
+    new THREE.Vector3(8, 8, 8),
+    //Extra building
     new THREE.Vector3(4, 4, 4),
-    //Sidewalk
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(2, 26, 3),
-    new THREE.Vector3(4, 4, 4),
-    new THREE.Vector3(0.1, 0.1, 0.1),
+    //Little City
     new THREE.Vector3(1.5, 1.5, 1.5),
+    //Tommy
     new THREE.Vector3(4, 4, 4),
   ];
   const modelRotation = [
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI),
-    // Side walk
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2 , Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
-  // // Load Trees
-  // const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
-  // const modelScale = 25;
-  // loadTrees(scene, modelPath, modelScale);
-  
+
   // Create a plane for the ground
   const groundGeometry = new THREE.PlaneGeometry(2800, 2800);
   // Create a material with a plain color and apply it to the ground plane
   const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x3b3b3b });
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-  groundMesh.rotation.x = -Math.PI / 2; // Rotate the plane to lie flat on the ground
+  groundMesh.rotation.x = -Math.PI / 2; 
   scene.add(groundMesh);
+
+  //Load buildings
 const buildingTextures = [
   "/textures/city/apartments4.png",
   "/textures/city/apartments9.png",
@@ -97,7 +68,7 @@ const buildingTextures = [
   "/textures/city/building_modern.png",
 ];
 const numRows = 6;
-const numCols = 15;
+const numCols = 16;
 const buildingWidth = 60;
 const buildingDepth = 38;
 const buildingPromises = []; // array to store promises for each Building instance
@@ -142,30 +113,30 @@ Promise.all(buildingPromises).then(() => {
       const texturePath = '/textures/city/asphalt.jpg';
       const road = new Road(1500, 30, texturePath);
       scene.add(road.group);
-      road.setPosition(-80, 0.5, 520);
+      road.setPosition(-20, 0.5, 520);
       road.setRotation(0, 0, 0);
       // Load road2
       const texturePath2 = '/textures/city/asphalt.jpg';
       const road2 = new Road(1500, 30, texturePath2);
       scene.add(road2.group);
-      road2.setPosition(-90, 0.5, 0);
+      road2.setPosition(-20, 0.5, 0);
       road2.setRotation(0, 0, 0);
       // Load road3
       const texturePath3 = '/textures/city/asphalt.jpg';
       const road3 = new Road(1500, 30, texturePath3);
       scene.add(road3.group);
-      road3.setPosition(-80, 0.5, -375);
+      road3.setPosition(-20, 0.5, -375);
       road3.setRotation(0, 0, 0);
       // Load road4
       const texturePath4 = '/textures/city/asphalt.jpg';
       const road4 = new Road(1500, 30, texturePath4);
       scene.add(road4.group);
-      road4.setPosition(-80, 0.5, -520);
+      road4.setPosition(-20, 0.5, -520);
       road4.setRotation(0, 0, 0);
       // Load road5
       const texturePath5 = '/textures/city/asphalt.jpg';
       const road5 = new Road(1500, 30, texturePath4);
       scene.add(road5.group);
-      road5.setPosition(-80, 0.5, 375);
+      road5.setPosition(-20, 0.5, 375);
       road5.setRotation(0, 0, 0);
     }

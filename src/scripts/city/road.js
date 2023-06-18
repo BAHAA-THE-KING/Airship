@@ -32,17 +32,60 @@ export default class Road {
     // Position and rotate road lines
     this.line1.rotation.set(Math.PI * 2, 0, 0);
     this.line2.rotation.set(Math.PI * 2, 0, 0);
-  
-
     this.line1.position.set(-0.9, 0.02, 1);
     this.line2.position.set(0.9, 0.02, -1);
 
-    // Create a group to hold the road surface and lines
+    // Create sidewalks
+    const sidewalkWidth = 18;
+
+    // Create the geometry for the sidewalks
+    const sidewalkGeometry = new THREE.PlaneGeometry(length, sidewalkWidth).rotateX(-Math.PI / 2);
+
+    // Create the material for the sidewalks
+    this.sideTexture = new THREE.TextureLoader().load('/textures/city/road.jpg');
+    this.sideTexture.wrapS = THREE.RepeatWrapping;
+    this.sideTexture.repeat.set(70 , 1.03);
+    const sidewalkMaterial = new THREE.MeshBasicMaterial({ map:this.sideTexture });
+
+    // Create a group to hold the sidewalks
+    this.sidewalkGroup = new THREE.Group();
+
+    // Create a mesh for the left sidewalk using the geometry and material
+    const leftSidewalkMesh = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
+
+    // Position the left sidewalk mesh to the left of the road
+    const leftSidewalkPosition = surfaceMesh.position.clone();
+    leftSidewalkPosition.x -= 0 ; // Adjust the position in the x direction
+    leftSidewalkPosition.z -= 24 ; 
+    leftSidewalkMesh.position.copy(leftSidewalkPosition);
+
+    // Rotate the left sidewalk mesh
+    leftSidewalkMesh.rotation.set(0, 0, 0);
+
+    // Add the left sidewalk mesh to the sidewalk group
+    this.sidewalkGroup.add(leftSidewalkMesh);
+
+    // Create a mesh for the right sidewalk using the geometry and material
+    const rightSidewalkMesh = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
+
+    // Position the right sidewalk mesh to the right of the road
+    const rightSidewalkPosition = surfaceMesh.position.clone();
+    rightSidewalkPosition.x += 0 ; // Adjust the position in the x direction
+    rightSidewalkPosition.z += 24; 
+    rightSidewalkMesh.position.copy(rightSidewalkPosition);
+
+    // Rotate the right sidewalk mesh
+    rightSidewalkMesh.rotation.set(0, 0, 0);
+
+    // Add the right sidewalk mesh to the sidewalk group
+    this.sidewalkGroup.add(rightSidewalkMesh);
+
+    // Create a group to hold the road surface, lines, and sidewalks
     this.group = new THREE.Group();
     this.group.add(surfaceMesh);
     this.group.add(this.line1);
     this.group.add(this.line2);
-
+    this.group.add(this.sidewalkGroup);
   }
 
   setPosition(x, y, z) {
