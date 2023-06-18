@@ -90,7 +90,7 @@ export default function createCity(scene) {
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
 
-  // // Load Trees
+  // Load Trees
 
   // const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
   // const modelScale = 25;
