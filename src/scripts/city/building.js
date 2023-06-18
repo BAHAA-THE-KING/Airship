@@ -25,7 +25,7 @@ class TextureManager {
     }
   }
 }
-
+let textureManager1 = new TextureManager();
 // Building class that uses TextureManager to load textures
 export default class Building {
   constructor(width, height, depth, textureUrl) {
@@ -33,20 +33,20 @@ export default class Building {
     this.height = height;
     this.depth = depth;
     this.textureUrl = textureUrl;
-    this.textureManager = new TextureManager();
+    this.textureManager = textureManager1;
     this.mesh = null;
     this.texture = null;
     this.loaded = false;
 
     const promise = this.textureManager.loadTexture(textureUrl).then((texture) => {
       this.texture = texture;
-      const materialWithTexture = new THREE.MeshPhongMaterial({ map: texture });
-      const materialWithoutTexture = new THREE.MeshPhongMaterial({ color: 0xe0e0e0 });
+      const materialWithTexture = new THREE.MeshStandardMaterial({ map: texture });
+      const materialWithoutTexture = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
 
       const materials = [
         materialWithoutTexture, // right
         materialWithoutTexture, // left
-        new THREE.MeshPhongMaterial({ color: 0xe0e0e0 }), // top
+        new THREE.MeshPhongMaterial({ color: 0xffffff }), // top
         new THREE.MeshPhongMaterial({ color: 0xffffff }), // bottom
         materialWithTexture, // front
         materialWithTexture, // back
