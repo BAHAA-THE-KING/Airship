@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Color } from "three";
-import Building from "./Building";
+import Building from "./building";
 import Road from "./Road";
 import Street from "./streets";
 import { loadModels } from "./models";
@@ -73,6 +73,10 @@ export default function createCity(scene) {
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
   // Load Trees
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5ea5b3a3b02bb70f885c50c5290287d939897aee
   // const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
   // const modelScale = 25;
   // loadTrees(scene, modelPath, modelScale);
@@ -84,6 +88,7 @@ export default function createCity(scene) {
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = -Math.PI / 2; // Rotate the plane to lie flat on the ground
   scene.add(groundMesh);
+<<<<<<< HEAD
   const buildingHeights = [50, 80, 65, 66, 55, 75, 70, 40];
   const buildingTextures = [
     "/textures/city/apartments4.png",
@@ -137,7 +142,69 @@ export default function createCity(scene) {
   Promise.all(buildingPromises).then(() => {
     console.log("All buildings loaded");
   });
+=======
 
+const buildingTextures = [
+  "/textures/city/apartments4.png",
+  "/textures/city/apartments9.png",
+  "/textures/city/apartments2.png",
+  "/textures/city/building_office13.png",
+  "/textures/city/skyscraper2.jpeg",
+  "/textures/city/skyscraper1.jpg",
+  "/textures/city/shop_front8.png",
+  "/textures/city/apartment_block6.png",
+  "/textures/city/building_house1.png",
+  "/textures/city/building_jmu.png",
+  "/textures/city/building_modern.png",
+];
+const numRows = 6;
+const numCols = 15;
+const buildingWidth = 60;
+const buildingDepth = 38;
+const buildingPromises = []; // array to store promises for each Building instance
+let heightIndex = 0;
+let textureIndex = 0;
+
+// Define a function that returns a Promise that resolves when the Building is loaded
+function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture) {
+  return new Promise((resolve, reject) => {
+    const building = new Building(buildingWidth, buildingHeight, buildingDepth, buildingTexture);
+    building.load().then(() => {
+      resolve(building);
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+}
+
+for (let row = 0; row < numRows; row++) {
+  for (let col = 0; col < numCols; col++) {
+    const buildingHeight = Math.random()*50+70;
+    const buildingTexture = buildingTextures[textureIndex];
+
+    // Load the Building and add it to the scene
+    const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture)
+      .then((building) => {
+        building.setPosition(
+          (col - (numCols - 1) / 2) * buildingWidth * 1.6,
+          building.getHeight() / 2,
+          (row - (numRows - 1) / 2) * buildingDepth * 5
+        );
+        building.addToScene(scene);
+      })
+      .catch((err) => {
+        console.error("Failed to create building", err);
+      });
+
+    buildingPromises.push(buildingPromise);
+    textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
+  }
+}
+>>>>>>> 5ea5b3a3b02bb70f885c50c5290287d939897aee
+
+Promise.all(buildingPromises).then(() => {
+  console.log("All buildings loaded");
+});
 
       // Load road1
       const texturePath = '/textures/city/asphalt.jpg';
@@ -170,4 +237,8 @@ export default function createCity(scene) {
       road5.setPosition(-80, 0.5, 375);
       road5.setRotation(0, 0, 0);
     }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 5ea5b3a3b02bb70f885c50c5290287d939897aee

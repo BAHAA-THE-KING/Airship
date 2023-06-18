@@ -5,7 +5,7 @@ class Lights {
         /**
          * lights
          */
-        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
 
         this.spotLight = new THREE.SpotLight(0x78ff00, 0.5, 10, Math.PI * 0.1, 0.25, 1);//color , intensity,distance, angle , penumbra , decay  
         this.spotLight.position.set(6, 5, 0);
