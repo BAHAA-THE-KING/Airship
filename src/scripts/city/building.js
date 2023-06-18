@@ -12,7 +12,12 @@ class TextureManager {
       return Promise.resolve(this.cache.get(url));
     } else {
       return new Promise((resolve, reject) => {
-
+        this.loader.load(url, (texture) => {
+          this.cache.set(url, texture); // cache the texture
+          resolve(texture);
+        }, undefined, (error) => {
+          reject(error);
+        });
       });
     }
   }
@@ -24,13 +29,14 @@ export default class Building {
     this.width = width;
     this.height = height;
     this.depth = depth;
-    this.texture = new THREE.TextureLoader().load(textureUrl, onLoad); // use the onLoad callback
-    this.mesh = null; // initialize mesh to null
+    this.loaded = false;
+    this.promise = null;
+    this.geometry = null;
+    this.mesh = null;
 
-    
     // Load texture using TextureManager
     const textureManager = new TextureManager();
-    textureManager.loadTexture(textureUrl).then((texture) => {
+    this.promise = textureManager.loadTexture(textureUrl).then((texture) => {
       // Create material with texture for the sides
       const sideMaterial = new THREE.MeshPhongMaterial({ map: texture });
       // Create material without texture for the top and bottom
@@ -45,32 +51,31 @@ export default class Building {
         sideMaterial, // front
         sideMaterial, // back
       ]);
+      this.loaded = true;
+      if (onLoad) {
+        onLoad();
+      }
     }).catch((err) => {
       console.error(`Failed to load texture: ${textureUrl}`, err);
     });
   }
-  
-  setPosition(x, y, z) {
 
+  setPosition(x, y, z) {
     if (!this.mesh) {
       console.error("Cannot set position before mesh is created");
       return;
     }
-    
     this.mesh.position.set(x, y, z);
-
   }
-  
-  addToScene(scene) {
 
+  addToScene(scene) {
     if (!this.mesh) {
       console.error("Cannot add to scene before mesh is created");
       return;
     }
-    
     scene.add(this.mesh);
-
   }
+
   getHeight() {
     return this.height;
   }
