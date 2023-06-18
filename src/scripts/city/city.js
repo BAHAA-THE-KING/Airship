@@ -72,11 +72,8 @@ export default function createCity(scene) {
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
-  // Load Trees
-<<<<<<< HEAD
-=======
 
->>>>>>> 5ea5b3a3b02bb70f885c50c5290287d939897aee
+  // Load Trees
   // const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
   // const modelScale = 25;
   // loadTrees(scene, modelPath, modelScale);
@@ -88,7 +85,7 @@ export default function createCity(scene) {
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = -Math.PI / 2; // Rotate the plane to lie flat on the ground
   scene.add(groundMesh);
-<<<<<<< HEAD
+
   const buildingHeights = [50, 80, 65, 66, 55, 75, 70, 40];
   const buildingTextures = [
     "/textures/city/apartments4.png",
@@ -142,28 +139,7 @@ export default function createCity(scene) {
   Promise.all(buildingPromises).then(() => {
     console.log("All buildings loaded");
   });
-=======
 
-const buildingTextures = [
-  "/textures/city/apartments4.png",
-  "/textures/city/apartments9.png",
-  "/textures/city/apartments2.png",
-  "/textures/city/building_office13.png",
-  "/textures/city/skyscraper2.jpeg",
-  "/textures/city/skyscraper1.jpg",
-  "/textures/city/shop_front8.png",
-  "/textures/city/apartment_block6.png",
-  "/textures/city/building_house1.png",
-  "/textures/city/building_jmu.png",
-  "/textures/city/building_modern.png",
-];
-const numRows = 6;
-const numCols = 15;
-const buildingWidth = 60;
-const buildingDepth = 38;
-const buildingPromises = []; // array to store promises for each Building instance
-let heightIndex = 0;
-let textureIndex = 0;
 
 // Define a function that returns a Promise that resolves when the Building is loaded
 function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture) {
@@ -200,7 +176,7 @@ for (let row = 0; row < numRows; row++) {
     textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
   }
 }
->>>>>>> 5ea5b3a3b02bb70f885c50c5290287d939897aee
+
 
 Promise.all(buildingPromises).then(() => {
   console.log("All buildings loaded");
@@ -237,8 +213,4 @@ Promise.all(buildingPromises).then(() => {
       road5.setPosition(-80, 0.5, 375);
       road5.setRotation(0, 0, 0);
     }
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> 5ea5b3a3b02bb70f885c50c5290287d939897aee
