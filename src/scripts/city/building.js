@@ -1,93 +1,84 @@
 import * as THREE from "three";
-
 // TextureManager class to load and cache textures
 class TextureManager {
   constructor() {
     this.cache = new Map();
     this.loader = new THREE.TextureLoader();
   }
-
   loadTexture(url) {
     if (this.cache.has(url)) {
       return Promise.resolve(this.cache.get(url));
     } else {
       return new Promise((resolve, reject) => {
-        this.loader.load(url, (texture) => {
-          this.cache.set(url, texture); // cache the texture
-          resolve(texture);
-        }, undefined, (error) => {
-          reject(error);
-        });
+        this.loader.load(
+          url,
+          (texture) => {
+            this.cache.set(url, texture);
+            resolve(texture);
+          },
+          null,
+          reject
+        );
       });
     }
   }
 }
-
+let textureManager1 = new TextureManager();
 // Building class that uses TextureManager to load textures
 export default class Building {
-  constructor(width, height, depth, textureUrl, onLoad) {
-    this.width = width;
+  constructor(width, height, depth, textureUrl) {
     this.height = height;
     this.depth = depth;
-    this.loaded = false;
-    this.promise = null;
-    this.geometry = null;
+    this.textureUrl = textureUrl;
+    this.textureManager = textureManager1;
     this.mesh = null;
-
-    // Load texture using TextureManager
-    const textureManager = new TextureManager();
-    this.promise = textureManager.loadTexture(textureUrl).then((texture) => {
-      // Create material with texture for the sides
-      const sideMaterial = new THREE.MeshPhongMaterial({ map: texture });
-      // Create material without texture for the top and bottom
-      const topBottomMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
-      // Create mesh with geometry and materials
-      this.geometry = new THREE.BoxGeometry(width, height, depth);
-      this.mesh = new THREE.Mesh(this.geometry, [
-        sideMaterial, // right
-        sideMaterial, // left
-        topBottomMaterial, // top
-        topBottomMaterial, // bottom
-        sideMaterial, // front
-        sideMaterial, // back
-      ]);
-      this.loaded = true;
-      if (onLoad) {
-        onLoad();
+    this.texture = null;
+    this.loaded = false;
+    const promise = this.textureManager.loadTexture(textureUrl).then((texture) => {
+      this.texture = texture;
+      const materialWithTexture = new THREE.MeshStandardMaterial({ map: texture });
+      const materialWithoutTexture = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
+      const materials = [
+        materialWithoutTexture, // right
+        materialWithoutTexture, // left
+        new THREE.MeshStandardMaterial({ color: 0xffffff }), // top
+        new THREE.MeshStandardMaterial({ color: 0xffffff }), // bottom
+        materialWithTexture, // front
+        materialWithTexture, // back
+      ];
+      const faceIndices = [4, 5, 0, 1]; // right, left, top, bottom
+      for (let i = 0; i < faceIndices.length; i++) {
+        const materialIndex = faceIndices[i];
+        materials[materialIndex] = materialWithTexture;
       }
-    }).catch((err) => {
-      console.error(`Failed to load texture: ${textureUrl}`, err);
+      const geometry = new THREE.BoxGeometry(width, height, depth);
+      this.mesh = new THREE.Mesh(geometry, materials);
+      this.loaded = true;
+      return this;
+    }).catch((error) => {
+      console.error(`Failed to load texture ${textureUrl}:`, error);
     });
+    this.promise = promise;
   }
-
   setPosition(x, y, z) {
-    if (!this.mesh) {
-      console.error("Cannot set position before mesh is created");
-      return;
+    if (this.mesh) {
+      this.mesh.position.set(x, y, z);
     }
-    this.mesh.position.set(x, y, z);
   }
-
   addToScene(scene) {
-    if (!this.mesh) {
-      console.error("Cannot add to scene before mesh is created");
-      return;
+    if (this.mesh) {
+      scene.add(this.mesh);
     }
-    scene.add(this.mesh);
   }
-
   getHeight() {
     return this.height;
   }
-
   isLoaded() {
     return this.loaded;
   }
-
   getPromise() {
     return this.promise;
   }
-
   load() {
     if (this.loaded) {
       return Promise.resolve(this);

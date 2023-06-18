@@ -66,14 +66,12 @@ export default function createCity(scene) {
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
-
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
   ];
   loadModels(scene, modelPaths, modelPositions, modelScales, modelRotation);
-
-  // Load Trees
+  // // Load Trees
   // const modelPath = "/textures/city/models/stylized_tree/scene.gltf";
   // const modelScale = 25;
   // loadTrees(scene, modelPath, modelScale);
@@ -85,62 +83,26 @@ export default function createCity(scene) {
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = -Math.PI / 2; // Rotate the plane to lie flat on the ground
   scene.add(groundMesh);
-
-  const buildingHeights = [50, 80, 65, 66, 55, 75, 70, 40];
-  const buildingTextures = [
-    "/textures/city/apartments4.png",
-    "/textures/city/apartments9.png",
-    "/textures/city/apartments2.png",
-    "/textures/city/building_office13.png",
-    "/textures/city/skyscraper2.jpeg",
-    "/textures/city/skyscraper1.jpg",
-    "/textures/city/shop_front8.png",
-    "/textures/city/apartment_block6.png",
-    "/textures/city/building_house1.png",
-    "/textures/city/building_jmu.png",
-    "/textures/city/building_modern.png",
-  ];
-  const numRows = 6;
-  const numCols = 15;
-  const buildingWidth = 60;
-  const buildingDepth = 38;
-  let heightIndex = 0;
-  let textureIndex = 0;
-  const buildingPromises = []; // array to store promises for each Building instance
-  for (let row = 0; row < numRows; row++) {
-    for (let col = 0; col < numCols; col++) {
-      const buildingHeight = buildingHeights[heightIndex];
-      const buildingTexture = buildingTextures[textureIndex];
-      const building = new Building(
-        buildingWidth,
-        buildingHeight,
-        buildingDepth,
-        buildingTexture,
-        () => { // callback function
-          building.mesh = new THREE.Mesh(
-            new THREE.BoxGeometry(buildingWidth, buildingHeight, buildingDepth),
-            new THREE.MeshBasicMaterial({ map: building.texture })
-          );
-          building.setPosition(
-            (col - (numCols - 1) / 2) * buildingWidth  * 1.6,
-            building.getHeight() / 2, // update the y position to use the new height of the building
-            (row - (numRows - 1) / 2) * buildingDepth * 5
-          );
-          building.addToScene(scene);
-        }
-      );
-      heightIndex = (heightIndex + 1) % buildingHeights.length; // cycle through the height array
-      textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
-      buildingPromises.push(new Promise((resolve, reject) => {
-        resolve();
-      }));
-    }
-  }
-  Promise.all(buildingPromises).then(() => {
-    console.log("All buildings loaded");
-  });
-
-
+const buildingTextures = [
+  "/textures/city/apartments4.png",
+  "/textures/city/apartments9.png",
+  "/textures/city/apartments2.png",
+  "/textures/city/building_office13.png",
+  "/textures/city/skyscraper2.jpeg",
+  "/textures/city/skyscraper1.jpg",
+  "/textures/city/shop_front8.png",
+  "/textures/city/apartment_block6.png",
+  "/textures/city/building_house1.png",
+  "/textures/city/building_jmu.png",
+  "/textures/city/building_modern.png",
+];
+const numRows = 6;
+const numCols = 15;
+const buildingWidth = 60;
+const buildingDepth = 38;
+const buildingPromises = []; // array to store promises for each Building instance
+let heightIndex = 0;
+let textureIndex = 0;
 // Define a function that returns a Promise that resolves when the Building is loaded
 function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture) {
   return new Promise((resolve, reject) => {
@@ -152,12 +114,10 @@ function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingText
     });
   });
 }
-
 for (let row = 0; row < numRows; row++) {
   for (let col = 0; col < numCols; col++) {
     const buildingHeight = Math.random()*50+70;
     const buildingTexture = buildingTextures[textureIndex];
-
     // Load the Building and add it to the scene
     const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture)
       .then((building) => {
@@ -171,17 +131,13 @@ for (let row = 0; row < numRows; row++) {
       .catch((err) => {
         console.error("Failed to create building", err);
       });
-
     buildingPromises.push(buildingPromise);
     textureIndex = (textureIndex + 1) % buildingTextures.length; // cycle through the texture array
   }
 }
-
-
 Promise.all(buildingPromises).then(() => {
   console.log("All buildings loaded");
 });
-
       // Load road1
       const texturePath = '/textures/city/asphalt.jpg';
       const road = new Road(1500, 30, texturePath);
@@ -213,4 +169,3 @@ Promise.all(buildingPromises).then(() => {
       road5.setPosition(-80, 0.5, 375);
       road5.setRotation(0, 0, 0);
     }
-
