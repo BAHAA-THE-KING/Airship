@@ -65,6 +65,11 @@ export default class Building {
       this.mesh.position.set(x, y, z);
     }
   }
+  setRotation(x, y, z) {
+    if (this.mesh) {
+      this.mesh.rotation.set(x, y, z);
+    }
+  }  
   addToScene(scene) {
     if (this.mesh) {
       scene.add(this.mesh);

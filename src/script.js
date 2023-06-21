@@ -91,7 +91,7 @@ loader.load("/models/good_year_blimp/good year blimp.gltf", (gltf) => {
         bx.position.y = 100;
         bx.position.z = 0;
         scene.add(bx);
-        scene.add(blimp);
+        // scene.add(blimp);
 });
 //Animate
 const clock = new THREE.Clock();

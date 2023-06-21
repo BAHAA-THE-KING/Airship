@@ -36,7 +36,7 @@ export default class Road {
     this.line2.position.set(0.9, 0.02, -1);
 
     // Create sidewalks
-    const sidewalkWidth = 18;
+    const sidewalkWidth = 25;
 
     // Create the geometry for the sidewalks
     const sidewalkGeometry = new THREE.PlaneGeometry(length, sidewalkWidth).rotateX(-Math.PI / 2);
@@ -56,7 +56,7 @@ export default class Road {
     // Position the left sidewalk mesh to the left of the road
     const leftSidewalkPosition = surfaceMesh.position.clone();
     leftSidewalkPosition.x -= 0 ; // Adjust the position in the x direction
-    leftSidewalkPosition.z -= 24 ; 
+    leftSidewalkPosition.z -= 50 ; 
     leftSidewalkMesh.position.copy(leftSidewalkPosition);
 
     // Rotate the left sidewalk mesh
@@ -71,7 +71,7 @@ export default class Road {
     // Position the right sidewalk mesh to the right of the road
     const rightSidewalkPosition = surfaceMesh.position.clone();
     rightSidewalkPosition.x += 0 ; // Adjust the position in the x direction
-    rightSidewalkPosition.z += 24; 
+    rightSidewalkPosition.z += 50; 
     rightSidewalkMesh.position.copy(rightSidewalkPosition);
 
     // Rotate the right sidewalk mesh
