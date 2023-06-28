@@ -81,6 +81,7 @@ let loader = new GLTFLoader();
 loader.load("/models/good_year_blimp/good year blimp.gltf", (gltf) => {
         let blimp = gltf.scene;
         blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
+        blimp.position.set(600, 0, 200)
         let bx = new THREE.Mesh(
                 new THREE.BoxGeometry(1, 1, 1),
                 new THREE.MeshBasicMaterial({
@@ -91,7 +92,7 @@ loader.load("/models/good_year_blimp/good year blimp.gltf", (gltf) => {
         bx.position.y = 100;
         bx.position.z = 0;
         scene.add(bx);
-        // scene.add(blimp);
+        scene.add(blimp);
 });
 //Animate
 const clock = new THREE.Clock();

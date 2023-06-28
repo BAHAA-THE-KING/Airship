@@ -24,7 +24,7 @@ export default function createCity(scene) {
     //Extra building
     new THREE.Vector3(1400, 0.1, 10),
     //Little City
-    new THREE.Vector3(300, -5, 400 ),
+    new THREE.Vector3(470, -5, 400 ),
     //Tommy
     new THREE.Vector3(10, 12, 10),
 
@@ -51,11 +51,22 @@ export default function createCity(scene) {
 
   // Create a plane for the ground
   const groundGeometry = new THREE.PlaneGeometry(5000, 5000);
-  // Create a material with a plain color and apply it to the ground plane
-  const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x3b3b3b });
+  // Load the texture for the ground
+  const textureLoader = new THREE.TextureLoader();
+  const groundTexture = textureLoader.load("/textures/city/grass.jpg");
+  
+  // Scale the texture to fit the ground plane
+  groundTexture.repeat.set(20, 20);
+  groundTexture.wrapS = THREE.RepeatWrapping;
+  groundTexture.wrapT = THREE.RepeatWrapping;
+  
+  // Create a material with the texture and apply it to the ground plane
+  const groundMaterial = new THREE.MeshBasicMaterial({ map: groundTexture });
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = -Math.PI / 2; 
   scene.add(groundMesh);
+
+  
 
   const buildingTextures = [
     "/textures/city/apartments4.png",
@@ -82,13 +93,13 @@ export default function createCity(scene) {
   let heightIndex = 0;
   let textureIndex = 0;
   // Define a function that returns a Promise that resolves when the Building is loaded
-  function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture) {
+  function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath) {
     return new Promise((resolve, reject) => {
-      const building = new Building(buildingWidth, buildingHeight, buildingDepth, buildingTexture);
+      const building = new Building(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath);
       building.load().then(() => {
         resolve(building);
-      }).catch((err) => {
-        reject(err);
+      }).catch((error) => {
+        reject(error);
       });
     });
   }
@@ -97,8 +108,9 @@ export default function createCity(scene) {
     for (let col = 0; col < numCols1; col++) {
       const buildingHeight = Math.random()*50+70;
       const buildingTexture = buildingTextures[textureIndex];
+      const topTexturePath = '/textures/city/roof_texture.jpeg'; // specify the path of the top texture
       // Load the Building and add it to the scene
-      const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture)
+      const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath) // pass topTexturePath
         .then((building) => {
           building.setPosition(
             (col - (numCols1 - 1) / 2) * buildingWidth * 1.6,
@@ -119,8 +131,9 @@ export default function createCity(scene) {
     for (let col = 0; col < numCols2; col++) {
       const buildingHeight = Math.random()*50+90;
       const buildingTexture = buildingTextures[textureIndex];
+      const topTexturePath = '/textures/city/roof_texture.jpeg'; // specify the path of the top texture
       // Load the Building and add it to the scene
-      const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture)
+      const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath)
         .then((building) => {
           building.setPosition(
             (col - (numCols2 - 1) / 2) * buildingWidth * 1.2,
@@ -141,11 +154,12 @@ export default function createCity(scene) {
     for (let col = 0; col < numCols3; col++) {
       const buildingHeight = Math.random()*50+85;
       const buildingTexture = buildingTextures[textureIndex];
+      const topTexturePath = '/textures/city/roof_texture.jpeg'; // specify the path of the top texture
       // Load the Building and add it to the scene
-      const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture)
+      const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath)
         .then((building)=> {
           building.setPosition(
-            (col - (numCols3 - 1) / 2) * buildingDepth * 1.45 - 1400, // adjust the x position to account for the second set of buildings
+            (col - (numCols3 - 1) / 2) * buildingDepth * 1.45 - 1500, // adjust the x position to account for the second set of buildings
             building.getHeight() / 2,
             (row - (numRows3 - 1) / 2) * buildingWidth * 4 // adjust the z position to account for the rotation
           );
@@ -176,26 +190,90 @@ export default function createCity(scene) {
       road2.setPosition(250, 0.5, -1138);
       road2.setRotation(0, 0, 0);
       
-      // // Load road2
-      // const texturePath3 = '/textures/city/asphalt.jpg';
-      // const road3 = new Road(1200, 75, texturePath3);
-      // scene.add(road3.group);
-      // road3.setPosition(200, 0.5, -125);
-      // road3.setRotation(0, 0, 0);
+      // Load road2
+      const texturePath3 = '/textures/city/asphalt.jpg';
+      const road3 = new Road(900, 75, texturePath3);
+      scene.add(road3.group);
+      road3.setPosition(-1500, 0.5, -125);
+      road3.setRotation(0, 0, 0);
 
-      // // Load road4
-      // const texturePath4 = '/textures/city/asphalt.jpg';
-      // const road4 = new Road(1200, 75, texturePath4);
-      // scene.add(road4.group);
-      // road4.setPosition(200, 0.5, -400);
-      // road4.setRotation(0, 0, 0);
-      // // Load road5
-      // const texturePath5 = '/textures/city/asphalt.jpg';
-      // const road5 = new Road(1200, 75, texturePath5);
-      // scene.add(road5.group);
-      // road5.setPosition(200, 0.5, 120);
-      // road5.setRotation(0, 0, 0);
+      // Load road4
+      const texturePath4 = '/textures/city/asphalt.jpg';
+      const road4 = new Road(900, 75, texturePath4);
+      scene.add(road4.group);
+      road4.setPosition(-1500, 0.5, 850);
+      road4.setRotation(0, 0, 0);
+      // Load road5
+      const texturePath5 = '/textures/city/asphalt.jpg';
+      const road5 = new Road(900, 75, texturePath5);
+      scene.add(road5.group);
+      road5.setPosition(-1500, 0.5, 120);
+      road5.setRotation(0, 0, 0);
+            // Load road6
+            const texturePath6 = '/textures/city/asphalt.jpg';
+            const road6 = new Road(900, 75, texturePath6);
+            scene.add(road6.group);
+            road6.setPosition(-1500, 0.5, 350);
+            road6.setRotation(0, 0, 0);
+            // Load road7
+            const texturePath7 = '/textures/city/asphalt.jpg';
+            const road7 = new Road(900, 75, texturePath7);
+            scene.add(road7.group);
+            road7.setPosition(-1500, 0.5, 600);
+            road7.setRotation(0, 0, 0);
+            
+            // Load road6
+            const texturePath8 = '/textures/city/asphalt.jpg';
+            const road8 = new Road(900, 75, texturePath8);
+            scene.add(road8.group);
+            road8.setPosition(-1500, 0.5, -350);
+            road8.setRotation(0, 0, 0);
+            // Load road7
+            const texturePath9 = '/textures/city/asphalt.jpg';
+            const road9 = new Road(900, 75, texturePath9);
+            scene.add(road9.group);
+            road9.setPosition(-1500, 0.5, -600);
+            road9.setRotation(0, 0, 0);      
+          
+            // Load road7
+            const texturePath10 = '/textures/city/asphalt.jpg';
+            const road10 = new Road(900, 75, texturePath10);
+            scene.add(road10.group);
+            road10.setPosition(-1500, 0.5, -850);
+            road10.setRotation(0, 0, 0);
+            
+            // Load road6
+            const texturePath11 = '/textures/city/asphalt.jpg';
+            const road11 = new Road(900, 75, texturePath11);
+            scene.add(road11.group);
+            road11.setPosition(-1500, 0.5, -1080);
+            road11.setRotation(0, 0, 0);
+            // Load road7
+            const texturePath12 = '/textures/city/asphalt.jpg';
+            const road12 = new Road(900, 75, texturePath12);
+            scene.add(road12.group);
+            road12.setPosition(-1500, 0.5, -1330);
+            road12.setRotation(0, 0, 0);  
 
+
+            // Load road6
+            const texturePath13 = '/textures/city/asphalt.jpg';
+            const road13 = new Road(900, 75, texturePath13);
+            scene.add(road13.group);
+            road13.setPosition(-1500, 0.5, 1080);
+            road13.setRotation(0, 0, 0);
+            // Load road7
+            const texturePath14 = '/textures/city/asphalt.jpg';
+            const road14 = new Road(900, 75, texturePath14);
+            scene.add(road14.group);
+            road14.setPosition(-1500, 0.5, -1330);
+            road14.setRotation(0, 0, 0);  
+            // Load road7
+            const texturePath15 = '/textures/city/asphalt.jpg';
+            const road15 = new Road(2900, 75, texturePath15);
+            scene.add(road15.group);
+            road15.setPosition(-990, 0.5, 0);
+            road15.setRotation(0, Math.PI / 2 , 0 );  
 // Load the GLTF model and repeat it 5 times
     
 //     repeatModel("textures/city/models/maple_tree/scene.gltf", 5).then((repeatedModels) => {
