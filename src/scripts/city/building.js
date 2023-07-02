@@ -1,4 +1,7 @@
 import * as THREE from "three";
+import TextureManager from "../utils/TextureManager";
+
+const textureManager = new TextureManager();
 
 class Building {
   constructor(width, height, depth, sideTexturePath, topTexturePath) {
@@ -7,7 +10,7 @@ class Building {
     this.depth = depth;
     this.sideTexturePath = sideTexturePath;
     this.topTexturePath = topTexturePath;
-    this.textureManager = new TextureManager();
+    this.textureManager = textureManager;
     this.mesh = new THREE.Object3D();
     this.loaded = false;
     this.promise = this.load();
@@ -62,38 +65,6 @@ class Building {
 
   getPromise() {
     return this.promise;
-  }
-}
-
-class TextureManager {
-  constructor() {
-    this.cache = new Map();
-    this.loader = new THREE.TextureLoader();
-  }
-
-  async loadTexture(url) {
-    if (this.cache.has(url)) {
-      return this.cache.get(url);
-    }
-
-    try {
-      const texture = await new Promise((resolve, reject) => {
-        this.loader.load(
-          url,
-          (texture) => {
-            this.cache.set(url, texture);
-            resolve(texture);
-          },
-          null,
-          reject
-        );
-      });
-
-      return texture;
-    } catch (error) {
-      console.error(`Failed to load texture ${url}:`, error);
-      throw error;
-    }
   }
 }
 
