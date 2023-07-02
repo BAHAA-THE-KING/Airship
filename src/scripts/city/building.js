@@ -25,16 +25,20 @@ class Building {
 
       const sideMaterial = new THREE.MeshStandardMaterial({ map: sideTexture });
       const topMaterial = new THREE.MeshStandardMaterial({ map: topTexture });
-      const sideGeometry = new THREE.BoxGeometry(this.width, this.height, this.depth);
-      const topGeometry = new THREE.PlaneGeometry(this.width, this.depth);
-      const sideMesh = new THREE.Mesh(sideGeometry, sideMaterial);
-      const topMesh = new THREE.Mesh(topGeometry, topMaterial);
+      const sideMaterials = [
+        sideMaterial,
+        sideMaterial,
+        topMaterial,
+        undefined,
+        sideMaterial,
+        sideMaterial
+      ];
 
-      topMesh.position.y = this.height / 2;
-      topMesh.rotateX(-Math.PI / 2);
+      const sideGeometry = new THREE.BoxGeometry(this.width, this.height, this.depth);
+
+      const sideMesh = new THREE.Mesh(sideGeometry, sideMaterials);
 
       this.mesh.add(sideMesh);
-      this.mesh.add(topMesh);
       this.loaded = true;
       return this;
     } catch (error) {
