@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import TextureManager from "../utils/TextureManager";
+import MaterialManager from "../utils/MaterialManager";
 
-const textureManager = new TextureManager();
+const materialManager = new MaterialManager();
 
 class Building {
   constructor(width, height, depth, sideTexturePath, topTexturePath) {
@@ -10,7 +10,6 @@ class Building {
     this.depth = depth;
     this.sideTexturePath = sideTexturePath;
     this.topTexturePath = topTexturePath;
-    this.textureManager = textureManager;
     this.mesh = new THREE.Object3D();
     this.loaded = false;
     this.promise = this.load();
@@ -18,13 +17,8 @@ class Building {
 
   async load() {
     try {
-      const [sideTexture, topTexture] = await Promise.all([
-        this.textureManager.loadTexture(this.sideTexturePath),
-        this.textureManager.loadTexture(this.topTexturePath)
-      ]);
-
-      const sideMaterial = new THREE.MeshStandardMaterial({ map: sideTexture });
-      const topMaterial = new THREE.MeshStandardMaterial({ map: topTexture });
+      const sideMaterial = await materialManager.getMaterial(this.sideTexturePath);
+      const topMaterial =  await materialManager.getMaterial(this.topTexturePath);
       const sideMaterials = [
         sideMaterial,
         sideMaterial,
