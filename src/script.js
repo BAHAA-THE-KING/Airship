@@ -6,12 +6,17 @@ import Lights from "./scripts/Lights";
 import Skybox from "./scripts/Skybox";
 import Floor from "./scripts/Floor";
 import createCity from "./scripts/city/city";
+import { Sky } from 'three/examples/jsm/objects/Sky.js';
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 
 //Initiate Renderer
 let width = window.innerWidth;
 let height = window.innerHeight;
+
+const gui = new GUI();
+let sky,sun;
 
 const can = document.querySelector("#can");
 
@@ -45,14 +50,14 @@ window.onresize = function () {
 const controls = addOrbitControls(camera, renderer);
 
 // Create a new skybox using the Skybox class
-const skybox = new Skybox([
-        'textures/skybox/px.jpg',
-        'textures/skybox/nx.jpg',
-        'textures/skybox/py.jpg',
-        'textures/skybox/ny.jpg',
-        'textures/skybox/pz.jpg',
-        'textures/skybox/nz.jpg',
-], scene);
+// const skybox = new Skybox([
+//         'textures/skybox/px.jpg',
+//         'textures/skybox/nx.jpg',
+//         'textures/skybox/py.jpg',
+//         'textures/skybox/ny.jpg',
+//         'textures/skybox/pz.jpg',
+//         'textures/skybox/nz.jpg',
+// ], scene);
 
 /**
  * lights
@@ -62,6 +67,80 @@ let lights = new Lights(scene);
 /**
  * Objects 
  */
+
+var texLoad = new THREE.TextureLoader(),
+addBlend = THREE.AdditiveBlending;
+ // Sky Texture
+var skyMat = new THREE.MeshBasicMaterial( {
+    map : texLoad.load( "textures/cloudMap.jpg" ),
+    side: THREE.BackSide,
+    transparent: true,
+    blending: addBlend,
+   });
+ var skySphere = new THREE.SphereBufferGeometry( 5000, 10, 5 ),skyMat;
+
+var skyMesh = new THREE.Mesh( skySphere, skyMat );
+scene.add( skyMesh );
+
+sky = new Sky();
+sky.scale.setScalar( 45000 );
+// sky.mesh = skyMesh;
+scene.add( sky );
+
+sun = new THREE.Vector3();
+
+
+
+
+/**
+ * GUI
+ */
+
+
+
+const effectController = {
+        turbidity: 10,
+        rayleigh: 3,
+        mieCoefficient: 0.005,
+        mieDirectionalG: 0.7,
+        elevation: 2,
+        azimuth: 180,
+        exposure: renderer.toneMappingExposure
+};
+
+function guiChanged() {
+
+        const uniforms = sky.material.uniforms;
+        uniforms[ 'turbidity' ].value = effectController.turbidity;
+        uniforms[ 'rayleigh' ].value = effectController.rayleigh;
+        uniforms[ 'mieCoefficient' ].value = effectController.mieCoefficient;
+        uniforms[ 'mieDirectionalG' ].value = effectController.mieDirectionalG;
+
+        const phi = THREE.MathUtils.degToRad( 90 - effectController.elevation );
+        const theta = THREE.MathUtils.degToRad( effectController.azimuth );
+
+        sun.setFromSphericalCoords( 1, phi, theta );
+
+        uniforms[ 'sunPosition' ].value.copy( sun );
+
+        renderer.toneMappingExposure = effectController.exposure;
+        renderer.render( scene, camera );
+
+}
+
+
+
+gui.add( effectController, 'turbidity', 0.0, 20.0, 0.1 ).onChange( guiChanged );
+gui.add( effectController, 'rayleigh', 0.0, 4, 0.001 ).onChange( guiChanged );
+gui.add( effectController, 'mieCoefficient', 0.0, 0.1, 0.001 ).onChange( guiChanged );
+gui.add( effectController, 'mieDirectionalG', 0.0, 1, 0.001 ).onChange( guiChanged );
+gui.add( effectController, 'elevation', 0, 90, 0.1 ).onChange( guiChanged );
+gui.add( effectController, 'azimuth', - 180, 180, 0.1 ).onChange( guiChanged );
+gui.add( effectController, 'exposure', 0, 1, 0.0001 ).onChange( guiChanged );
+
+guiChanged();
+
+
 
 
 // Create a new cube using the Cube class
