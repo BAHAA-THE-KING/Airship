@@ -1,13 +1,12 @@
 import "./style.css";
 import * as THREE from "three";
-import addOrbitControls from './scripts/OrbitControls';
-import Cube from "./scripts/Cube";
-import Lights from "./scripts/Lights";
-import Skybox from "./scripts/Skybox";
-import Floor from "./scripts/Floor";
+import addOrbitControls from './scripts/Environment/OrbitControls';
+import Cube from "./scripts/Environment/Cube";
+import Lights from "./scripts/Environment/Lights";
+import Floor from "./scripts/Environment/Floor";
 import createCity from "./scripts/city/city";
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import { GUI } from 'lil-gui';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 
@@ -48,16 +47,6 @@ window.onresize = function () {
 
 // Add OrbitControls to the camera
 const controls = addOrbitControls(camera, renderer);
-
-// Create a new skybox using the Skybox class
-// const skybox = new Skybox([
-//         'textures/skybox/px.jpg',
-//         'textures/skybox/nx.jpg',
-//         'textures/skybox/py.jpg',
-//         'textures/skybox/ny.jpg',
-//         'textures/skybox/pz.jpg',
-//         'textures/skybox/nz.jpg',
-// ], scene);
 
 /**
  * lights
