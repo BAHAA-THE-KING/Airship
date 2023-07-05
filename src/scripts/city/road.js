@@ -1,30 +1,51 @@
 import * as THREE from "three";
+import MaterialManager from "../utils/MaterialManager";
+import TextureManager from "../utils/TextureManager";
+
+const surfaceTextureUrl = '/textures/city/asphalt.jpg';
+const sideTextureUrl = '/textures/city/road.jpg';
 
 export default class Road {
-  constructor(length, width, texturePath) {
+  constructor(length, width) {
     this.length = length;
     this.width = width;
-    this.texturePath = texturePath;
-
+    this.group = new THREE.Group();
+    this.load();
+  }
+  async load() {
     // Create road surface
-    this.surfaceTexture = new THREE.TextureLoader().load(texturePath);
-    this.surfaceTexture.wrapS = THREE.RepeatWrapping; // set horizontal wrapping mode
-    this.surfaceTexture.repeat.set(10, 1); // adjust repeat values as needed
-    this.surfaceMaterial = new THREE.MeshPhongMaterial({ map: this.surfaceTexture });
-    const surfaceGeometry = new THREE.BoxBufferGeometry(length, 0.01, width);
+    let surfaceMaterial = MaterialManager.get(surfaceTextureUrl);
+    if (surfaceMaterial === false) {
+      const surfaceTexture = await TextureManager.loadTexture(surfaceTextureUrl);
+
+      surfaceTexture.wrapS = THREE.RepeatWrapping; // set horizontal wrapping mode
+      surfaceTexture.repeat.set(10, 1); // adjust repeat values as needed
+
+      surfaceMaterial = new THREE.MeshStandardMaterial({ map: surfaceTexture });
+
+      MaterialManager.save(surfaceTextureUrl, surfaceMaterial);
+    }
+
+    const surfaceGeometry = new THREE.BoxGeometry(this.length, 0.01, this.width);
+
+    this.surfaceMesh = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
+
     const uvAttribute = surfaceGeometry.attributes.uv;
     for (let i = 0; i < uvAttribute.count; i++) {
-      if (uvAttribute.getY(i) < 0.5) {
+      if (uvAttribute.getY(i) < 0.5)
         uvAttribute.setY(i, 0);
-      } else {
+      else
         uvAttribute.setY(i, 1);
-      }
     }
-    const surfaceMesh = new THREE.Mesh(surfaceGeometry, this.surfaceMaterial);
 
     // Create road lines
-    const lineGeometry = new THREE.BoxGeometry(length, 0.5, 0.22);
-    const lineMaterial = new THREE.MeshPhongMaterial({ color: 0xa8680d });
+    let lineMaterial = MaterialManager.get("Line Material");
+    if (lineMaterial === false) {
+      lineMaterial = new THREE.MeshStandardMaterial({ color: 0xa8680d });
+      MaterialManager.save("Line Material", lineMaterial);
+    }
+
+    const lineGeometry = new THREE.BoxGeometry(this.length, 0.5, 0.22);
 
     this.line1 = new THREE.Mesh(lineGeometry, lineMaterial);
     this.line2 = new THREE.Mesh(lineGeometry, lineMaterial);
@@ -35,17 +56,26 @@ export default class Road {
     this.line1.position.set(-0.9, 0.02, 1);
     this.line2.position.set(0.9, 0.02, -1);
 
+
     // Create sidewalks
     const sidewalkWidth = 25;
 
     // Create the geometry for the sidewalks
-    const sidewalkGeometry = new THREE.PlaneGeometry(length, sidewalkWidth).rotateX(-Math.PI / 2);
+    const sidewalkGeometry = new THREE.PlaneGeometry(this.length, sidewalkWidth).rotateX(-Math.PI / 2);
 
     // Create the material for the sidewalks
-    this.sideTexture = new THREE.TextureLoader().load('/textures/city/road.jpg');
-    this.sideTexture.wrapS = THREE.RepeatWrapping;
-    this.sideTexture.repeat.set(70 , 1.03);
-    const sidewalkMaterial = new THREE.MeshBasicMaterial({ map:this.sideTexture });
+    let sidewalkMaterial = MaterialManager.get(sideTextureUrl);
+
+    if (sidewalkMaterial === false) {
+      const sideTexture = await TextureManager.loadTexture(sideTextureUrl);
+
+      sideTexture.wrapS = THREE.RepeatWrapping;
+      sideTexture.repeat.set(70, 1.03);
+
+      sidewalkMaterial = new THREE.MeshStandardMaterial({ map: sideTexture });
+
+      MaterialManager.save(sideTextureUrl, sidewalkMaterial);
+    }
 
     // Create a group to hold the sidewalks
     this.sidewalkGroup = new THREE.Group();
@@ -54,9 +84,9 @@ export default class Road {
     const leftSidewalkMesh = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
 
     // Position the left sidewalk mesh to the left of the road
-    const leftSidewalkPosition = surfaceMesh.position.clone();
-    leftSidewalkPosition.x -= 0 ; // Adjust the position in the x direction
-    leftSidewalkPosition.z -= 50 ; 
+    const leftSidewalkPosition = this.surfaceMesh.position.clone();
+    leftSidewalkPosition.x -= 0; // Adjust the position in the x direction
+    leftSidewalkPosition.z -= 50;
     leftSidewalkMesh.position.copy(leftSidewalkPosition);
 
     // Rotate the left sidewalk mesh
@@ -69,9 +99,9 @@ export default class Road {
     const rightSidewalkMesh = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
 
     // Position the right sidewalk mesh to the right of the road
-    const rightSidewalkPosition = surfaceMesh.position.clone();
-    rightSidewalkPosition.x += 0 ; // Adjust the position in the x direction
-    rightSidewalkPosition.z += 50; 
+    const rightSidewalkPosition = this.surfaceMesh.position.clone();
+    rightSidewalkPosition.x += 0; // Adjust the position in the x direction
+    rightSidewalkPosition.z += 50;
     rightSidewalkMesh.position.copy(rightSidewalkPosition);
 
     // Rotate the right sidewalk mesh
@@ -81,8 +111,7 @@ export default class Road {
     this.sidewalkGroup.add(rightSidewalkMesh);
 
     // Create a group to hold the road surface, lines, and sidewalks
-    this.group = new THREE.Group();
-    this.group.add(surfaceMesh);
+    this.group.add(this.surfaceMesh);
     this.group.add(this.line1);
     this.group.add(this.line2);
     this.group.add(this.sidewalkGroup);

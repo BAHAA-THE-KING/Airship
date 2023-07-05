@@ -1,30 +1,33 @@
 import Force from '../Force';
+
 class DragForce extends Force {
-    constructor(cd,area,density,velocity) {
-      this.cd = cd;
-      this.area = area;
-      this.density = density;
-      this.velocity = velocity;
-     
-    }
-    //----------------------------------------------------------------
-    calculate_cd() {
-      
-    }
-    //----------------------------------------------------------------
-    calculate_area() {
-      
-    }
-    //----------------------------------------------------------------
-    calculate_density() {
-      
-    }
-    //----------------------------------------------------------------
-    calculate_velocity() {
-      
-    }
-    //----------------------------------------------------------------
-   
-  
+  // D = 0.5 * Cd * A * p * v2
+  constructor(cd, area, density, velocity) {
+    super();
+    this.cd = cd;
+    this.area = area;
+    this.density = density;
+    this.velocity = velocity;
+
   }
-  export default DragForce;
+
+  calculate_cd() {
+
+  }
+
+  calculate_area() {
+
+  }
+
+  calculate_density() {
+
+  }
+
+  calculate_velocity() {
+
+  }
+
+
+
+}
+export default DragForce;

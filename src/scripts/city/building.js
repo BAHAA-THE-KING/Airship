@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import MaterialManager from "../utils/MaterialManager";
-
-const materialManager = new MaterialManager();
+import TextureManager from "../utils/TextureManager";
 
 class Building {
   constructor(width, height, depth, sideTexturePath, topTexturePath) {
@@ -17,8 +16,20 @@ class Building {
 
   async load() {
     try {
-      const sideMaterial = await materialManager.getMaterial(this.sideTexturePath);
-      const topMaterial =  await materialManager.getMaterial(this.topTexturePath);
+      let sideMaterial = MaterialManager.get(this.sideTexturePath);
+      if (sideMaterial === false) {
+        const texture = await TextureManager.loadTexture(this.sideTexturePath);
+        sideMaterial = new THREE.MeshStandardMaterial({ map: texture });
+        MaterialManager.save(this.sideTexturePath, sideMaterial);
+      }
+
+      let topMaterial = MaterialManager.get(this.topTexturePath);
+      if (topMaterial === false) {
+        const topTexture = await TextureManager.loadTexture(this.topTexturePath)
+        topMaterial = new THREE.MeshStandardMaterial({ map: topTexture });
+        MaterialManager.save(this.topTexturePath, topMaterial);
+      }
+
       const sideMaterials = [
         sideMaterial,
         sideMaterial,
@@ -33,10 +44,14 @@ class Building {
       const sideMesh = new THREE.Mesh(sideGeometry, sideMaterials);
 
       this.mesh.add(sideMesh);
+
       this.loaded = true;
+
       return this;
+
     } catch (error) {
-      console.error(`Failed to load textures ${this.sideTexturePath} and ${this.topTexturePath}:`, error);
+      console.error(`Failed to create buidling : `, error);
+      console.log(this.sideTexturePath);
       throw error;
     }
   }

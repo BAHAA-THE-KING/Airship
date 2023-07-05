@@ -1,21 +1,19 @@
 import "./style.css";
 import * as THREE from "three";
-import addOrbitControls from './scripts/Environment/OrbitControls';
-import Cube from "./scripts/Environment/Cube";
-import Lights from "./scripts/Environment/Lights";
-import Floor from "./scripts/Environment/Floor";
+import addOrbitControls from './scripts/environment/OrbitControls';
+import addLights from "./scripts/environment/Lights";
 import createCity from "./scripts/city/city";
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
-import { GUI } from 'lil-gui';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import makeGui from "./scripts/environment/GUI";
+import Blimp from "./scripts/models/Blimp";
+import PhysicsWorld from "./scripts/physics/PhysicsWorld";
 
 
 //Initiate Renderer
 let width = window.innerWidth;
 let height = window.innerHeight;
 
-const gui = new GUI();
-let sky,sun;
+let sky, sun;
 
 const can = document.querySelector("#can");
 
@@ -23,7 +21,7 @@ can.setAttribute("width", width);
 can.setAttribute("height", height);
 
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
-camera.position.set(10, 10, 5);
+camera.position.set(100, 100, 100);
 
 const scene = new THREE.Scene();
 
@@ -51,30 +49,30 @@ const controls = addOrbitControls(camera, renderer);
 /**
  * lights
  */
-let lights = new Lights(scene);
+addLights(scene);
 
 /**
  * Objects 
  */
 
 var texLoad = new THREE.TextureLoader(),
-addBlend = THREE.AdditiveBlending;
- // Sky Texture
-var skyMat = new THREE.MeshBasicMaterial( {
-    map : texLoad.load( "textures/cloudMap.jpg" ),
-    side: THREE.BackSide,
-    transparent: true,
-    blending: addBlend,
-   });
- var skySphere = new THREE.SphereBufferGeometry( 5000, 10, 5 ),skyMat;
+        addBlend = THREE.AdditiveBlending;
+// Sky Texture
+var skyMat = new THREE.MeshBasicMaterial({
+        map: texLoad.load("textures/cloudMap.jpg"),
+        side: THREE.BackSide,
+        transparent: true,
+        blending: addBlend,
+});
+var skySphere = new THREE.SphereBufferGeometry(5000, 10, 5), skyMat;
 
-var skyMesh = new THREE.Mesh( skySphere, skyMat );
-scene.add( skyMesh );
+var skyMesh = new THREE.Mesh(skySphere, skyMat);
+scene.add(skyMesh);
 
 sky = new Sky();
-sky.scale.setScalar( 45000 );
+sky.scale.setScalar(45000);
 // sky.mesh = skyMesh;
-scene.add( sky );
+scene.add(sky);
 
 sun = new THREE.Vector3();
 
@@ -82,11 +80,8 @@ sun = new THREE.Vector3();
 
 
 /**
- * GUI
+ * GUI Variables
  */
-
-
-
 const effectController = {
         turbidity: 10,
         rayleigh: 3,
@@ -98,77 +93,55 @@ const effectController = {
 };
 
 function guiChanged() {
-
         const uniforms = sky.material.uniforms;
-        uniforms[ 'turbidity' ].value = effectController.turbidity;
-        uniforms[ 'rayleigh' ].value = effectController.rayleigh;
-        uniforms[ 'mieCoefficient' ].value = effectController.mieCoefficient;
-        uniforms[ 'mieDirectionalG' ].value = effectController.mieDirectionalG;
+        uniforms['turbidity'].value = effectController.turbidity;
+        uniforms['rayleigh'].value = effectController.rayleigh;
+        uniforms['mieCoefficient'].value = effectController.mieCoefficient;
+        uniforms['mieDirectionalG'].value = effectController.mieDirectionalG;
 
-        const phi = THREE.MathUtils.degToRad( 90 - effectController.elevation );
-        const theta = THREE.MathUtils.degToRad( effectController.azimuth );
+        const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
+        const theta = THREE.MathUtils.degToRad(effectController.azimuth);
 
-        sun.setFromSphericalCoords( 1, phi, theta );
+        sun.setFromSphericalCoords(1, phi, theta);
 
-        uniforms[ 'sunPosition' ].value.copy( sun );
+        uniforms['sunPosition'].value.copy(sun);
 
         renderer.toneMappingExposure = effectController.exposure;
-        renderer.render( scene, camera );
-
+        renderer.render(scene, camera);
 }
 
+const physicalVariables = {
+        gravity: 9.8,
+};
 
-
-gui.add( effectController, 'turbidity', 0.0, 20.0, 0.1 ).onChange( guiChanged );
-gui.add( effectController, 'rayleigh', 0.0, 4, 0.001 ).onChange( guiChanged );
-gui.add( effectController, 'mieCoefficient', 0.0, 0.1, 0.001 ).onChange( guiChanged );
-gui.add( effectController, 'mieDirectionalG', 0.0, 1, 0.001 ).onChange( guiChanged );
-gui.add( effectController, 'elevation', 0, 90, 0.1 ).onChange( guiChanged );
-gui.add( effectController, 'azimuth', - 180, 180, 0.1 ).onChange( guiChanged );
-gui.add( effectController, 'exposure', 0, 1, 0.0001 ).onChange( guiChanged );
-
+makeGui(effectController, guiChanged, physicalVariables);
 guiChanged();
 
 
-
-
-// Create a new cube using the Cube class
-const floor = new Floor(10000, "white");
-//floor.addToScene(scene);
-
-const cube = new Cube(1, 0xffffff);
-cube.rotate(0.01, 0.01, 0);
-// cube.addToScene(scene);
-
-
 // Load city by calling 'createCity' function
-
 createCity(scene);
 
-let loader = new GLTFLoader();
-loader.load("/models/good_year_blimp/good year blimp.gltf", (gltf) => {
-        let blimp = gltf.scene;
-        blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
-        blimp.position.set(600, 0, 200)
-        let bx = new THREE.Mesh(
-                new THREE.BoxGeometry(1, 1, 1),
-                new THREE.MeshBasicMaterial({
-                        color: "#FF0000"
-                })
-        );
-        bx.position.x = 0;
-        bx.position.y = 100;
-        bx.position.z = 0;
-        scene.add(bx);
-        scene.add(blimp);
-});
-//Animate
+/**
+ * Load Blimp Model
+ */
+const blimp = new Blimp(scene);
+
+/**
+ * Create Physic Emulator
+ */
+const physicsWorld = new PhysicsWorld(blimp);
+
+/**
+ * Animate
+ */
 const clock = new THREE.Clock();
 let oldElapsedTime = 0;
 function animate() {
         const elapsedTime = clock.getElapsedTime();
         const deltaTime = elapsedTime - oldElapsedTime;
         oldElapsedTime = elapsedTime;
+
+        physicsWorld.update(deltaTime);
 
         controls.update();
         renderer.render(scene, camera);

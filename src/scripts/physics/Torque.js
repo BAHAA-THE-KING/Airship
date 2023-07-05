@@ -1,16 +1,14 @@
-import PhysicsWorld from '../physics/PhysicsWorld.js';
-class Torque extends PhysicsWorld  {
-    constructor(force,radius,alpha) {
-      this.force = force;
-      this.radius = radius;
-      this.alpha = alpha;
-    }
-  
-    calculate() {
-      
-    }
-    //----------------------------------------------------------------
-   
-  
+class Torque {
+  constructor(force, radius, alpha) {
+    this.force = force;
+    this.radius = radius;
+    this.alpha = alpha;
   }
-  export default Torque;
+
+  calculate() {
+
+  }
+
+
+}
+export default Torque;
