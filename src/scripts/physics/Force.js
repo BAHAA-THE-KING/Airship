@@ -1,18 +1,13 @@
+import { Vector3 } from "three";
+
 class Force {
-  constructor(direction) {
-    this.direction = direction;
-
+  constructor() {
+    this.direction = this.compute_direction();
   }
 
-  Compute_direction() {
+  direction = new Vector3();
 
-  }
-
-  calculate() {
-
-  }
-
-
-
+  compute_direction() { };
+  calculate() { };
 }
 export default Force;

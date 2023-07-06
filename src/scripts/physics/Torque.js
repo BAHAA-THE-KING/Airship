@@ -1,14 +1,10 @@
 class Torque {
-  constructor(force, radius, alpha) {
+  constructor(force) {
     this.force = force;
-    this.radius = radius;
-    this.alpha = alpha;
   }
 
-  calculate() {
+  force = new Force();
 
-  }
-
-
+  calculate() { };
 }
 export default Torque;

@@ -7,6 +7,7 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import makeGui from "./scripts/environment/GUI";
 import Blimp from "./scripts/models/Blimp";
 import PhysicsWorld from "./scripts/physics/PhysicsWorld";
+import WeightForce from "./scripts/physics/Forces/WeightForce";
 
 
 //Initiate Renderer
@@ -64,7 +65,7 @@ var skyMat = new THREE.MeshBasicMaterial({
         transparent: true,
         blending: addBlend,
 });
-var skySphere = new THREE.SphereBufferGeometry(5000, 10, 5), skyMat;
+var skySphere = new THREE.SphereGeometry(5000, 30, 30), skyMat;
 
 var skyMesh = new THREE.Mesh(skySphere, skyMat);
 scene.add(skyMesh);
@@ -75,9 +76,6 @@ sky.scale.setScalar(45000);
 scene.add(sky);
 
 sun = new THREE.Vector3();
-
-
-
 
 /**
  * GUI Variables
@@ -112,6 +110,13 @@ function guiChanged() {
 
 const physicalVariables = {
         gravity: 9.8,
+        currentRPM: 0,
+        loadMass: 5000,
+        heliumVolume: 4000,
+        airVelocity: 0,
+        airDirection: { x: 0, y: 0, z: 0 },
+        verticalRudderAlpha: 0,
+        horizontalRudderAlpha: 0
 };
 
 makeGui(effectController, guiChanged, physicalVariables);
