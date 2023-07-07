@@ -1,3 +1,5 @@
+import Force from "./Force";
+
 class Torque {
   constructor(force) {
     this.force = force;

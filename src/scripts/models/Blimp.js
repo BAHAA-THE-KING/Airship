@@ -3,12 +3,15 @@ import ModelManager from "../utils/ModelManager";
 
 class Blimp {
    constructor(scene) {
+      this.isReady = false;
       ModelManager.loadModel("/models/good_year_blimp/good year blimp.gltf")
          .then((model) => {
             this.blimp = model.scene;
             this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
             this.move(600, 0, 200);
             scene.add(this.blimp);
+
+            this.isReady = true;
          });
    }
 

@@ -7,8 +7,6 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import makeGui from "./scripts/environment/GUI";
 import Blimp from "./scripts/models/Blimp";
 import PhysicsWorld from "./scripts/physics/PhysicsWorld";
-import WeightForce from "./scripts/physics/Forces/WeightForce";
-
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -22,7 +20,7 @@ can.setAttribute("width", width);
 can.setAttribute("height", height);
 
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
-camera.position.set(100, 100, 100);
+camera.position.set(929, 252, 528);
 
 const scene = new THREE.Scene();
 
@@ -46,6 +44,7 @@ window.onresize = function () {
 
 // Add OrbitControls to the camera
 const controls = addOrbitControls(camera, renderer);
+controls.target.set(600, 0, 200);
 
 /**
  * lights
@@ -109,12 +108,14 @@ function guiChanged() {
 }
 
 const physicalVariables = {
+        start: false,
         gravity: 9.8,
         currentRPM: 0,
         loadMass: 5000,
         heliumVolume: 4000,
-        airVelocity: 0,
-        airDirection: { x: 0, y: 0, z: 0 },
+        airVolume: 1000,
+        windVelocity: 0,
+        windDirection: { x: 0, y: 0, z: 0 },
         verticalRudderAlpha: 0,
         horizontalRudderAlpha: 0
 };
@@ -123,8 +124,17 @@ makeGui(effectController, guiChanged, physicalVariables);
 guiChanged();
 
 
-// Load city by calling 'createCity' function
+/**
+ * Load city by calling 'createCity' function
+ * 
+*/
 createCity(scene);
+
+/**
+ * Clouds
+ */
+
+
 
 /**
  * Load Blimp Model
@@ -134,7 +144,7 @@ const blimp = new Blimp(scene);
 /**
  * Create Physic Emulator
  */
-const physicsWorld = new PhysicsWorld(blimp);
+const physicsWorld = new PhysicsWorld(blimp, physicalVariables);
 
 /**
  * Animate
@@ -146,10 +156,11 @@ function animate() {
         const deltaTime = elapsedTime - oldElapsedTime;
         oldElapsedTime = elapsedTime;
 
-        physicsWorld.update(deltaTime);
+        if (physicalVariables.start) physicsWorld.update(deltaTime);
 
         controls.update();
         renderer.render(scene, camera);
+
         requestAnimationFrame(animate);
 }
 animate();

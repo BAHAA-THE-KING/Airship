@@ -11,27 +11,11 @@ class ThurstForce extends Force {
     return new Vector3(+1, 0, 0);
   };
 
-  calculate_rpm(rpm) {
-    return rpm;
-  };
-
-  calculate_diameter(diameter) {
-    return diameter;
-  };
-
-  calculate_pitch(pitch) {
-    return pitch;
-  };
-
-  calculate_velocity(velocity) {
-    return velocity.length();
-  };
-
-  calculate(rpm, diameter, pitch, velocity) {
-    const rpm = this.calculate_rpm(rpm);
-    const d = this.calculate_diameter(diameter);
-    const pitch = this.calculate_pitch(pitch);
-    const v = this.calculate_velocity(velocity);
+  calculate(RPM, diameter, Pitch, velocityLength) {
+    const rpm = RPM;
+    const d = diameter;
+    const pitch = Pitch;
+    const v = velocityLength;
 
     const strength = 4.392 * (10 ** -8) * rpm * ((d ** 3.5) / (pitch ** 0.5)) * (4.233 * (10 ** -4) * rpm * pitch - v);
 

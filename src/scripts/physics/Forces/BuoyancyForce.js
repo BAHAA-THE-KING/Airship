@@ -11,22 +11,10 @@ class BuoyancyForce extends Force {
     return new Vector3(0, +1, 0);
   };
 
-  calculate_density(pressure, airMolarMass, R, temperature) {
-    return (pressure * airMolarMass) / (R * temperature);
-  };
-
-  calculate_volume(heliumVolume, airVolume) {
-    return heliumVolume + airVolume;
-  };
-
-  calculate_gravity(gravity) {
-    return gravity;
-  };
-
-  calculate(pressure, airMolarMass, R, temperature, heliumVolume, airVolume, gravity) {
-    const p = calculate_density(pressure, airMolarMass, R, temperature)
-    const V = calculate_volume(heliumVolume, airVolume)
-    const g = calculate_gravity(gravity)
+  calculate(density, volume, gravity) {
+    const p = density;
+    const V = volume;
+    const g = gravity;
 
     const strength = p * V * g;
 

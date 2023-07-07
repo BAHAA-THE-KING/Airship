@@ -6,7 +6,7 @@ class Yaw extends Torque {
     super(Force);
   }
 
-  calculateM(alpha) {
+  calculateM(Alpha) {
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
@@ -16,14 +16,14 @@ class Yaw extends Torque {
 
     const d = 75 / 2;
 
-    const alpha = alpha;
+    const alpha = Alpha;
 
     const M = F * d * Math.sin(alpha);
 
     return M;
   };
 
-  calculateMInverse(alphaInverse) {
+  calculateMInverse(AlphaInverse) {
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
@@ -33,7 +33,7 @@ class Yaw extends Torque {
 
     const d = 75 / 2;
 
-    const alphaInverse = alphaInverse;
+    const alphaInverse = AlphaInverse;
 
     const MInverse = F * d * Math.sin(alphaInverse);
 
