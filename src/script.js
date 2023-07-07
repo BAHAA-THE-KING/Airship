@@ -7,6 +7,7 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import makeGui from "./scripts/environment/GUI";
 import Blimp from "./scripts/models/Blimp";
 import PhysicsWorld from "./scripts/physics/PhysicsWorld";
+import { createClouds } from './scripts/Environment/clouds';
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -54,6 +55,8 @@ addLights(scene);
 /**
  * Objects 
  */
+
+var clouds = createClouds(scene);
 
 var texLoad = new THREE.TextureLoader(),
         addBlend = THREE.AdditiveBlending;
@@ -157,10 +160,10 @@ function animate() {
         oldElapsedTime = elapsedTime;
 
         if (physicalVariables.start) physicsWorld.update(deltaTime);
-
         controls.update();
+        clouds.rotation.y += 0.001;
         renderer.render(scene, camera);
-
+            
         requestAnimationFrame(animate);
 }
 animate();
