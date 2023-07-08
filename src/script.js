@@ -114,13 +114,13 @@ const physicalVariables = {
         start: false,
         gravity: 9.8,
         currentRPM: 0,
-        loadMass: 5000,
-        heliumVolume: 4000,
-        airVolume: 1000,
+        loadMass: 5400,
+        maxVolume: 5300,
+        airVolume: 0,
         windVelocity: 0,
         windDirection: { x: 0, y: 0, z: 0 },
-        verticalRudderAlpha: 0,
-        horizontalRudderAlpha: 0
+        verticalRudder: 0,
+        horizontalRudder: 0
 };
 
 makeGui(effectController, guiChanged, physicalVariables);
@@ -147,7 +147,7 @@ const blimp = new Blimp(scene);
 /**
  * Create Physic Emulator
  */
-const physicsWorld = new PhysicsWorld(blimp, physicalVariables);
+const physicsWorld = new PhysicsWorld(blimp, physicalVariables, controls);
 
 /**
  * Animate
@@ -163,7 +163,7 @@ function animate() {
         controls.update();
         clouds.rotation.y += 0.001;
         renderer.render(scene, camera);
-            
+
         requestAnimationFrame(animate);
 }
 animate();

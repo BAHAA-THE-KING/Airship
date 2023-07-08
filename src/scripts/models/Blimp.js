@@ -15,6 +15,10 @@ class Blimp {
          });
    }
 
+   get position() {
+      return this.blimp.position;
+   }
+
    move(dx, dy, dz) {
       if (dx instanceof Vector3) {
          this.blimp.position.x += dx.x;

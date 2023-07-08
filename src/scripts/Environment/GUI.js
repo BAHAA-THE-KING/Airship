@@ -18,14 +18,14 @@ function makeGui(effectController, onChangeEffect, physicalVariables) {
 
    const staticPhysicsFolder = physicsFolder.addFolder("Static");
    staticPhysicsFolder.add(physicalVariables, 'gravity').min(0).max(1000);
-   staticPhysicsFolder.add(physicalVariables, 'heliumVolume').min(3600).max(5630);
-   staticPhysicsFolder.add(physicalVariables, 'airVolume').min(500).max(5630);
-   staticPhysicsFolder.add(physicalVariables, 'loadMass').min(4000).max(6400);
+   staticPhysicsFolder.add(physicalVariables, 'loadMass').min(5400).max(5824);
+   staticPhysicsFolder.add(physicalVariables, 'maxVolume').min(5300).max(5740);
 
    const drivePhysicsFolder = physicsFolder.addFolder("Drive");
-   drivePhysicsFolder.add(physicalVariables, 'currentRPM').min(0).max(2000);
-   drivePhysicsFolder.add(physicalVariables, 'verticalRudderAlpha').min(-Math.PI / 2).max(Math.PI / 2);
-   drivePhysicsFolder.add(physicalVariables, 'horizontalRudderAlpha').min(-Math.PI / 2).max(Math.PI / 2);
+   drivePhysicsFolder.add(physicalVariables, 'currentRPM').min(0).max(2500);
+   drivePhysicsFolder.add(physicalVariables, 'airVolume').min(0).max(800);
+   drivePhysicsFolder.add(physicalVariables, 'verticalRudder').min(-Math.PI / 2).max(Math.PI / 2);
+   drivePhysicsFolder.add(physicalVariables, 'horizontalRudder').min(-Math.PI / 2).max(Math.PI / 2);
 
    const windPhysicsFolder = physicsFolder.addFolder("Wind");
    windPhysicsFolder.add(physicalVariables, 'windVelocity').min(0).max(200);

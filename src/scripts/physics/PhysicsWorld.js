@@ -10,9 +10,10 @@ import hYaw from './Torques/hYaw';
 import vYaw from './Torques/vYaw';
 
 class PhysicsWorld {
-  constructor(target, physicalVariables) {
+  constructor(target, physicalVariables, controls) {
     this.target = target;
     this.physicalVariables = physicalVariables;
+    this.controls = controls;
 
     this.acceleration = new Vector3();
     this.velocity = new Vector3();
@@ -27,8 +28,9 @@ class PhysicsWorld {
     };
 
     this.editableConstants = {
-      airMolarMass: 28.97,
-      diameter: 80,
+      airMolarMass: 0.02897,
+      heliumMolarMass: 0.004003,
+      diameter: 120,
       pitch: 30
     };
 
@@ -106,7 +108,7 @@ class PhysicsWorld {
 
   calculate_heliumDensity() {
     const pressure = this.calculate_pressure();
-    const heliumMolarMass = 4.003;
+    const heliumMolarMass = this.editableConstants.heliumMolarMass;
     const R = this.constants.R;
     const temperature = this.calculate_temperature();
 
@@ -117,13 +119,14 @@ class PhysicsWorld {
 
   calculate_mass() {
     const loadMass = this.physicalVariables.loadMass;
-    const heliumVolume = this.physicalVariables.heliumVolume;
+    const heliumVolume = this.physicalVariables.maxVolume - this.physicalVariables.airVolume;
     const airVolume = this.physicalVariables.airVolume;
 
     const airDensity = this.calculate_airDensity();
     const heliumDensity = this.calculate_heliumDensity();
 
     const mass = loadMass + heliumDensity * heliumVolume + airDensity * airVolume;
+
     return mass;
   };
 
@@ -134,7 +137,7 @@ class PhysicsWorld {
   };
 
   calculate_volume() {
-    const heliumVolume = this.physicalVariables.heliumVolume;
+    const heliumVolume = this.physicalVariables.maxVolume - this.physicalVariables.airVolume;
     const airVolume = this.physicalVariables.airVolume;
 
     const volume = heliumVolume + airVolume;
@@ -142,7 +145,7 @@ class PhysicsWorld {
     return volume;
   };
 
-  calculate_frontArea() {
+  calculate_dragArea(angleZ) {
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
@@ -150,8 +153,13 @@ class PhysicsWorld {
   
     f(x)=π ((75)/(2)) ((18.9)/(2)) cos(x)+π ((18.9)/(2)) ((18.2)/(2)) sin(x)
     */
+    const sideArea = Math.PI * (this.sizes.length / 2) * (this.sizes.width / 2);
     const frontArea = Math.PI * (this.sizes.height / 2) * (this.sizes.width / 2);
-    return frontArea;
+
+    const sideFactor = Math.abs(Math.cos(angleZ));
+    const frontFactor = Math.abs(Math.sin(angleZ));
+
+    return sideArea * sideFactor + frontArea * frontFactor;
   };
 
   calculate_velocityLength() {
@@ -180,8 +188,10 @@ class PhysicsWorld {
     */
     const sideArea = Math.PI * (this.sizes.length / 2) * (this.sizes.height / 2);
     const frontArea = Math.PI * (this.sizes.height / 2) * (this.sizes.width / 2);
+
     const sideFactor = Math.abs(Math.cos(angleY));
     const frontFactor = Math.abs(Math.sin(angleY));
+
     return sideArea * sideFactor + frontArea * frontFactor;
   };
 
@@ -192,9 +202,9 @@ class PhysicsWorld {
   }
 
   calculate_windVelocityDirection() {
-    const windX = this.physicalVariables.windVelocity.x;
-    const windY = this.physicalVariables.windVelocity.y;
-    const windZ = this.physicalVariables.windVelocity.z;
+    const windX = this.physicalVariables.windDirection.x;
+    const windY = this.physicalVariables.windDirection.y;
+    const windZ = this.physicalVariables.windDirection.z;
 
     const windVelocityDirection = new Vector3(
       windX,
@@ -211,7 +221,7 @@ class PhysicsWorld {
     const density = this.calculate_airDensity();
     const volume = this.calculate_volume();
     const cd = this.constants.cd;
-    const frontArea = this.calculate_frontArea();
+    const dragArea = this.calculate_dragArea(this.angleZ);
     const velocityLength = this.calculate_velocityLength();
     const movement = this.movement;
     const rpm = this.calculate_rpm();
@@ -220,13 +230,18 @@ class PhysicsWorld {
     const area = this.calculate_area(this.angleY);
     const windVelocityDirection = this.calculate_windVelocityDirection();
     const windVelocityLength = this.calculate_windVelocityLength();
-    console.log(movement);
 
     const W = this.forces.W.calculate(mass, gravity);
     const B = this.forces.B.calculate(density, volume, gravity);
-    const D = this.forces.D.calculate(cd, frontArea, density, velocityLength, movement);
-    const T = this.forces.T.calculate(rpm, diameter, pitch, velocityLength);
+    const D = this.forces.D.calculate(cd, dragArea, density, velocityLength, movement);
+    const T = this.forces.T.calculate(rpm, diameter, pitch, velocityLength).multiplyScalar(2);
     const Wi = this.forces.Wi.calculate(cd, area, density, windVelocityLength, windVelocityDirection);
+
+    console.log("Weight = ", W);
+    console.log("Buoyancy = ", B);
+    console.log("Drag = ", D);
+    console.log("Thrust = ", T);
+    console.log("Wind = ", Wi);
 
     const Sigma = new Vector3().addVectors(
       W,
@@ -251,6 +266,9 @@ class PhysicsWorld {
 
     const a = sigma.divideScalar(m);
 
+    console.log("a = ", a);
+    console.log("m = ", m);
+
     return a;
   }
 
@@ -262,6 +280,7 @@ class PhysicsWorld {
     const v = new Vector3().addVectors(v0, a.clone().multiplyScalar(t));
 
     this.velocity = v.clone();
+    console.log("v = ", v);
 
     return v;
   }
@@ -271,6 +290,8 @@ class PhysicsWorld {
     const v = this.calculate_velocity(t);
 
     const d = v.clone().multiplyScalar(t);
+
+    this.movement = d.clone();
 
     return d;
   }
@@ -283,7 +304,8 @@ class PhysicsWorld {
     if (!this.target.isReady) return;
     const d = this.calculateMovement(deltaTime);
     this.move(d);
-    console.log(d);
+    this.controls.target = this.target.position.clone();
+    this.controls.object.position.add(d);
   }
 }
 
