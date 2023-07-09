@@ -55,22 +55,26 @@ addLights(scene);
 /**
  * Objects 
  */
+const textureLoader = new THREE.TextureLoader();
+const textures = [];
+for (let i = 1; i < 8; i++) {
+  textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
+  var clouds = createClouds(scene,textures[i],5);
+}
 
-var clouds = createClouds(scene);
+// var texLoad = new THREE.TextureLoader(),
+//         addBlend = THREE.AdditiveBlending;
+// // Sky Texture
+// var skyMat = new THREE.MeshBasicMaterial({
+//         map: texLoad.load("textures/cloudMap.jpg"),
+//         side: THREE.BackSide,
+//         transparent: true,
+//         blending: addBlend,
+// });
+// var skySphere = new THREE.SphereGeometry(5000, 30, 30), skyMat;
 
-var texLoad = new THREE.TextureLoader(),
-        addBlend = THREE.AdditiveBlending;
-// Sky Texture
-var skyMat = new THREE.MeshBasicMaterial({
-        map: texLoad.load("textures/cloudMap.jpg"),
-        side: THREE.BackSide,
-        transparent: true,
-        blending: addBlend,
-});
-var skySphere = new THREE.SphereGeometry(5000, 30, 30), skyMat;
-
-var skyMesh = new THREE.Mesh(skySphere, skyMat);
-scene.add(skyMesh);
+// var skyMesh = new THREE.Mesh(skySphere, skyMat);
+// scene.add(skyMesh);
 
 sky = new Sky();
 sky.scale.setScalar(45000);

@@ -1,29 +1,27 @@
 
 import * as THREE from 'three';
 
-export function createClouds(scene) {
-  const textureLoader = new THREE.TextureLoader();
-  const cloudTexture = textureLoader.load('textures/cloud1.png');
+export function createClouds(scene,texture,number) {
 
   const cloudMaterial = new THREE.PointsMaterial({
     size: 1000,
-    map: cloudTexture,
     transparent: true,
     depthWrite: false,
-    opacity : 0.6,
-    // blending: THREE.AdditiveBlending
+    opacity: 0.6,
+    map:texture, // Set initial map value to null
   });
-
+  
   const cloudGeometry = new THREE.BufferGeometry();
   const positions = [];
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < number; i++) {
     const x = Math.random() * 4000 - 2000;
     const y = Math.random() * 2000 + 1000;
     const z = Math.random() * 4000 - 2000;
-    // cloudMaterial.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
 
     positions.push(x, y, z);
+   
+   
   }
 
   cloudGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
