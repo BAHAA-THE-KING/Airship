@@ -2,23 +2,23 @@ import Torque from '../Torque.js';
 
 class Yaw extends Torque {
   // M = Fdrag * d * sin(a)
-  constructor(Force) {
-    super(Force);
+  constructor() {
+    super();
   }
 
-  calculateM(Alpha) {
+  calculateM(Alpha, F) {
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
     Width: 18.2 meters (60 feet)
     */
-    const F = this.force.calculate();
+    const f = F;
 
     const d = 75 / 2;
 
     const alpha = Alpha;
 
-    const M = F * d * Math.sin(alpha);
+    const M = f * d * Math.sin(alpha);
 
     return M;
   };
@@ -29,13 +29,13 @@ class Yaw extends Torque {
     Height: 18.9 meters (62 feet)
     Width: 18.2 meters (60 feet)
     */
-    const F = this.force.calculate();
+    const f = F;
 
     const d = 75 / 2;
 
     const alphaInverse = AlphaInverse;
 
-    const MInverse = F * d * Math.sin(alphaInverse);
+    const MInverse = f * d * Math.sin(alphaInverse);
 
     return MInverse;
   };
@@ -44,10 +44,10 @@ class Yaw extends Torque {
     return 10000;
   };
 
-  calculate(alpha, alphaInverse) {
-    const M = this.calculateM(alpha);
+  calculate(alpha, alphaInverse, forceValue) {
+    const M = this.calculateM(alpha, forceValue);
 
-    const MInverse = this.calculateM(alphaInverse);
+    const MInverse = this.calculateM(alphaInverse, forceValue);
 
     const l = this.calculateL();
 

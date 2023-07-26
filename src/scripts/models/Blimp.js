@@ -9,6 +9,7 @@ class Blimp {
             this.blimp = model.scene;
             this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
             this.move(600, 0, 200);
+            console.log(model);
             scene.add(this.blimp);
 
             this.isReady = true;
@@ -43,13 +44,13 @@ class Blimp {
       this.blimp.position.z = z;
    }
 
-   rotateTo(dx, dy, dz) {
+   rotate(dx, dy, dz) {
       this.blimp.rotation.x += dx;
       this.blimp.rotation.y += dy;
       this.blimp.rotation.z += dz;
    }
 
-   rotate(x, y, z) {
+   rotateTo(x, y, z) {
       this.blimp.rotation.x = x;
       this.blimp.rotation.y = y;
       this.blimp.rotation.z = z;

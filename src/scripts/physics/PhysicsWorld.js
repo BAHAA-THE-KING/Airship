@@ -215,6 +215,18 @@ class PhysicsWorld {
     return windVelocityDirection;
   }
 
+  calculateVAlpha() {
+    const alpha = this.physicalVariables.verticalRudder;
+
+    return alpha;
+  }
+
+  calculateHAlpha() {
+    const alpha = this.physicalVariables.horizontalRudder;
+
+    return alpha;
+  }
+
   calculate_sigma() {
     const mass = this.calculate_mass();
     const gravity = this.calculate_gravity();
@@ -296,14 +308,44 @@ class PhysicsWorld {
     return d;
   }
 
+  calculateRotation(deltaTime) {
+    const density = this.calculate_airDensity();
+    const cd = this.constants.cd;
+    const dragArea = this.calculate_dragArea(this.angleZ);
+    const velocityLength = this.calculate_velocityLength();
+    const movement = this.movement;
+    const vAlpha = this.calculateVAlpha();
+    const hAlpha = this.calculateHAlpha();
+
+    const D = this.forces.D.calculate(cd, dragArea, density, velocityLength, movement);
+    const hY = this.torques.V.calculate(vAlpha, -vAlpha, D.length());
+    const vY = this.torques.V.calculate(hAlpha, -hAlpha, D.length());
+
+    console.log("hY = ", hY);
+    console.log("vY = ", vY);
+
+    const angles = {
+      v: vY * deltaTime,
+      h: hY * deltaTime,
+    };
+
+    return angles;
+  }
+
   move(d) {
     this.target.move(d.x, d.y, d.z);
+  }
+
+  rotate(angles) {
+    this.target.rotate(0, angles.h/180*Math.PI, angles.v/180*Math.PI);
   }
 
   update(deltaTime) {
     if (!this.target.isReady) return;
     const d = this.calculateMovement(deltaTime);
     this.move(d);
+    const angles = this.calculateRotation(deltaTime);
+    this.rotate(angles);
     this.controls.target = this.target.position.clone();
     this.controls.object.position.add(d);
   }
