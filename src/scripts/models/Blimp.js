@@ -2,6 +2,13 @@ import { Vector3 } from "three";
 import ModelManager from "../utils/ModelManager";
 
 class Blimp {
+   isReady;
+   leftRudder;
+   rightRudder;
+   bottomRudder;
+   topRudder;
+   leftFan;
+   rightFan;
    constructor(scene) {
       this.isReady = false;
       ModelManager.loadModel("/models/good_year_blimp/good year blimp.gltf")
@@ -9,8 +16,15 @@ class Blimp {
             this.blimp = model.scene;
             this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
             this.move(600, 0, 200);
-            console.log(model);
             scene.add(this.blimp);
+
+            this.rightFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_fan")[0];
+            this.leftFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_fan")[0];
+
+            this.rightRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_rudder")[0];
+            this.leftRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_rudder")[0];
+            this.topRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "top_rudder")[0];
+            this.bottomRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "bottom_rudder")[0];
 
             this.isReady = true;
          });
@@ -54,6 +68,14 @@ class Blimp {
       this.blimp.rotation.x = x;
       this.blimp.rotation.y = y;
       this.blimp.rotation.z = z;
+   }
+
+   rotateRudderTo(h, v) {
+      this.rightRudder.rotation.y = h;
+      this.leftRudder.rotation.y = h;
+
+      this.topRudder.rotation.z = v;
+      this.bottomRudder.rotation.z = v;
    }
 }
 

@@ -37,7 +37,9 @@ class PhysicsWorld {
     this.sizes = {
       length: 75,
       height: 18.9,
-      width: 18.2
+      width: 18.2,
+      rudderWidth: 2,
+      rudderHeight: 5
     };
 
     this.beginValues = {
@@ -195,6 +197,13 @@ class PhysicsWorld {
     return sideArea * sideFactor + frontArea * frontFactor;
   };
 
+  calculate_rudderArea() {
+    const width = this.sizes.rudderWidth;
+    const height = this.sizes.rudderHeight;
+
+    return width * height;
+  };
+
   calculate_windVelocityLength() {
     const windVelocityLength = this.physicalVariables.windVelocity;
 
@@ -216,13 +225,13 @@ class PhysicsWorld {
   }
 
   calculateVAlpha() {
-    const alpha = this.physicalVariables.verticalRudder;
+    const alpha = this.physicalVariables.verticalRudder * Math.PI / 180;
 
     return alpha;
   }
 
   calculateHAlpha() {
-    const alpha = this.physicalVariables.horizontalRudder;
+    const alpha = this.physicalVariables.horizontalRudder * Math.PI / 180;
 
     return alpha;
   }
@@ -311,7 +320,7 @@ class PhysicsWorld {
   calculateRotation(deltaTime) {
     const density = this.calculate_airDensity();
     const cd = this.constants.cd;
-    const dragArea = this.calculate_dragArea(this.angleZ);
+    const dragArea = this.calculate_rudderArea();
     const velocityLength = this.calculate_velocityLength();
     const movement = this.movement;
     const vAlpha = this.calculateVAlpha();
@@ -321,15 +330,9 @@ class PhysicsWorld {
     const hY = this.torques.V.calculate(vAlpha, -vAlpha, D.length());
     const vY = this.torques.V.calculate(hAlpha, -hAlpha, D.length());
 
-    console.log("hY = ", hY);
-    console.log("vY = ", vY);
 
-    const angles = {
-      v: vY * deltaTime,
-      h: hY * deltaTime,
-    };
-
-    return angles;
+    this.angleZ += vY * deltaTime;
+    this.angleY += hY * deltaTime;
   }
 
   move(d) {
@@ -337,15 +340,17 @@ class PhysicsWorld {
   }
 
   rotate(angles) {
-    this.target.rotate(0, angles.h/180*Math.PI, angles.v/180*Math.PI);
+    this.target.rotateTo(0, angles.h, angles.v);
+
+    this.target.rotateRudderTo(this.calculateHAlpha(), this.calculateVAlpha());
   }
 
   update(deltaTime) {
     if (!this.target.isReady) return;
     const d = this.calculateMovement(deltaTime);
     this.move(d);
-    const angles = this.calculateRotation(deltaTime);
-    this.rotate(angles);
+    this.calculateRotation(deltaTime);
+    this.rotate({ h: this.angleY, v: this.angleZ });
     this.controls.target = this.target.position.clone();
     this.controls.object.position.add(d);
   }

@@ -24,8 +24,8 @@ function makeGui(effectController, onChangeEffect, physicalVariables) {
    const drivePhysicsFolder = physicsFolder.addFolder("Drive");
    drivePhysicsFolder.add(physicalVariables, 'currentRPM').min(0).max(2500);
    drivePhysicsFolder.add(physicalVariables, 'airVolume').min(0).max(800);
-   drivePhysicsFolder.add(physicalVariables, 'verticalRudder').min(-Math.PI / 2).max(Math.PI / 2);
-   drivePhysicsFolder.add(physicalVariables, 'horizontalRudder').min(-Math.PI / 2).max(Math.PI / 2);
+   drivePhysicsFolder.add(physicalVariables, 'verticalRudder').min(-10).max(10).step(0.5);
+   drivePhysicsFolder.add(physicalVariables, 'horizontalRudder').min(-10).max(10).step(0.5);
 
    const windPhysicsFolder = physicsFolder.addFolder("Wind");
    windPhysicsFolder.add(physicalVariables, 'windVelocity').min(0).max(200);
