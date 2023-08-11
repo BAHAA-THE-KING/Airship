@@ -11,13 +11,11 @@ import { createClouds } from './scripts/Environment/clouds';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-import { GUI } from 'lil-gui';
-
 //Initiate Renderer
 let width = window.innerWidth;
 let height = window.innerHeight;
 
-let  sun,water;
+let sun, water;
 
 
 const can = document.querySelector("#can");
@@ -25,7 +23,7 @@ const can = document.querySelector("#can");
 can.setAttribute("width", width);
 can.setAttribute("height", height);
 
-const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100000);
 camera.position.set(929, 252, 528);
 
 const scene = new THREE.Scene();
@@ -63,71 +61,67 @@ addLights(scene);
 const textureLoader = new THREE.TextureLoader();
 const textures = [];
 for (let i = 1; i < 8; i++) {
-  textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
-  var clouds = createClouds(scene,textures[i],5);
+        textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
+        var clouds = createClouds(scene, textures[i], 5);
 }
 sun = new THREE.Vector3();
 
 // Water
-
-const waterGeometry = new THREE.PlaneGeometry( 2000,2000 );
-                                        
+const waterGeometry = new THREE.PlaneGeometry(20000, 20000);
 water = new Water(
-waterGeometry,
-{
-textureWidth: 512,
-textureHeight: 512,
-waterNormals: new THREE.TextureLoader().load( 'textures/waternormals.jpg', function ( texture ) {
-
-texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-                } ),
+        waterGeometry,
+        {
+                textureWidth: 512,
+                textureHeight: 512,
+                waterNormals: new THREE.TextureLoader()
+                        .load(
+                                'textures/waternormals.jpg',
+                                (texture) => texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+                        ),
                 sunDirection: new THREE.Vector3(),
                 sunColor: 0xffffff,
                 waterColor: 0x001e0f,
                 distortionScale: 3.7,
-                fog: scene.fog !== undefined
+                fog: !!scene.fog
         }
 );
-
 water.rotation.x = - Math.PI / 2;
-        water.position.y = 10;
-scene.add( water );
+water.position.y = 10;
+scene.add(water);
 
 // Skybox
-
 const sky = new Sky();
-sky.scale.setScalar( 10000 );
-scene.add( sky );
+sky.scale.setScalar(10000);
+scene.add(sky);
 
 const skyUniforms = sky.material.uniforms;
 
-skyUniforms[ 'turbidity' ].value = 10;
-skyUniforms[ 'rayleigh' ].value = 2;
-skyUniforms[ 'mieCoefficient' ].value = 0.005;
-skyUniforms[ 'mieDirectionalG' ].value = 0.8;
+skyUniforms['turbidity'].value = 10;
+skyUniforms['rayleigh'].value = 2;
+skyUniforms['mieCoefficient'].value = 0.005;
+skyUniforms['mieDirectionalG'].value = 0.8;
 
 const parameters = {
         elevation: 2,
         azimuth: 180
 };
 
-const pmremGenerator = new THREE.PMREMGenerator( renderer );
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
 let renderTarget;
 
 function updateSun() {
 
-        const phi = THREE.MathUtils.degToRad( 90 - parameters.elevation );
-        const theta = THREE.MathUtils.degToRad( parameters.azimuth );
+        const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
+        const theta = THREE.MathUtils.degToRad(parameters.azimuth);
 
-        sun.setFromSphericalCoords( 1, phi, theta );
+        sun.setFromSphericalCoords(1, phi, theta);
 
-        sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
-        water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
+        sky.material.uniforms['sunPosition'].value.copy(sun);
+        water.material.uniforms['sunDirection'].value.copy(sun).normalize();
 
-        if ( renderTarget !== undefined ) renderTarget.dispose();
+        if (renderTarget !== undefined) renderTarget.dispose();
 
-        renderTarget = pmremGenerator.fromScene( sky );
+        renderTarget = pmremGenerator.fromScene(sky);
 
         scene.environment = renderTarget.texture;
 
@@ -137,15 +131,12 @@ updateSun();
 
 //
 
-const geometry = new THREE.BoxGeometry( 30, 30, 30 );
-const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
+const geometry = new THREE.BoxGeometry(30, 30, 30);
+const material = new THREE.MeshStandardMaterial({ roughness: 0 });
 
 
 
 //
-
-
-
 const stats = new Stats();
 stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild(stats.dom)
@@ -153,8 +144,6 @@ document.body.appendChild(stats.dom)
 /**
  * GUI Variables
  */
-
-const gui = new GUI();
 const effectController = {
         turbidity: 10,
         rayleigh: 3,
@@ -181,21 +170,16 @@ function guiChanged() {
 
         renderer.toneMappingExposure = effectController.exposure;
 
-//         const waterUniforms = water.material.uniforms;
+        //         const waterUniforms = water.material.uniforms;
 
-// const folderWater = gui.addFolder( 'Water' );
-// folderWater.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
-// folderWater.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
-// folderWater.open();
+        // const folderWater = gui.addFolder( 'Water' );
+        // folderWater.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
+        // folderWater.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
+        // folderWater.open();
 
         renderer.render(scene, camera);
 }
 
-
-
-		
-
-			
 const physicalVariables = {
         start: false,
         gravity: 9.8,
@@ -220,8 +204,6 @@ guiChanged();
 createCity(scene);
 
 
-
-
 /**
  * Load Blimp Model
  */
@@ -243,8 +225,9 @@ function animate() {
         const deltaTime = elapsedTime - oldElapsedTime;
         oldElapsedTime = elapsedTime;
 
-        if (physicalVariables.start) physicsWorld.update(deltaTime);
+        physicsWorld.update(deltaTime);
         controls.update();
+
         render();
         stats.update();
         clouds.rotation.y += 0.001;
@@ -253,13 +236,8 @@ function animate() {
         requestAnimationFrame(animate);
 }
 function render() {
-
         const time = performance.now() * 0.001;
-
-  
-        water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
-
-        renderer.render( scene, camera );
-
+        water.material.uniforms['time'].value += 1.0 / 60.0;
+        renderer.render(scene, camera);
 }
 animate();

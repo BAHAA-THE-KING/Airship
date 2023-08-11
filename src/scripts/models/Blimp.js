@@ -15,7 +15,8 @@ class Blimp {
          .then((model) => {
             this.blimp = model.scene;
             this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
-            this.move(600, 0, 200);
+            this.moveTo(600, 0, 200);
+            this.blimp.rotation.order = "YXZ";
             scene.add(this.blimp);
 
             this.rightFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_fan")[0];
@@ -35,24 +36,12 @@ class Blimp {
    }
 
    move(dx, dy, dz) {
-      if (dx instanceof Vector3) {
-         this.blimp.position.x += dx.x;
-         this.blimp.position.y += dx.y;
-         this.blimp.position.z += dx.z;
-         return;
-      }
       this.blimp.position.x += dx;
       this.blimp.position.y += dy;
       this.blimp.position.z += dz;
    }
 
    moveTo(x, y, z) {
-      if (x instanceof Vector3) {
-         this.blimp.position.x = x.x;
-         this.blimp.position.y = x.y;
-         this.blimp.position.z = x.z;
-         return;
-      }
       this.blimp.position.x = x;
       this.blimp.position.y = y;
       this.blimp.position.z = z;
@@ -76,6 +65,11 @@ class Blimp {
 
       this.topRudder.rotation.z = v;
       this.bottomRudder.rotation.z = v;
+   }
+
+   rotateFan(deg) {
+      this.rightFan.rotateX(deg);
+      this.leftFan.rotateX(deg);
    }
 }
 

@@ -255,7 +255,7 @@ class PhysicsWorld {
     const W = this.forces.W.calculate(mass, gravity);
     const B = this.forces.B.calculate(density, volume, gravity);
     const D = this.forces.D.calculate(cd, dragArea, density, velocityLength, movement);
-    const T = this.forces.T.calculate(rpm, diameter, pitch, velocityLength).multiplyScalar(2);
+    const T = this.forces.T.calculate(rpm, diameter, pitch, velocityLength, this.angleY, this.angleZ).multiplyScalar(2);
     const Wi = this.forces.Wi.calculate(cd, area, density, windVelocityLength, windVelocityDirection);
 
     console.log("Weight = ", W);
@@ -327,11 +327,19 @@ class PhysicsWorld {
     const hAlpha = this.calculateHAlpha();
 
     const D = this.forces.D.calculate(cd, dragArea, density, velocityLength, movement);
-    const hY = this.torques.V.calculate(vAlpha, -vAlpha, D.length());
+    const hY = this.torques.H.calculate(vAlpha, -vAlpha, D.length());
     const vY = this.torques.V.calculate(hAlpha, -hAlpha, D.length());
 
 
-    this.angleZ += vY * deltaTime;
+    this.angleZ =
+      (this.angleZ + vY * deltaTime > Math.PI / 6) ?
+        Math.PI / 6 :
+        (
+          (this.angleZ + vY * deltaTime < -Math.PI / 6) ?
+            -Math.PI / 6
+            : this.angleZ + vY * deltaTime
+        )
+      ;
     this.angleY += hY * deltaTime;
   }
 
@@ -339,18 +347,23 @@ class PhysicsWorld {
     this.target.move(d.x, d.y, d.z);
   }
 
-  rotate(angles) {
-    this.target.rotateTo(0, angles.h, angles.v);
-
-    this.target.rotateRudderTo(this.calculateHAlpha(), this.calculateVAlpha());
+  rotate(h, v) {
+    this.target.rotateTo(0, h, v);
   }
 
   update(deltaTime) {
     if (!this.target.isReady) return;
+    this.target.rotateRudderTo(this.calculateHAlpha(), this.calculateVAlpha());
+    if (this.physicalVariables.currentRPM)
+      this.target.rotateFan(this.physicalVariables.currentRPM / 2500);
+
+    if (!this.physicalVariables.start) return;
     const d = this.calculateMovement(deltaTime);
+
     this.move(d);
     this.calculateRotation(deltaTime);
-    this.rotate({ h: this.angleY, v: this.angleZ });
+    this.rotate(this.angleY, this.angleZ);
+
     this.controls.target = this.target.position.clone();
     this.controls.object.position.add(d);
   }
