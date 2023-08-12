@@ -15,9 +15,10 @@ export function createClouds(scene,texture,number) {
   const positions = [];
 
   for (let i = 0; i < number; i++) {
-    const x = Math.random() * 4000 - 2000;
-    const y = Math.random() * 2000 + 1000;
-    const z = Math.random() * 4000 - 2000;
+    const x = Math.random() * 10000 - 5000; // Adjust range to cover 10000 units
+    const y = Math.random() * 3000 + 2000;  // Keep y range as per your requirement
+    const z = Math.random() * 10000 - 5000; // Adjust range to cover 10000 units
+
 
     positions.push(x, y, z);
    
