@@ -11,6 +11,7 @@ import { createClouds } from './scripts/Environment/clouds';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
+
 import { GUI } from 'lil-gui';
 
 //Initiate Renderer
@@ -64,13 +65,15 @@ const textureLoader = new THREE.TextureLoader();
 const textures = [];
 for (let i = 1; i < 8; i++) {
   textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
-  var clouds = createClouds(scene,textures[i],5);
+  var clouds = createClouds(scene,textures[i],10);
 }
+
+
 sun = new THREE.Vector3();
 
 // Water
 
-const waterGeometry = new THREE.PlaneGeometry( 2000,2000 );
+const waterGeometry = new THREE.PlaneGeometry( 10000,10000 );
                                         
 water = new Water(
 waterGeometry,
@@ -91,7 +94,7 @@ texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 );
 
 water.rotation.x = - Math.PI / 2;
-        water.position.y = 10;
+        water.position.y = -10;
 scene.add( water );
 
 // Skybox
@@ -135,14 +138,6 @@ function updateSun() {
 
 updateSun();
 
-//
-
-const geometry = new THREE.BoxGeometry( 30, 30, 30 );
-const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
-
-
-
-//
 
 
 
@@ -181,12 +176,13 @@ function guiChanged() {
 
         renderer.toneMappingExposure = effectController.exposure;
 
-//         const waterUniforms = water.material.uniforms;
+        const waterUniforms = water.material.uniforms;
+     
 
-// const folderWater = gui.addFolder( 'Water' );
-// folderWater.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
-// folderWater.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
-// folderWater.open();
+const folderWater = gui.addFolder( 'Water' );
+folderWater.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
+folderWater.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
+folderWater.open();
 
         renderer.render(scene, camera);
 }
