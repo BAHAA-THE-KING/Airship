@@ -5,10 +5,10 @@ import MaterialManager from '../utils/MaterialManager';
 
 function makeGround(scene) {
    // Load the texture for the ground
-   TextureManager.loadTexture("/textures/city/grass.jpg")
+   TextureManager.loadTexture("/textures/city/Grass2.jpg")
       .then((texture) => {
          // Scale the texture to fit the ground plane
-         texture.repeat.set(20, 20);
+         texture.repeat.set(5, 5);
          texture.wrapS = THREE.RepeatWrapping;
          texture.wrapT = THREE.RepeatWrapping;
 
@@ -17,7 +17,7 @@ function makeGround(scene) {
          MaterialManager.save("ground", groundMaterial);
 
          // Create a plane for the ground
-         const groundGeometry = new THREE.PlaneGeometry(5000, 5000);
+         const groundGeometry = new THREE.PlaneGeometry(2500, 2500);
 
          const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
          groundMesh.rotation.x = -Math.PI / 2;
