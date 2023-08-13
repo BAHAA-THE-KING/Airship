@@ -23,7 +23,7 @@ const can = document.querySelector("#can");
 can.setAttribute("width", width);
 can.setAttribute("height", height);
 
-const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100000);
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
 camera.position.set(929, 252, 528);
 
 const scene = new THREE.Scene();
@@ -48,6 +48,8 @@ window.onresize = function () {
 
 // Add OrbitControls to the camera
 const controls = addOrbitControls(camera, renderer);
+// const cameraTarget = new THREE.Vector3(0, 0, 0); // Set this to the desired target point
+// controls.target.copy(cameraTarget);
 controls.target.set(600, 0, 200);
 
 /**
@@ -60,7 +62,7 @@ addLights(scene);
  */
 const textureLoader = new THREE.TextureLoader();
 const textures = [];
-for (let i = 1; i < 8; i++) {
+for (let i = 1; i < 7; i++) {
   textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
   var clouds = createClouds(scene,textures[i],10);
 }
@@ -90,7 +92,8 @@ water = new Water(
         }
 );
 water.rotation.x = - Math.PI / 2;
-        water.position.y = -10;
+water.position.y = -10;
+const minAllowedY=-33;
 scene.add( water );
 
 // Skybox
@@ -152,13 +155,17 @@ const effectController = {
         azimuth: 180,
         exposure: renderer.toneMappingExposure
 };
-
+const waterUniforms = water.material.uniforms;
+     
 function guiChanged() {
         const uniforms = sky.material.uniforms;
         uniforms['turbidity'].value = effectController.turbidity;
         uniforms['rayleigh'].value = effectController.rayleigh;
         uniforms['mieCoefficient'].value = effectController.mieCoefficient;
         uniforms['mieDirectionalG'].value = effectController.mieDirectionalG;
+     
+
+
 
         const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
         const theta = THREE.MathUtils.degToRad(effectController.azimuth);
@@ -169,13 +176,6 @@ function guiChanged() {
 
         renderer.toneMappingExposure = effectController.exposure;
 
-        const waterUniforms = water.material.uniforms;
-     
-
-const folderWater = gui.addFolder( 'Water' );
-folderWater.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
-folderWater.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
-folderWater.open();
 
         renderer.render(scene, camera);
 }
@@ -193,7 +193,7 @@ const physicalVariables = {
         horizontalRudder: 0
 };
 
-makeGui(effectController, guiChanged, physicalVariables);
+makeGui(waterUniforms,effectController, guiChanged, physicalVariables);
 guiChanged();
 
 
@@ -224,13 +224,29 @@ function animate() {
         const elapsedTime = clock.getElapsedTime();
         const deltaTime = elapsedTime - oldElapsedTime;
         oldElapsedTime = elapsedTime;
-
+      
+        if (blimp.isReady) {
+                if (blimp.position.y < -10) {
+                        blimp.position.y = blimp.position.y -0.1; 
+                       
+                        physicalVariables.start = false;  
+                    }
+                if (blimp.position.y < minAllowedY) {
+                    blimp.position.setY(minAllowedY);         
+                }
+            }
+        //     if (camera.position.y < -7) {
+        //         camera.position.setY(-7);
+        //     }
         physicsWorld.update(deltaTime);
         controls.update();
-
+              
+  
         render();
         stats.update();
         clouds.rotation.y += 0.001;
+     
+
         renderer.render(scene, camera);
         stats.end()
         requestAnimationFrame(animate);
