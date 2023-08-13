@@ -5,49 +5,82 @@ import makeGround from "../environment/Ground";
 import ModelManager from "../utils/ModelManager";
 
 export default function createCity(scene) {
+
+
+// Create a box geometry
+const geometry = new THREE.BoxGeometry(800, 500, 100);
+
+// Create a texture loader
+const textureLoader = new THREE.TextureLoader();
+
+// Load the texture image
+const texture = textureLoader.load('/textures/city/ground.jpg');
+
+// Create a material with the texture
+const material = new THREE.MeshBasicMaterial({ map: texture });
+
+// Create a mesh
+const rectangle = new THREE.Mesh(geometry, material);
+rectangle.position.x = 10;
+rectangle.position.y = 1;
+rectangle.position.z = 1000;
+rectangle.rotation.x = Math.PI /2 ;
+
+// Add the rectangle to the scene
+// scene.add(rectangle);
+
+
+
   makeGround(scene);
 
   //Load Models
   const modelPaths = [
-    // //Football Stadium
+    //Airport
+    "/models/airport_on_island/scene.gltf",
+    //Football Stadium
     "/textures/city/models/football_stadium/scene.gltf",
-    // //Extra building
+    //Extra building
     // "/textures/city/models/european_buildings_asset_pack_3/scene.gltf",
-    // //Little City
+    //Little City
     "/textures/city/models/imaginary_city_i/scene.gltf",
     //Tommy
-    "/textures/city/models/tommy_gta_vice_city/scene.gltf",
+    // "/textures/city/models/tommy_gta_vice_city/scene.gltf",
   ];
 
   const modelPositions = [
-    // //Football Stadium
-    new THREE.Vector3(-700, 0.1, -1050),
-    // //Extra building
+     //Airport
+     new THREE.Vector3(300, -268, -100),   
+    //Football Stadium
+    new THREE.Vector3(-290, 0.1, 250),
+    //Extra building
     // new THREE.Vector3(1400, 0.1, 10),
-    // //Little City
-    new THREE.Vector3(470, -5, 400),
+    //Little City
+    new THREE.Vector3(-800, -5, 600),
     //Tommy
     new THREE.Vector3(10, 12, 10),
 
   ];
 
   const modelScales = [
+    //Airport
+    new THREE.Vector3(100, 100, 100),
     //Football Stadium
-    new THREE.Vector3(8, 8, 8),
-    // //Extra building
+    new THREE.Vector3(12, 12, 12),
+    //Extra building
     // new THREE.Vector3(8, 8, 8),
-    // //Little City
-    new THREE.Vector3(2.5, 2.5, 2.5),
+    //Little City
+    new THREE.Vector3(3.5, 3.5, 3.5),
     //Tommy
-    new THREE.Vector3(4, 4, 4),
+    // new THREE.Vector3(4, 4, 4),
 
   ];
 
   const modelRotation = [
+    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI ),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI * 1.5),
     // new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI - 0.006, Math.PI / 2),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
+    // new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
 
   ];
 
@@ -83,16 +116,16 @@ export default function createCity(scene) {
   const topTexturePath = '/textures/city/roof_texture.jpeg'; // specify the path of the top texture
 
   const numRows1 = 2; // number of rows for the first set of buildings
-  const numCols1 = 18; // number of columns for the first set of buildings
+  const numCols1 = 15; // number of columns for the first set of buildings
   const numRows2 = 2; // number of rows for the second set of buildings
-  const numCols2 = 25; // number of columns for the second set of buildings
-  const numRows3 = 13; // number of rows for the third set of buildings
-  const numCols3 = 15; // number of columns for the third set of buildings
+  const numCols2 = 10; // number of columns for the second set of buildings
+  const numRows3 = 2; // number of rows for the third set of buildings
+  const numCols3 = 3; // number of columns for the third set of buildings
 
   const buildingPromises = []; // array to store promises for each Building instance
 
   let textureIndex = 0;
-
+  
   // Define a function that returns a Promise that resolves when the Building is loaded
   function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath) {
     return new Promise((resolve, reject) => {
@@ -107,18 +140,18 @@ export default function createCity(scene) {
   // Add the first set of buildings
   for (let row = 0; row < numRows1; row++) {
     for (let col = 0; col < numCols1; col++) {
-      const buildingHeight = 70 + Math.random() * 50;
-      const buildingWidth = 60 + (Math.random() - 0.5) * 1.5;
-      const buildingDepth = 38 + (Math.random() - 0.5) * 1.5;
+      const buildingHeight = 150 + Math.random() * 90;
+      const buildingWidth = 90 + (Math.random() - 0.5) * 1.5;
+      const buildingDepth = 80 + (Math.random() - 0.5) * 1.5;
       const buildingTexture = buildingTextures[textureIndex];
 
       // Load the Building and add it to the scene
       const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath) // pass topTexturePath
         .then((building) => {
           building.setPosition(
-            (col - (numCols1 - 1) / 2) * buildingWidth * 1.6,
+            (col - (numCols1 - 1) / 2) * buildingWidth * 1.9,
             building.getHeight() / 2,
-            (row - (numRows1 - 1) / 2) * buildingDepth * 70
+            (row - (numRows1 - 1) / 2) * buildingDepth * 25
           );
           building.addToScene(scene);
         })
@@ -132,16 +165,16 @@ export default function createCity(scene) {
   // Add the second set of buildings
   for (let row = 0; row < numRows2; row++) {
     for (let col = 0; col < numCols2; col++) {
-      const buildingHeight = 90 + Math.random() * 50;
-      const buildingWidth = 60 + (Math.random() - 0.5) * 1.5;
-      const buildingDepth = 38 + (Math.random() - 0.5) * 1.5;
+      const buildingHeight = 160 + Math.random() * 50;
+      const buildingWidth = 150 + (Math.random() - 0.5) * 5;
+      const buildingDepth = 70 + (Math.random() - 0.5) * 1.5;
       const buildingTexture = buildingTextures[textureIndex];
 
       // Load the Building and add it to the scene
       const buildingPromise = loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath)
         .then((building) => {
           building.setPosition(
-            (col - (numCols2 - 1) / 2) * buildingWidth * 1.2,
+            (col - (numCols2 - 1) / 2) * buildingWidth * 1.8,
             building.getHeight() / 2,
             (row - (numRows2 - 1) / 2) * buildingDepth * 39  // adjust the z position to account for the first set of buildings
           );

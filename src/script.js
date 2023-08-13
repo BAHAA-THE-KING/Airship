@@ -176,6 +176,10 @@ function guiChanged() {
 
         renderer.toneMappingExposure = effectController.exposure;
 
+        const waterUniforms = water.material.uniforms;
+     
+
+
 
         renderer.render(scene, camera);
 }

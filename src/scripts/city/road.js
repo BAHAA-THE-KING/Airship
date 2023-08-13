@@ -26,7 +26,7 @@ export default class Road {
       MaterialManager.save(surfaceTextureUrl, surfaceMaterial);
     }
 
-    const surfaceGeometry = new THREE.BoxGeometry(this.length, 0.01, this.width);
+    const surfaceGeometry = new THREE.BoxGeometry(this.length, 10, this.width);
 
     this.surfaceMesh = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
 
@@ -45,7 +45,7 @@ export default class Road {
       MaterialManager.save("Line Material", lineMaterial);
     }
 
-    const lineGeometry = new THREE.BoxGeometry(this.length, 0.5, 0.22);
+    const lineGeometry = new THREE.BoxGeometry(this.length, 10, 0.22);
 
     this.line1 = new THREE.Mesh(lineGeometry, lineMaterial);
     this.line2 = new THREE.Mesh(lineGeometry, lineMaterial);
@@ -53,8 +53,8 @@ export default class Road {
     // Position and rotate road lines
     this.line1.rotation.set(Math.PI * 2, 0, 0);
     this.line2.rotation.set(Math.PI * 2, 0, 0);
-    this.line1.position.set(-0.9, 0.02, 1);
-    this.line2.position.set(0.9, 0.02, -1);
+    this.line1.position.set(-0.9, 0.01, 1);
+    this.line2.position.set(0.9, 0.01, -1);
 
 
     // Create sidewalks
