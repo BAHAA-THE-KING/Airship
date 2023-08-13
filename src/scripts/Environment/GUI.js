@@ -2,7 +2,7 @@ import { GUI } from 'lil-gui';
 
 const gui = new GUI();
 
-function makeGui(effectController, onChangeEffect, physicalVariables) {
+function makeGui(waterUniforms,effectController, onChangeEffect, physicalVariables) {
    const skyboxFolder = gui.addFolder("Skybox");
    skyboxFolder.add(effectController, 'turbidity', 0.0, 20.0, 0.1).onChange(onChangeEffect);
    skyboxFolder.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(onChangeEffect);
@@ -12,7 +12,11 @@ function makeGui(effectController, onChangeEffect, physicalVariables) {
    skyboxFolder.add(effectController, 'azimuth', - 180, 180, 0.1).onChange(onChangeEffect);
    skyboxFolder.add(effectController, 'exposure', 0, 1, 0.0001).onChange(onChangeEffect);
    skyboxFolder.close();
-
+   const waterFolder = gui.addFolder("Water");
+   
+   waterFolder.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
+   waterFolder.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
+   waterFolder.close();
    const physicsFolder = gui.addFolder("Physics");
    physicsFolder.add(physicalVariables, 'start');
 

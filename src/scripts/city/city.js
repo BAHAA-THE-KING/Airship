@@ -9,22 +9,22 @@ export default function createCity(scene) {
 
   //Load Models
   const modelPaths = [
-    //Football Stadium
+    // //Football Stadium
     "/textures/city/models/football_stadium/scene.gltf",
-    //Extra building
-    "/textures/city/models/european_buildings_asset_pack_3/scene.gltf",
-    //Little City
+    // //Extra building
+    // "/textures/city/models/european_buildings_asset_pack_3/scene.gltf",
+    // //Little City
     "/textures/city/models/imaginary_city_i/scene.gltf",
     //Tommy
     "/textures/city/models/tommy_gta_vice_city/scene.gltf",
   ];
 
   const modelPositions = [
-    //Football Stadium
+    // //Football Stadium
     new THREE.Vector3(-700, 0.1, -1050),
-    //Extra building
-    new THREE.Vector3(1400, 0.1, 10),
-    //Little City
+    // //Extra building
+    // new THREE.Vector3(1400, 0.1, 10),
+    // //Little City
     new THREE.Vector3(470, -5, 400),
     //Tommy
     new THREE.Vector3(10, 12, 10),
@@ -34,9 +34,9 @@ export default function createCity(scene) {
   const modelScales = [
     //Football Stadium
     new THREE.Vector3(8, 8, 8),
-    //Extra building
-    new THREE.Vector3(8, 8, 8),
-    //Little City
+    // //Extra building
+    // new THREE.Vector3(8, 8, 8),
+    // //Little City
     new THREE.Vector3(2.5, 2.5, 2.5),
     //Tommy
     new THREE.Vector3(4, 4, 4),
@@ -45,7 +45,7 @@ export default function createCity(scene) {
 
   const modelRotation = [
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI * 1.5),
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
+    // new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI - 0.006, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
 
