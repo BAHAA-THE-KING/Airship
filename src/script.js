@@ -10,6 +10,7 @@ import PhysicsWorld from "./scripts/physics/PhysicsWorld";
 import { createClouds } from './scripts/Environment/clouds';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
+import makeMountain from './scripts/Environment/mountain.js';
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -23,7 +24,7 @@ const can = document.querySelector("#can");
 can.setAttribute("width", width);
 can.setAttribute("height", height);
 
-const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 15000);
 camera.position.set(929, 252, 528);
 
 const scene = new THREE.Scene();
@@ -72,7 +73,7 @@ sun = new THREE.Vector3();
 
 // Water
 
-const waterGeometry = new THREE.PlaneGeometry( 10000,10000 );
+const waterGeometry = new THREE.PlaneGeometry( 12000,12000 );
                                         
 water = new Water(
         waterGeometry,
@@ -98,7 +99,7 @@ scene.add( water );
 
 // Skybox
 const sky = new Sky();
-sky.scale.setScalar(10000);
+sky.scale.setScalar(12000);
 scene.add(sky);
 
 const skyUniforms = sky.material.uniforms;
@@ -207,7 +208,7 @@ guiChanged();
 */
 createCity(scene);
 
-
+makeMountain(scene);
 /**
  * Load Blimp Model
  */

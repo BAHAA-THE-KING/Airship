@@ -6,7 +6,7 @@ function addOrbitControls(camera, renderer) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
     // Set constraints to keep the camera within the skybox boundaries
-    const halfSkyboxSize = 10000 * 0.5;
+    const halfSkyboxSize = 12000 * 0.5;
     controls.minDistance = halfSkyboxSize/35; // Minimum distance from the target
     controls.maxDistance = halfSkyboxSize ; // Maximum distance from the target
     controls.maxPolarAngle = Math.PI / 2; // Limit the angle of inclination (no looking directly up or down)
