@@ -218,96 +218,96 @@ rectangle.rotation.x = Math.PI /2 ;
     console.log("All buildings loaded");
   });
 
-  // Load Road 1
-  const road = new Road(1300, 75);
-  scene.add(road.group);
-  road.setPosition(250, 0.5, -938);
-  road.setRotation(0, 0, 0);
+//   // Load Road 1
+//   const road = new Road(1300, 75);
+//   scene.add(road.group);
+//   road.setPosition(250, 0.5, -938);
+//   road.setRotation(0, 0, 0);
 
-  // Load Road 2
-  const road2 = new Road(1300, 75);
-  scene.add(road2.group);
-  road2.setPosition(250, 0.5, -1138);
-  road2.setRotation(0, 0, 0);
+//   // Load Road 2
+//   const road2 = new Road(1300, 75);
+//   scene.add(road2.group);
+//   road2.setPosition(250, 0.5, -1138);
+//   road2.setRotation(0, 0, 0);
 
-  // Load Road 3
-  const road3 = new Road(900, 75);
-  scene.add(road3.group);
-  road3.setPosition(-1500, 0.5, -125);
-  road3.setRotation(0, 0, 0);
+//   // Load Road 3
+//   const road3 = new Road(900, 75);
+//   scene.add(road3.group);
+//   road3.setPosition(-1500, 0.5, -125);
+//   road3.setRotation(0, 0, 0);
 
-  // Load Road 4
-  const road4 = new Road(900, 75);
-  scene.add(road4.group);
-  road4.setPosition(-1500, 0.5, 850);
-  road4.setRotation(0, 0, 0);
+//   // Load Road 4
+//   const road4 = new Road(900, 75);
+//   scene.add(road4.group);
+//   road4.setPosition(-1500, 0.5, 850);
+//   road4.setRotation(0, 0, 0);
 
-  // Load Road 5
-  const road5 = new Road(900, 75);
-  scene.add(road5.group);
-  road5.setPosition(-1500, 0.5, 120);
-  road5.setRotation(0, 0, 0);
+//   // Load Road 5
+//   const road5 = new Road(900, 75);
+//   scene.add(road5.group);
+//   road5.setPosition(-1500, 0.5, 120);
+//   road5.setRotation(0, 0, 0);
 
-  // Load Road 6
-  const road6 = new Road(900, 75);
-  scene.add(road6.group);
-  road6.setPosition(-1500, 0.5, 350);
-  road6.setRotation(0, 0, 0);
+//   // Load Road 6
+//   const road6 = new Road(900, 75);
+//   scene.add(road6.group);
+//   road6.setPosition(-1500, 0.5, 350);
+//   road6.setRotation(0, 0, 0);
 
-  // Load Road 7
-  const road7 = new Road(900, 75);
-  scene.add(road7.group);
-  road7.setPosition(-1500, 0.5, 600);
-  road7.setRotation(0, 0, 0);
+//   // Load Road 7
+//   const road7 = new Road(900, 75);
+//   scene.add(road7.group);
+//   road7.setPosition(-1500, 0.5, 600);
+//   road7.setRotation(0, 0, 0);
 
-  // Load Road 8
-  const road8 = new Road(900, 75);
-  scene.add(road8.group);
-  road8.setPosition(-1500, 0.5, -350);
-  road8.setRotation(0, 0, 0);
+//   // Load Road 8
+//   const road8 = new Road(900, 75);
+//   scene.add(road8.group);
+//   road8.setPosition(-1500, 0.5, -350);
+//   road8.setRotation(0, 0, 0);
 
-  // Load Road 9
-  const road9 = new Road(900, 75);
-  scene.add(road9.group);
-  road9.setPosition(-1500, 0.5, -600);
-  road9.setRotation(0, 0, 0);
+//   // Load Road 9
+//   const road9 = new Road(900, 75);
+//   scene.add(road9.group);
+//   road9.setPosition(-1500, 0.5, -600);
+//   road9.setRotation(0, 0, 0);
 
-  // Load Road 10
-  const road10 = new Road(900, 75);
-  scene.add(road10.group);
-  road10.setPosition(-1500, 0.5, -850);
-  road10.setRotation(0, 0, 0);
+//   // Load Road 10
+//   const road10 = new Road(900, 75);
+//   scene.add(road10.group);
+//   road10.setPosition(-1500, 0.5, -850);
+//   road10.setRotation(0, 0, 0);
 
-  // Load Road 11
-  const road11 = new Road(900, 75);
-  scene.add(road11.group);
-  road11.setPosition(-1500, 0.5, -1080);
-  road11.setRotation(0, 0, 0);
+//   // Load Road 11
+//   const road11 = new Road(900, 75);
+//   scene.add(road11.group);
+//   road11.setPosition(-1500, 0.5, -1080);
+//   road11.setRotation(0, 0, 0);
 
-  // Load Road 12
-  const road12 = new Road(900, 75);
-  scene.add(road12.group);
-  road12.setPosition(-1500, 0.5, -1330);
-  road12.setRotation(0, 0, 0);
+//   // Load Road 12
+//   const road12 = new Road(900, 75);
+//   scene.add(road12.group);
+//   road12.setPosition(-1500, 0.5, -1330);
+//   road12.setRotation(0, 0, 0);
 
 
-  // Load Road 13
-  const road13 = new Road(900, 75);
-  scene.add(road13.group);
-  road13.setPosition(-1500, 0.5, 1080);
-  road13.setRotation(0, 0, 0);
+//   // Load Road 13
+//   const road13 = new Road(900, 75);
+//   scene.add(road13.group);
+//   road13.setPosition(-1500, 0.5, 1080);
+//   road13.setRotation(0, 0, 0);
 
-  // Load Road 14
-  const road14 = new Road(900, 75);
-  scene.add(road14.group);
-  road14.setPosition(-1500, 0.5, -1330);
-  road14.setRotation(0, 0, 0);
+//   // Load Road 14
+//   const road14 = new Road(900, 75);
+//   scene.add(road14.group);
+//   road14.setPosition(-1500, 0.5, -1330);
+//   road14.setRotation(0, 0, 0);
 
-  // Load Road 15
-  const road15 = new Road(2900, 75);
-  scene.add(road15.group);
-  road15.setPosition(-990, 0.5, 0);
-  road15.setRotation(0, Math.PI / 2, 0);
+//   // Load Road 15
+//   const road15 = new Road(2900, 75);
+//   scene.add(road15.group);
+//   road15.setPosition(-990, 0.5, 0);
+//   road15.setRotation(0, Math.PI / 2, 0);
 
   // Load the GLTF model and repeat it 5 times
 
