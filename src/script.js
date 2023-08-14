@@ -67,7 +67,7 @@ addLights(scene);
  */
 const textureLoader = new THREE.TextureLoader();
 const textures = [];
-for (let i = 1; i < 7; i++) {
+for (let i = 1; i < 6; i++) {
   textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
   var clouds = createClouds(scene, textures[i], 10);
 }
