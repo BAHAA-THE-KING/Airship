@@ -151,9 +151,8 @@ function updateSun() {
 updateSun();
 
 const stats = new Stats();
-stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
-stats.dom.children[0].classList.add("output_fps")
-document.body.appendChild(stats.dom)
+stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild(stats.dom);
 
 /**
  * GUI Variables
@@ -197,7 +196,9 @@ const NightTime = {
 };
 
 const waterUniforms = water.material.uniforms;
-     
+let selectedTime = {
+  ...afterNoon,
+};
 function guiChanged() {
   const uniforms = sky.material.uniforms;
   // Set properties based on the selected time of day or lighting condition
@@ -232,17 +233,57 @@ const physicalVariables = {
   horizontalRudder: 0,
 };
 
-makeGui(waterUniforms,effectController, guiChanged, physicalVariables);
+function timeChange(){
+        if (selectedTime.MorningTime){
+                selectedTime.NightTime=MorningTime.NightTime;
+                selectedTime.afterNoon=MorningTime.afterNoon;
+                selectedTime.azimuth=MorningTime.azimuth;
+                selectedTime.MorningTime=MorningTime.MorningTime;
+                selectedTime.elevation=MorningTime.elevation;
+                selectedTime.exposure=MorningTime.exposure;
+                selectedTime.mieCoefficient=MorningTime.mieCoefficient;
+                selectedTime.mieDirectionalG=MorningTime.mieDirectionalG;
+                selectedTime.rayleigh=MorningTime.rayleigh;
+                selectedTime.turbidity=MorningTime.turbidity;
+        }
+        if (selectedTime.NightTime){
+                selectedTime.NightTime=NightTime.NightTime;
+                selectedTime.afterNoon=NightTime.afterNoon;
+                selectedTime.azimuth=NightTime.azimuth;
+                selectedTime.MorningTime=NightTime.MorningTime;
+                selectedTime.elevation=NightTime.elevation;
+                selectedTime.exposure=NightTime.exposure;
+                selectedTime.mieCoefficient=NightTime.mieCoefficient;
+                selectedTime.mieDirectionalG=NightTime.mieDirectionalG;
+                selectedTime.rayleigh=NightTime.rayleigh;
+                selectedTime.turbidity=NightTime.turbidity;
+        }
+        if (selectedTime.afterNoon){
+                selectedTime.NightTime=afterNoon.NightTime;
+                selectedTime.afterNoon=afterNoon.afterNoon;
+                selectedTime.MorningTime=afterNoon.MorningTime;
+                selectedTime.azimuth=afterNoon.azimuth;
+                selectedTime.elevation=afterNoon.elevation;
+                selectedTime.exposure=afterNoon.exposure;
+                selectedTime.mieCoefficient=afterNoon.mieCoefficient;
+                selectedTime.mieDirectionalG=afterNoon.mieDirectionalG;
+                selectedTime.rayleigh=afterNoon.rayleigh;
+                selectedTime.turbidity=afterNoon.turbidity;
+        }
+        guiChanged();
+}
+
+makeGui(waterUniforms, selectedTime, guiChanged, physicalVariables,timeChange);
 guiChanged();
 
 /**
  * Load city by calling 'createCity' function
  *
  */
-// createCity(scene);
+createCity(scene);
 
-// makeMountain(scene);
-// makeText(scene);
+makeMountain(scene);
+makeText(scene);
 /**
  * Load Blimp Model
  */
@@ -260,36 +301,63 @@ const clock = new THREE.Clock();
 let oldElapsedTime = 0;
 let daytime = 0;
 function animate() {
-        stats.begin()
-        const elapsedTime = clock.getElapsedTime();
-        const deltaTime = elapsedTime - oldElapsedTime;
-        oldElapsedTime = elapsedTime;
-      
-        if (blimp.isReady) {
-                if (blimp.position.y < -10) {
-                        blimp.position.y = blimp.position.y -0.1; 
-                       
-                        physicalVariables.start = false;  
-                    }
-                if (blimp.position.y < minAllowedY) {
-                    blimp.position.setY(minAllowedY);         
-                }
-            }
-        //     if (camera.position.y < -7) {
-        //         camera.position.setY(-7);
-        //     }
-        physicsWorld.update(deltaTime);
-        controls.update();
-              
-  
-        render();
-        stats.update();
-        clouds.rotation.y += 0.001;
-     
+  stats.begin();
+  const elapsedTime = clock.getElapsedTime(); // Make sure you have a clock instance
 
-        renderer.render(scene, camera);
-        stats.end()
-        requestAnimationFrame(animate);
+  // daytime += 0.01;
+  // console.log("1",selectedTime.elevation)
+  // console.log("2",(MorningTime.elevation - afterNoon.elevation) / 100)
+  // if (0 <= daytime && daytime < 1) {
+  //         selectedTime.turbidity += (MorningTime.turbidity - afterNoon.turbidity) / 100;
+  //         selectedTime.rayleigh += (MorningTime.rayleigh - afterNoon.rayleigh) / 100;
+  //         selectedTime.mieCoefficient += (MorningTime.mieCoefficient - afterNoon.mieCoefficient) / 100;
+  //         selectedTime.mieDirectionalG += (MorningTime.mieDirectionalG - afterNoon.mieDirectionalG) / 100;
+  //         selectedTime.elevation += (MorningTime.elevation - afterNoon.elevation) / 100;
+  //         guiChanged();
+  //         updateSun();
+  // }else if (1 <= daytime && daytime < 2) {
+  //         selectedTime.turbidity += (NightTime.turbidity - MorningTime.turbidity) / 100;
+  //         selectedTime.rayleigh += (NightTime.rayleigh - MorningTime.rayleigh) / 100;
+  //         selectedTime.mieCoefficient += (NightTime.mieCoefficient - MorningTime.mieCoefficient) / 100;
+  //         selectedTime.mieDirectionalG += (NightTime.mieDirectionalG - MorningTime.mieDirectionalG) / 100;
+  //         selectedTime.elevation += (NightTime.elevation - MorningTime.elevation) / 100;
+  //         guiChanged();
+  //         updateSun();
+  // }else if (2 <= daytime && daytime < 3) {
+  //         selectedTime.turbidity += (afterNoon.turbidity - NightTime.turbidity) / 100;
+  //         selectedTime.rayleigh += (afterNoon.rayleigh - NightTime.rayleigh) / 100;
+  //         selectedTime.mieCoefficient += (afterNoon.mieCoefficient - NightTime.mieCoefficient) / 100;
+  //         selectedTime.mieDirectionalG += (afterNoon.mieDirectionalG - NightTime.mieDirectionalG) / 100;
+  //         selectedTime.elevation += (afterNoon.elevation - NightTime.elevation) / 100;
+  //         guiChanged();
+  //             updateSun();
+  // }
+  // if (daytime>=3)daytime=0;
+  // console.log(daytime);
+  const deltaTime = elapsedTime - oldElapsedTime;
+  oldElapsedTime = elapsedTime;
+
+  if (blimp.isReady) {
+    if (blimp.position.y < -10) {
+      blimp.position.y = blimp.position.y - 0.1;
+
+      physicalVariables.start = false;
+    }
+    if (blimp.position.y < minAllowedY) {
+      blimp.position.setY(minAllowedY);
+    }
+  }
+
+  physicsWorld.update(deltaTime);
+  controls.update();
+
+  render();
+  stats.update();
+  clouds.rotation.y += 0.001;
+
+  renderer.render(scene, camera);
+  stats.end();
+  requestAnimationFrame(animate);
 }
 function render() {
   const time = performance.now() * 0.001;
