@@ -125,6 +125,7 @@ export default class Road {
     this.group.rotation.set(x, y, z);
   }
 
+  
   addToScene(scene) {
     scene.add(this.group)
   }
