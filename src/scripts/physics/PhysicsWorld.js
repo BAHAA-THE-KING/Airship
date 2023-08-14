@@ -379,8 +379,8 @@ class PhysicsWorld {
   update(deltaTime) {
     if (!this.target.isReady) return;
     this.target.rotateRudderTo(this.calculateHAlpha(), this.calculateVAlpha());
-    if (this.physicalVariables.currentRPM)
-      this.target.rotateFan(this.physicalVariables.currentRPM / 2500);
+
+    this.target.rotateFan(this.physicalVariables.currentRPM / 3000);
 
     if (!this.physicalVariables.start) return;
     const d = this.calculateMovement(deltaTime);
@@ -391,7 +391,7 @@ class PhysicsWorld {
     this.calculateRotation(deltaTime);
     this.rotate(this.angleY, this.angleZ);
 
-    //this.controls.target = this.target.position.clone();
+    this.controls.target = this.controls.target.add(d);
     this.controls.object.position.add(d);
 
     this.output.PositionX = this.target.position.x.toFixed(4) + "m";

@@ -319,9 +319,9 @@ guiChanged();
  *
  */
 createCity(scene);
-
 makeMountain(scene);
 makeText(scene);
+
 /**
  * Load Blimp Model
  */

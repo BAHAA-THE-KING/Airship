@@ -80,34 +80,42 @@ function makeGui(waterUniforms, effectController, onChangeEffect, physicalVariab
    physicsFolder.open();
 
    const outgui = new GUI({ title: "Output" });
+
    outgui.domElement.classList.add("output");
-   //outgui.add(output, "WeightX").disable();
-   outgui.add(output, "WeightY").disable();
-   //outgui.add(output, "WeightZ").disable();
-   //outgui.add(output, "BuoyancyX").disable();
-   outgui.add(output, "BuoyancyY").disable();
-   //outgui.add(output, "BuoyancyZ").disable();
-   outgui.add(output, "DragX").disable();
-   outgui.add(output, "DragY").disable();
-   outgui.add(output, "DragZ").disable();
-   outgui.add(output, "ThrustX").disable();
-   outgui.add(output, "ThrustY").disable();
-   outgui.add(output, "ThrustZ").disable();
-   outgui.add(output, "Thrust").disable();
-   outgui.add(output, "WindX").disable();
-   outgui.add(output, "WindY").disable();
-   outgui.add(output, "WindZ").disable();
-   outgui.add(output, "AccelerationX").disable();
-   outgui.add(output, "AccelerationY").disable();
-   outgui.add(output, "AccelerationZ").disable();
-   outgui.add(output, "Acceleration").disable();
-   outgui.add(output, "VelocityX").disable();
-   outgui.add(output, "VelocityY").disable();
-   outgui.add(output, "VelocityZ").disable();
-   outgui.add(output, "Velocity").disable();
-   outgui.add(output, "PositionX").disable();
-   outgui.add(output, "PositionY").disable();
-   outgui.add(output, "PositionZ").disable();
+   //outgui.add(output, "WeightX").disable().domElement.classList.add("weight");
+   outgui.add(output, "WeightY").disable().domElement.classList.add("weight");
+   //outgui.add(output, "WeightZ").disable().domElement.classList.add("weight");
+
+   //outgui.add(output, "BuoyancyX").disable().domElement.classList.add("buoyancy");
+   outgui.add(output, "BuoyancyY").disable().domElement.classList.add("buoyancy");
+   //outgui.add(output, "BuoyancyZ").disable().domElement.classList.add("buoyancy");
+
+   outgui.add(output, "DragX").disable().domElement.classList.add("drag");
+   outgui.add(output, "DragY").disable().domElement.classList.add("drag");
+   outgui.add(output, "DragZ").disable().domElement.classList.add("drag");
+
+   outgui.add(output, "ThrustX").disable().domElement.classList.add("thrust");
+   outgui.add(output, "ThrustY").disable().domElement.classList.add("thrust");
+   outgui.add(output, "ThrustZ").disable().domElement.classList.add("thrust");
+   outgui.add(output, "Thrust").disable().domElement.classList.add("thrust");
+
+   outgui.add(output, "WindX").disable().domElement.classList.add("wind");
+   outgui.add(output, "WindY").disable().domElement.classList.add("wind");
+   outgui.add(output, "WindZ").disable().domElement.classList.add("wind");
+
+   outgui.add(output, "AccelerationX").disable().domElement.classList.add("acceleration");
+   outgui.add(output, "AccelerationY").disable().domElement.classList.add("acceleration");
+   outgui.add(output, "AccelerationZ").disable().domElement.classList.add("acceleration");
+   outgui.add(output, "Acceleration").disable().domElement.classList.add("acceleration");
+
+   outgui.add(output, "VelocityX").disable().domElement.classList.add("velocity");
+   outgui.add(output, "VelocityY").disable().domElement.classList.add("velocity");
+   outgui.add(output, "VelocityZ").disable().domElement.classList.add("velocity");
+   outgui.add(output, "Velocity").disable().domElement.classList.add("velocity");
+
+   outgui.add(output, "PositionX").disable().domElement.classList.add("position");
+   outgui.add(output, "PositionY").disable().domElement.classList.add("position");
+   outgui.add(output, "PositionZ").disable().domElement.classList.add("position");
 
    return outgui;
 }

@@ -23,10 +23,36 @@ body {
    left: 15px;
 }
 
-.output input[aria-labelledby=lil-gui-name-33],
-.output input[aria-labelledby=lil-gui-name-40],
-.output input[aria-labelledby=lil-gui-name-44] {
+.weight input {
+   color: aquamarine !important;
+}
+
+.buoyancy input {
+   color: yellowgreen !important;
+}
+
+.drag input {
+   color: deeppink !important;
+}
+
+.thrust input {
    color: lime !important;
+}
+
+.wind input {
+   color: gold !important;
+}
+
+.acceleration input {
+   color: aqua !important;
+}
+
+.velocity input {
+   color: orange !important;
+}
+
+.position input {
+   color: yellow !important;
 }
 
 .lil-gui .controller.disabled {
