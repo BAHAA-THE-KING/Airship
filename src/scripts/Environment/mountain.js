@@ -55,8 +55,11 @@ mesh5.position.set(3700,-400,-200);
 mesh6.position.set(-3700,-400,-200);
 // scene.add(mesh);
 // scene.add(mesh2);
+
+
+
 scene.add(mesh3);
-scene.add(mesh4);
+// scene.add(mesh4);
 scene.add(mesh5);
 scene.add(mesh6);
 
