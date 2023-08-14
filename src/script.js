@@ -35,9 +35,12 @@ const scene = new THREE.Scene();
 
 const renderer = new THREE.WebGL1Renderer({ canvas: can });
 
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(width, height);
 renderer.render(scene, camera);
+
 window.onresize = function () {
   width = window.innerWidth;
   height = window.innerHeight;
@@ -60,7 +63,7 @@ controls.target.set(600, 0, 200);
 /**
  * lights
  */
-addLights(scene);
+const { ambientLight, directionalLight } = addLights(scene);
 
 /**
  * Objects
@@ -263,14 +266,32 @@ const output = {
 const timeControl = {
   Morning: () => {
     selectedTime = { ...Morning };
+    ambientLight.intensity = 1;
+    ambientLight.color = new THREE.Color("white");
+    directionalLight.position.set(0, 1000, 0);
+    directionalLight.color = new THREE.Color("white");
+    directionalLight.intensity = 0.5;
+    directionalLight.castShadow = false
     guiChanged();
   },
   Evning: () => {
     selectedTime = { ...Evning };
+    ambientLight.intensity = 0.7;
+    ambientLight.color = new THREE.Color("orange");
+    directionalLight.position.set(0, 3000, -6000);
+    directionalLight.color = new THREE.Color("orange");
+    directionalLight.intensity = 1;
+    directionalLight.castShadow = true;
     guiChanged();
   },
   Night: () => {
     selectedTime = { ...Night };
+    ambientLight.intensity = 0.2;
+    ambientLight.color = new THREE.Color("white");
+    directionalLight.position.set(0, 6000, -6000);
+    directionalLight.color = new THREE.Color("white");
+    directionalLight.intensity = 0.7;
+    directionalLight.castShadow = true;
     guiChanged();
   }
 };

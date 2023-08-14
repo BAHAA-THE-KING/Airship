@@ -30,6 +30,9 @@ export default class Road {
 
     this.surfaceMesh = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
 
+    this.surfaceMesh.receiveShadow = true;
+    this.surfaceMesh.castShadow = true;
+
     const uvAttribute = surfaceGeometry.attributes.uv;
     for (let i = 0; i < uvAttribute.count; i++) {
       if (uvAttribute.getY(i) < 0.5)
@@ -56,6 +59,10 @@ export default class Road {
     this.line1.position.set(-0.9, 0.01, 1);
     this.line2.position.set(0.9, 0.01, -1);
 
+    this.line1.receiveShadow = true;
+    this.line1.castShadow = true;
+    this.line2.receiveShadow = true;
+    this.line2.castShadow = true;
 
     // Create sidewalks
     const sidewalkWidth = 25;
@@ -80,6 +87,9 @@ export default class Road {
     // Create a group to hold the sidewalks
     this.sidewalkGroup = new THREE.Group();
 
+    this.sidewalkGroup.receiveShadow = true;
+    this.sidewalkGroup.castShadow = true;
+
     // Create a mesh for the left sidewalk using the geometry and material
     const leftSidewalkMesh = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
 
@@ -91,6 +101,9 @@ export default class Road {
 
     // Rotate the left sidewalk mesh
     leftSidewalkMesh.rotation.set(0, 0, 0);
+
+    leftSidewalkMesh.receiveShadow = true;
+    leftSidewalkMesh.castShadow = true;
 
     // Add the left sidewalk mesh to the sidewalk group
     this.sidewalkGroup.add(leftSidewalkMesh);
@@ -106,6 +119,9 @@ export default class Road {
 
     // Rotate the right sidewalk mesh
     rightSidewalkMesh.rotation.set(0, 0, 0);
+
+    rightSidewalkMesh.receiveShadow = true;
+    rightSidewalkMesh.castShadow = true;
 
     // Add the right sidewalk mesh to the sidewalk group
     this.sidewalkGroup.add(rightSidewalkMesh);
@@ -125,7 +141,7 @@ export default class Road {
     this.group.rotation.set(x, y, z);
   }
 
-  
+
   addToScene(scene) {
     scene.add(this.group)
   }

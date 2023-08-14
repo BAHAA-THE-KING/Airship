@@ -7,27 +7,30 @@ import ModelManager from "../utils/ModelManager";
 export default function createCity(scene) {
 
 
-// Create a box geometry
-const geometry = new THREE.BoxGeometry(800, 500, 100);
+  // Create a box geometry
+  const geometry = new THREE.BoxGeometry(800, 500, 100);
 
-// Create a texture loader
-const textureLoader = new THREE.TextureLoader();
+  // Create a texture loader
+  const textureLoader = new THREE.TextureLoader();
 
-// Load the texture image
-const texture = textureLoader.load('/textures/city/ground.jpg');
+  // Load the texture image
+  const texture = textureLoader.load('/textures/city/ground.jpg');
 
-// Create a material with the texture
-const material = new THREE.MeshBasicMaterial({ map: texture });
+  // Create a material with the texture
+  const material = new THREE.MeshBasicMaterial({ map: texture });
 
-// Create a mesh
-const rectangle = new THREE.Mesh(geometry, material);
-rectangle.position.x = 10;
-rectangle.position.y = 1;
-rectangle.position.z = 1000;
-rectangle.rotation.x = Math.PI /2 ;
+  // Create a mesh
+  const rectangle = new THREE.Mesh(geometry, material);
+  rectangle.position.x = 10;
+  rectangle.position.y = 1;
+  rectangle.position.z = 1000;
+  rectangle.rotation.x = Math.PI / 2;
 
-// Add the rectangle to the scene
-// scene.add(rectangle);
+  rectangle.receiveShadow = true;
+  rectangle.castShadow = true;
+
+  // Add the rectangle to the scene
+  // scene.add(rectangle);
 
 
 
@@ -48,8 +51,8 @@ rectangle.rotation.x = Math.PI /2 ;
   ];
 
   const modelPositions = [
-     //Airport
-     new THREE.Vector3(300, -268, -100),   
+    //Airport
+    new THREE.Vector3(300, -268, -100),
     //Football Stadium
     new THREE.Vector3(-290, 0.1, 250),
     //Extra building
@@ -76,7 +79,7 @@ rectangle.rotation.x = Math.PI /2 ;
   ];
 
   const modelRotation = [
-    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI ),
+    new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI),
     new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI * 1.5),
     // new THREE.Vector3(Math.PI / 2, Math.PI, Math.PI / 2),
     new THREE.Vector3(Math.PI / 2, Math.PI - 0.006, Math.PI / 2),
@@ -125,7 +128,7 @@ rectangle.rotation.x = Math.PI /2 ;
   const buildingPromises = []; // array to store promises for each Building instance
 
   let textureIndex = 0;
-  
+
   // Define a function that returns a Promise that resolves when the Building is loaded
   function loadBuilding(buildingWidth, buildingHeight, buildingDepth, buildingTexture, topTexturePath) {
     return new Promise((resolve, reject) => {
@@ -248,66 +251,66 @@ rectangle.rotation.x = Math.PI /2 ;
   road5.setPosition(40, 5, 1125);
   road5.setRotation(0, 0, 0);
 
-//   // Load Road 6
-//   const road6 = new Road(900, 75);
-//   scene.add(road6.group);
-//   road6.setPosition(-1500, 0.5, 350);
-//   road6.setRotation(0, 0, 0);
+  //   // Load Road 6
+  //   const road6 = new Road(900, 75);
+  //   scene.add(road6.group);
+  //   road6.setPosition(-1500, 0.5, 350);
+  //   road6.setRotation(0, 0, 0);
 
-//   // Load Road 7
-//   const road7 = new Road(900, 75);
-//   scene.add(road7.group);
-//   road7.setPosition(-1500, 0.5, 600);
-//   road7.setRotation(0, 0, 0);
+  //   // Load Road 7
+  //   const road7 = new Road(900, 75);
+  //   scene.add(road7.group);
+  //   road7.setPosition(-1500, 0.5, 600);
+  //   road7.setRotation(0, 0, 0);
 
-//   // Load Road 8
-//   const road8 = new Road(900, 75);
-//   scene.add(road8.group);
-//   road8.setPosition(-1500, 0.5, -350);
-//   road8.setRotation(0, 0, 0);
+  //   // Load Road 8
+  //   const road8 = new Road(900, 75);
+  //   scene.add(road8.group);
+  //   road8.setPosition(-1500, 0.5, -350);
+  //   road8.setRotation(0, 0, 0);
 
-//   // Load Road 9
-//   const road9 = new Road(900, 75);
-//   scene.add(road9.group);
-//   road9.setPosition(-1500, 0.5, -600);
-//   road9.setRotation(0, 0, 0);
+  //   // Load Road 9
+  //   const road9 = new Road(900, 75);
+  //   scene.add(road9.group);
+  //   road9.setPosition(-1500, 0.5, -600);
+  //   road9.setRotation(0, 0, 0);
 
-//   // Load Road 10
-//   const road10 = new Road(900, 75);
-//   scene.add(road10.group);
-//   road10.setPosition(-1500, 0.5, -850);
-//   road10.setRotation(0, 0, 0);
+  //   // Load Road 10
+  //   const road10 = new Road(900, 75);
+  //   scene.add(road10.group);
+  //   road10.setPosition(-1500, 0.5, -850);
+  //   road10.setRotation(0, 0, 0);
 
-//   // Load Road 11
-//   const road11 = new Road(900, 75);
-//   scene.add(road11.group);
-//   road11.setPosition(-1500, 0.5, -1080);
-//   road11.setRotation(0, 0, 0);
+  //   // Load Road 11
+  //   const road11 = new Road(900, 75);
+  //   scene.add(road11.group);
+  //   road11.setPosition(-1500, 0.5, -1080);
+  //   road11.setRotation(0, 0, 0);
 
-//   // Load Road 12
-//   const road12 = new Road(900, 75);
-//   scene.add(road12.group);
-//   road12.setPosition(-1500, 0.5, -1330);
-//   road12.setRotation(0, 0, 0);
+  //   // Load Road 12
+  //   const road12 = new Road(900, 75);
+  //   scene.add(road12.group);
+  //   road12.setPosition(-1500, 0.5, -1330);
+  //   road12.setRotation(0, 0, 0);
 
 
-//   // Load Road 13
-//   const road13 = new Road(900, 75);
-//   scene.add(road13.group);
-//   road13.setPosition(-1500, 0.5, 1080);
-//   road13.setRotation(0, 0, 0);
+  //   // Load Road 13
+  //   const road13 = new Road(900, 75);
+  //   scene.add(road13.group);
+  //   road13.setPosition(-1500, 0.5, 1080);
+  //   road13.setRotation(0, 0, 0);
 
-//   // Load Road 14
-//   const road14 = new Road(900, 75);
-//   scene.add(road14.group);
-//   road14.setPosition(-1500, 0.5, -1330);
-//   road14.setRotation(0, 0, 0);
+  //   // Load Road 14
+  //   const road14 = new Road(900, 75);
+  //   scene.add(road14.group);
+  //   road14.setPosition(-1500, 0.5, -1330);
+  //   road14.setRotation(0, 0, 0);
 
-//   // Load Road 15
-//   const road15 = new Road(2900, 75);
-//   scene.add(road15.group);
-//   road15.setPosition(-990, 0.5, 0);
-//   road15.setRotation(0, Math.PI / 2, 0);
+  //   // Load Road 15
+  //   const road15 = new Road(2900, 75);
+  //   scene.add(road15.group);
+  //   road15.setPosition(-990, 0.5, 0);
+  //   road15.setRotation(0, Math.PI / 2, 0);
 
   // Load the GLTF model and repeat it 5 times
 

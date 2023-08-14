@@ -4,6 +4,15 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 const cache = new Map();
 const loader = new GLTFLoader();
 
+function traverse(obj) {
+   if (!obj?.children?.length) return;
+   for (const n of obj.children) {
+      n.receiveShadow = true;
+      n.castShadow = true;
+      traverse(n);
+   }
+}
+
 class ModelManager {
    static loadModel(url) {
       if (cache.has(url)) {
@@ -16,6 +25,9 @@ class ModelManager {
                url,
                (gltf) => {
                   cache.set(url, gltf);
+                  gltf.scene.receiveShadow = true;
+                  gltf.scene.castShadow = true;
+                  traverse(gltf.scene);
                   resolve(gltf);
                },
                null,

@@ -30,6 +30,9 @@
 //   const terrainMaterial2 = new THREE.MeshBasicMaterial({ map: terrainTexture });
 //   const terrainMesh = new THREE.Mesh(terrainGeometry, terrainMaterial2);
 
+//   terrainMesh.receiveShadow = true;
+//   terrainMesh.castShadow = true;
+
 //   terrainMesh.rotation.x = Math.PI / 2; // Rotate around the x-axis
 //   terrainMesh.rotation.y = Math.PI; // Rotate around the y-axis
 //   terrainMesh.rotation.z = Math.PI; // Rotate around the z-axis

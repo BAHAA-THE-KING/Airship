@@ -2,27 +2,22 @@ import * as THREE from 'three';
 // import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
 
 function makeMountain(scene) {
+  const textureLoader = new THREE.TextureLoader();
+  const worldWidth = 256, worldDepth = 256
 
 
+  const tt = textureLoader.load(`textures/mountain/Mountain.png`);
+  // const HeightMap = textureLoader.load(`textures/mountain/HeightMap3.png`);
+  const HeightMap2 = textureLoader.load(`textures/mountain/HeightMap8.png`);
+  // const HeightMap2 = textureLoader.load(`textures/mountain/HeightMap7.jpg`);
 
-
-
-const textureLoader = new THREE.TextureLoader();
-const worldWidth = 256, worldDepth = 256
-
-
-const tt = textureLoader.load(`textures/mountain/Mountain.png`);
-// const HeightMap = textureLoader.load(`textures/mountain/HeightMap3.png`);
-const HeightMap2 = textureLoader.load(`textures/mountain/HeightMap8.png`);
-// const HeightMap2 = textureLoader.load(`textures/mountain/HeightMap7.jpg`);
-
-// const material = new THREE.MeshPhongMaterial({
-//     map: tt,               // Your texture
-//     displacementMap: HeightMap,
-//     // displacementScale: 500,     // Adjust the scale as needed
-//     displacementScale: 1500,     // 3
-//     // depthTest: false, //
-//   });
+  // const material = new THREE.MeshPhongMaterial({
+  //     map: tt,               // Your texture
+  //     displacementMap: HeightMap,
+  //     // displacementScale: 500,     // Adjust the scale as needed
+  //     displacementScale: 1500,     // 3
+  //     // depthTest: false, //
+  //   });
   const material2 = new THREE.MeshPhongMaterial({
     map: tt,               // Your texture
     displacementMap: HeightMap2,
@@ -31,71 +26,81 @@ const HeightMap2 = textureLoader.load(`textures/mountain/HeightMap8.png`);
     // depthTest: false, //
   });
   const geometry = new THREE.PlaneGeometry(2500, 2500, worldWidth - 1, worldDepth - 1);
-geometry.rotateX(-Math.PI / 2);
-geometry.rotateY(-Math.PI );
+  geometry.rotateX(-Math.PI / 2);
+  geometry.rotateY(-Math.PI);
 
-// const mesh = new THREE.Mesh(geometry, material);
-// const mesh2 = new THREE.Mesh(geometry, material);
-const mesh3 = new THREE.Mesh(geometry, material2);
-const mesh4 = new THREE.Mesh(geometry, material2);
-const mesh5 = new THREE.Mesh(geometry, material2);
-const mesh6 = new THREE.Mesh(geometry, material2);
-// mesh.position.set(3000,-400,-200);
-// mesh2.position.set(-3400,-400,-200);
-mesh3.scale.set(4,1,1)
-mesh4.scale.set(4,1,1)
-mesh5.scale.set(4,1,1)
-mesh6.scale.set(4,1,1)
-mesh4.rotateY(Math.PI)
-mesh5.rotateY(Math.PI/2)
-mesh6.rotateY(-Math.PI/2)
-mesh3.position.set(0,-400,3500);
-mesh4.position.set(0,-400,-3500);
-mesh5.position.set(3700,-400,-200);
-mesh6.position.set(-3700,-400,-200);
-// scene.add(mesh);
-// scene.add(mesh2);
+  // const mesh = new THREE.Mesh(geometry, material);
+  // const mesh2 = new THREE.Mesh(geometry, material);
+  const mesh3 = new THREE.Mesh(geometry, material2);
+  const mesh4 = new THREE.Mesh(geometry, material2);
+  const mesh5 = new THREE.Mesh(geometry, material2);
+  const mesh6 = new THREE.Mesh(geometry, material2);
+  // mesh.position.set(3000,-400,-200);
+  // mesh2.position.set(-3400,-400,-200);
 
+  mesh3.scale.set(4, 1, 1)
+  mesh4.scale.set(4, 1, 1)
+  mesh5.scale.set(4, 1, 1)
+  mesh6.scale.set(4, 1, 1)
 
+  mesh4.rotateY(Math.PI)
+  mesh5.rotateY(Math.PI / 2)
+  mesh6.rotateY(-Math.PI / 2)
 
-scene.add(mesh3);
-// scene.add(mesh4);
-scene.add(mesh5);
-scene.add(mesh6);
+  mesh3.position.set(0, -400, 3500);
+  mesh4.position.set(0, -400, -3500);
+  mesh5.position.set(3700, -400, -200);
+  mesh6.position.set(-3700, -400, -200);
 
+  mesh3.receiveShadow = true;
+  mesh3.castShadow = true;
+  mesh4.receiveShadow = true;
+  mesh4.castShadow = true;
+  mesh5.receiveShadow = true;
+  mesh5.castShadow = true;
+  mesh6.receiveShadow = true;
+  mesh6.castShadow = true;
 
-// const data = generateHeight( worldWidth, worldDepth );
-
-
-// const worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
-
-// const geometry2 = new THREE.PlaneGeometry( 2500, 2500, worldWidth - 1, worldDepth - 1 );
-// geometry2.rotateX( - Math.PI / 2 );
-
-// const vertices = geometry2.attributes.position.array;
-
-// for ( let i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
-
-//     vertices[ j + 1 ] = data[ i ] * 10;
-
-// }
-
-// //
-
-// let texture = new THREE.CanvasTexture( generateTexture( data, worldWidth, worldDepth ) );
-// texture.wrapS = THREE.ClampToEdgeWrapping;
-// texture.wrapT = THREE.ClampToEdgeWrapping;
-// texture.colorSpace = THREE.SRGBColorSpace;
-
-// const mesh3 = new THREE.Mesh( geometry2, new THREE.MeshBasicMaterial( { map: texture } ) );
-// const mesh4 = new THREE.Mesh( geometry2, new THREE.MeshBasicMaterial( { map: texture } ) );
-// mesh3.position.set(0,-1000,3500);
-// mesh4.position.set(0,-1000,-3500);
-// scene.add( mesh3 );
-// scene.add( mesh4 );
+  // scene.add(mesh);
+  // scene.add(mesh2);
+  scene.add(mesh3);
+  // scene.add(mesh4);
+  scene.add(mesh5);
+  scene.add(mesh6);
 
 
-			
+  // const data = generateHeight( worldWidth, worldDepth );
+
+
+  // const worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+
+  // const geometry2 = new THREE.PlaneGeometry( 2500, 2500, worldWidth - 1, worldDepth - 1 );
+  // geometry2.rotateX( - Math.PI / 2 );
+
+  // const vertices = geometry2.attributes.position.array;
+
+  // for ( let i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+
+  //     vertices[ j + 1 ] = data[ i ] * 10;
+
+  // }
+
+  // //
+
+  // let texture = new THREE.CanvasTexture( generateTexture( data, worldWidth, worldDepth ) );
+  // texture.wrapS = THREE.ClampToEdgeWrapping;
+  // texture.wrapT = THREE.ClampToEdgeWrapping;
+  // texture.colorSpace = THREE.SRGBColorSpace;
+
+  // const mesh3 = new THREE.Mesh( geometry2, new THREE.MeshBasicMaterial( { map: texture } ) );
+  // const mesh4 = new THREE.Mesh( geometry2, new THREE.MeshBasicMaterial( { map: texture } ) );
+  // mesh3.position.set(0,-1000,3500);
+  // mesh4.position.set(0,-1000,-3500);
+  // scene.add( mesh3 );
+  // scene.add( mesh4 );
+
+
+
 
 
 }

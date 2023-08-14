@@ -107,6 +107,21 @@ function makeText(scene) {
         const textMesh6 = new THREE.Mesh(textGeometry6, textMaterial);
         const textMesh7 = new THREE.Mesh(textGeometry7, textMaterial);
 
+        textMesh.receiveShadow = true;
+        textMesh.castShadow = true;
+        textMesh2.receiveShadow = true;
+        textMesh2.castShadow = true;
+        textMesh3.receiveShadow = true;
+        textMesh3.castShadow = true;
+        textMesh4.receiveShadow = true;
+        textMesh4.castShadow = true;
+        textMesh5.receiveShadow = true;
+        textMesh5.castShadow = true;
+        textMesh6.receiveShadow = true;
+        textMesh6.castShadow = true;
+        textMesh7.receiveShadow = true;
+        textMesh7.castShadow = true;
+
 
         const group = new THREE.Group();
         const group1 = new THREE.Group();
@@ -115,31 +130,31 @@ function makeText(scene) {
         const MainGroup = new THREE.Group();
 
         textMesh.rotateY(Math.PI / 2);
-        textMesh.rotateY(-Math.PI /3);
+        textMesh.rotateY(-Math.PI / 3);
 
         textMesh2.rotateY(Math.PI / 2);
-        textMesh2.rotateY(-Math.PI /3);
+        textMesh2.rotateY(-Math.PI / 3);
 
         textMesh3.rotateY(Math.PI / 2);
-        textMesh3.rotateY(-Math.PI /3);
+        textMesh3.rotateY(-Math.PI / 3);
 
         textMesh4.rotateY(Math.PI / 2);
-        textMesh4.rotateY(-Math.PI /3);
+        textMesh4.rotateY(-Math.PI / 3);
 
         textMesh5.rotateY(Math.PI / 2);
-        textMesh5.rotateY(-Math.PI /3);
+        textMesh5.rotateY(-Math.PI / 3);
 
         textMesh6.rotateY(Math.PI / 2);
-        textMesh6.rotateY(-Math.PI /3);
+        textMesh6.rotateY(-Math.PI / 3);
 
 
         textMesh7.rotateY(Math.PI / 2);
-        textMesh7.rotateY(-Math.PI /3);
+        textMesh7.rotateY(-Math.PI / 3);
 
         // const axisHelper = new THREE.AxesHelper(5); // 5 is the size of the axis lines
 
         // Add the axis helper to the group
-      
+
 
 
         textMesh.position.set(0, 30, -100); // Adjust the position
@@ -147,7 +162,7 @@ function makeText(scene) {
         group.position.x += -80;
         group.position.y += 0;
         group.position.z += -350;
-       
+
 
         textMesh2.position.set(50, 10, -80); // Adjust the position
 
@@ -168,7 +183,7 @@ function makeText(scene) {
         group2.position.y += 0;
         group2.position.z += -200;
 
-        
+
         textMesh6.position.set(205, 10, 30); // Adjust the position
 
         textMesh7.position.set(490, 10, -140); // Adjust the position//

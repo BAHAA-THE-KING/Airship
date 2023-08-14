@@ -10,6 +10,9 @@ class Building {
     this.sideTexturePath = sideTexturePath;
     this.topTexturePath = topTexturePath;
     this.mesh = new THREE.Object3D();
+    this.mesh.receiveShadow = true;
+    this.mesh.castShadow = true;
+
     this.loaded = false;
     this.promise = this.load();
   }
@@ -42,6 +45,8 @@ class Building {
       const sideGeometry = new THREE.BoxGeometry(this.width, this.height, this.depth);
 
       const sideMesh = new THREE.Mesh(sideGeometry, sideMaterials);
+      sideMesh.receiveShadow = true;
+      sideMesh.castShadow = true;
 
       this.mesh.add(sideMesh);
 
