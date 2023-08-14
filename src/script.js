@@ -12,6 +12,7 @@ import { Water } from "three/examples/jsm/objects/Water.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import makeMountain from "./scripts/Environment/mountain.js";
 import makeText from "./scripts/Environment/text.js";
+import makeSpheres from "./scripts/Environment/spheres";
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -322,6 +323,7 @@ createCity(scene);
 
 makeMountain(scene);
 makeText(scene);
+makeSpheres(scene);
 /**
  * Load Blimp Model
  */
