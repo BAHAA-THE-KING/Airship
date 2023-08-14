@@ -11,6 +11,7 @@ import { createClouds } from './scripts/Environment/clouds';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import makeMountain from './scripts/Environment/mountain.js';
+import makeText from './scripts/Environment/text.js';
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -96,6 +97,23 @@ water.rotation.x = - Math.PI / 2;
 water.position.y = -10;
 const minAllowedY=-33;
 scene.add( water );
+
+const audioListener = new THREE.AudioListener();
+camera.add(audioListener);
+
+const audioLoader = new THREE.AudioLoader();
+let audio;
+
+// Load audio after a user gesture (e.g., a click event)
+document.addEventListener('click', function() {
+    audioLoader.load('audio/seaSound.mp3', function(buffer) {
+        audio = new THREE.PositionalAudio(audioListener);
+        audio.setBuffer(buffer);
+        audio.setLoop(true); // Set audio to loop
+        audio.setRefDistance(70);
+        audio.play(); // Start playing the audio
+    });
+});
 
 // Skybox
 const sky = new Sky();
@@ -209,6 +227,7 @@ guiChanged();
 createCity(scene);
 
 makeMountain(scene);
+makeText(scene);
 /**
  * Load Blimp Model
  */
