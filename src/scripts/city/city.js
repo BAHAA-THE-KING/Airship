@@ -218,35 +218,35 @@ rectangle.rotation.x = Math.PI /2 ;
     console.log("All buildings loaded");
   });
 
-//   // Load Road 1
-//   const road = new Road(1300, 75);
-//   scene.add(road.group);
-//   road.setPosition(250, 0.5, -938);
-//   road.setRotation(0, 0, 0);
+  // // Load Road 1
+  // const road = new Road(1300, 150);
+  // scene.add(road.group);
+  // road.setPosition(250, 0.5, -1300);
+  // road.setRotation(0, 0, 0);
 
-//   // Load Road 2
-//   const road2 = new Road(1300, 75);
-//   scene.add(road2.group);
-//   road2.setPosition(250, 0.5, -1138);
-//   road2.setRotation(0, 0, 0);
+  // Load Road 2
+  const road2 = new Road(2600, 75);
+  scene.add(road2.group);
+  road2.setPosition(40, 5, -1250);
+  road2.setRotation(0, 0, 0);
 
-//   // Load Road 3
-//   const road3 = new Road(900, 75);
-//   scene.add(road3.group);
-//   road3.setPosition(-1500, 0.5, -125);
-//   road3.setRotation(0, 0, 0);
+  // Load Road 3
+  const road3 = new Road(2600, 75);
+  scene.add(road3.group);
+  road3.setPosition(40, 5, -1125);
+  road3.setRotation(0, 0, 0);
 
-//   // Load Road 4
-//   const road4 = new Road(900, 75);
-//   scene.add(road4.group);
-//   road4.setPosition(-1500, 0.5, 850);
-//   road4.setRotation(0, 0, 0);
+  // Load Road 4
+  const road4 = new Road(2600, 75);
+  scene.add(road4.group);
+  road4.setPosition(40, 5, 1250);
+  road4.setRotation(0, 0, 0);
 
-//   // Load Road 5
-//   const road5 = new Road(900, 75);
-//   scene.add(road5.group);
-//   road5.setPosition(-1500, 0.5, 120);
-//   road5.setRotation(0, 0, 0);
+  // Load Road 5
+  const road5 = new Road(2600, 75);
+  scene.add(road5.group);
+  road5.setPosition(40, 5, 1125);
+  road5.setRotation(0, 0, 0);
 
 //   // Load Road 6
 //   const road6 = new Road(900, 75);
