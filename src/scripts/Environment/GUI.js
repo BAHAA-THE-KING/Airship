@@ -1,62 +1,15 @@
 import { GUI } from 'lil-gui';
 
 
-function makeGui(waterUniforms, effectController, onChangeEffect, physicalVariables, timeChange, output) {
+function makeGui(timeController, physicalVariables, output) {
 
    const gui = new GUI();
 
-   const skyboxFolder = gui.addFolder("Skybox");
-   skyboxFolder.add(effectController, 'turbidity', 0.0, 20.0, 0.1).onChange(onChangeEffect);
-   skyboxFolder.add(effectController, 'rayleigh', 0.0, 4, 0.001).onChange(onChangeEffect);
-   skyboxFolder.add(effectController, 'mieCoefficient', 0.0, 0.1, 0.001).onChange(onChangeEffect);
-   skyboxFolder.add(effectController, 'mieDirectionalG', 0.0, 1, 0.001).onChange(onChangeEffect);
-   skyboxFolder.add(effectController, 'elevation', 0, 90, 0.1).onChange(onChangeEffect);
-   skyboxFolder.add(effectController, 'azimuth', - 180, 180, 0.1).onChange(onChangeEffect);
-   skyboxFolder.add(effectController, 'exposure', 0, 1, 0.0001).onChange(onChangeEffect);
-
-   skyboxFolder.close();
-
    const timeControlFolder = gui.addFolder("Time Controls");
-   const MorningControl = timeControlFolder.add(effectController, "Morning").name("Morning");
-   const NightControl = timeControlFolder.add(effectController, "Night").name("Night");
-   const EvningControl = timeControlFolder.add(effectController, "Evning").name("Evning");
+   timeControlFolder.add(timeController, "Morning");
+   timeControlFolder.add(timeController, "Evning");
+   timeControlFolder.add(timeController, "Night");
 
-   // Set up callbacks for each button
-   MorningControl.onChange(function (value) {
-      effectController.Morning = value;
-      effectController.Night = false;
-      effectController.Evning = false;
-      MorningControl.updateDisplay();
-      EvningControl.updateDisplay();
-      NightControl.updateDisplay();
-      timeChange();
-   });
-
-   NightControl.onChange(function (value) {
-      effectController.Morning = false;
-      effectController.Night = value;
-      effectController.Evning = false;
-      MorningControl.updateDisplay();
-      EvningControl.updateDisplay();
-      NightControl.updateDisplay();
-      timeChange();
-   });
-
-   EvningControl.onChange(function (value) {
-      effectController.Morning = false;
-      effectController.Night = false;
-      effectController.Evning = value;
-      MorningControl.updateDisplay();
-      EvningControl.updateDisplay();
-      NightControl.updateDisplay();
-      timeChange();
-   });
-
-   const waterFolder = gui.addFolder("Water");
-
-   waterFolder.add(waterUniforms.distortionScale, 'value', 0, 8, 0.1).name('distortionScale');
-   waterFolder.add(waterUniforms.size, 'value', 0.1, 10, 0.1).name('size');
-   waterFolder.close();
    const physicsFolder = gui.addFolder("Physics");
    physicsFolder.add(physicalVariables, 'start');
 

@@ -167,9 +167,6 @@ const Morning = {
   mieDirectionalG: 1.0,
   elevation: 90,
   azimuth: 180,
-  Morning: true,
-  Night: false,
-  Evning: false,
   exposure: renderer.toneMappingExposure,
 };
 const Evning = {
@@ -179,9 +176,6 @@ const Evning = {
   mieDirectionalG: 0.607,
   elevation: 0,
   azimuth: 180,
-  Morning: false,
-  Night: false,
-  Evning: true,
   exposure: renderer.toneMappingExposure,
 };
 const Night = {
@@ -191,16 +185,10 @@ const Night = {
   mieDirectionalG: 1.0,
   elevation: 30,
   azimuth: 180,
-  Morning: false,
-  Night: true,
-  Evning: false,
   exposure: renderer.toneMappingExposure,
 };
 
-const waterUniforms = water.material.uniforms;
-let selectedTime = {
-  ...Morning,
-};
+let selectedTime = { ...Evning };
 function guiChanged() {
   const uniforms = sky.material.uniforms;
   // Set properties based on the selected time of day or lighting condition
@@ -272,47 +260,22 @@ const output = {
   PositionZ: 0,
 };
 
-function timeChange() {
-  if (selectedTime.Evning) {
-    selectedTime.Night = Evning.Night;
-    selectedTime.Morning = Evning.Morning;
-    selectedTime.azimuth = Evning.azimuth;
-    selectedTime.Evning = Evning.Evning;
-    selectedTime.elevation = Evning.elevation;
-    selectedTime.exposure = Evning.exposure;
-    selectedTime.mieCoefficient = Evning.mieCoefficient;
-    selectedTime.mieDirectionalG = Evning.mieDirectionalG;
-    selectedTime.rayleigh = Evning.rayleigh;
-    selectedTime.turbidity = Evning.turbidity;
+const timeControl = {
+  Morning: () => {
+    selectedTime = { ...Morning };
+    guiChanged();
+  },
+  Evning: () => {
+    selectedTime = { ...Evning };
+    guiChanged();
+  },
+  Night: () => {
+    selectedTime = { ...Night };
+    guiChanged();
   }
-  if (selectedTime.Night) {
-    selectedTime.Night = Night.Night;
-    selectedTime.Morning = Night.Morning;
-    selectedTime.azimuth = Night.azimuth;
-    selectedTime.Evning = Night.Evning;
-    selectedTime.elevation = Night.elevation;
-    selectedTime.exposure = Night.exposure;
-    selectedTime.mieCoefficient = Night.mieCoefficient;
-    selectedTime.mieDirectionalG = Night.mieDirectionalG;
-    selectedTime.rayleigh = Night.rayleigh;
-    selectedTime.turbidity = Night.turbidity;
-  }
-  if (selectedTime.Morning) {
-    selectedTime.Night = Morning.Night;
-    selectedTime.Morning = Morning.Morning;
-    selectedTime.Evning = Morning.Evning;
-    selectedTime.azimuth = Morning.azimuth;
-    selectedTime.elevation = Morning.elevation;
-    selectedTime.exposure = Morning.exposure;
-    selectedTime.mieCoefficient = Morning.mieCoefficient;
-    selectedTime.mieDirectionalG = Morning.mieDirectionalG;
-    selectedTime.rayleigh = Morning.rayleigh;
-    selectedTime.turbidity = Morning.turbidity;
-  }
-  guiChanged();
-}
+};
 
-const outputFolder = makeGui(waterUniforms, selectedTime, guiChanged, physicalVariables, timeChange, output);
+const outputFolder = makeGui(timeControl, physicalVariables, output);
 guiChanged();
 
 /**

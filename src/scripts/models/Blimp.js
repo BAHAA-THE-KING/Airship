@@ -1,4 +1,3 @@
-import { Vector3 } from "three";
 import ModelManager from "../utils/ModelManager";
 
 class Blimp {
