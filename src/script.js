@@ -65,8 +65,8 @@ addLights(scene);
 const textureLoader = new THREE.TextureLoader();
 const textures = [];
 for (let i = 1; i < 7; i++) {
-  textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
-  var clouds = createClouds(scene,textures[i],10);
+        textures[i] = textureLoader.load(`textures/clouds/${i}.png`);
+        var clouds = createClouds(scene, textures[i], 10);
 }
 
 
@@ -74,8 +74,8 @@ sun = new THREE.Vector3();
 
 // Water
 
-const waterGeometry = new THREE.PlaneGeometry( 12000,12000 );
-                                        
+const waterGeometry = new THREE.PlaneGeometry(12000, 12000);
+
 water = new Water(
         waterGeometry,
         {
@@ -95,8 +95,8 @@ water = new Water(
 );
 water.rotation.x = - Math.PI / 2;
 water.position.y = -10;
-const minAllowedY=-33;
-scene.add( water );
+const minAllowedY = -33;
+scene.add(water);
 
 const audioListener = new THREE.AudioListener();
 camera.add(audioListener);
@@ -105,14 +105,14 @@ const audioLoader = new THREE.AudioLoader();
 let audio;
 
 // Load audio after a user gesture (e.g., a click event)
-document.addEventListener('click', function() {
-    audioLoader.load('audio/seaSound.mp3', function(buffer) {
-        audio = new THREE.PositionalAudio(audioListener);
-        audio.setBuffer(buffer);
-        audio.setLoop(true); // Set audio to loop
-        audio.setRefDistance(70);
-        audio.play(); // Start playing the audio
-    });
+document.addEventListener('click', function () {
+        audioLoader.load('audio/seaSound.mp3', function (buffer) {
+                audio = new THREE.PositionalAudio(audioListener);
+                audio.setBuffer(buffer);
+                audio.setLoop(true); // Set audio to loop
+                audio.setRefDistance(70);
+                audio.play(); // Start playing the audio
+        });
 });
 
 // Skybox
@@ -156,10 +156,9 @@ function updateSun() {
 updateSun();
 
 
-
-
 const stats = new Stats();
 stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.dom.children[0].classList.add("output_fps")
 document.body.appendChild(stats.dom)
 
 /**
@@ -175,16 +174,13 @@ const effectController = {
         exposure: renderer.toneMappingExposure
 };
 const waterUniforms = water.material.uniforms;
-     
+
 function guiChanged() {
         const uniforms = sky.material.uniforms;
         uniforms['turbidity'].value = effectController.turbidity;
         uniforms['rayleigh'].value = effectController.rayleigh;
         uniforms['mieCoefficient'].value = effectController.mieCoefficient;
         uniforms['mieDirectionalG'].value = effectController.mieDirectionalG;
-     
-
-
 
         const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
         const theta = THREE.MathUtils.degToRad(effectController.azimuth);
@@ -194,11 +190,6 @@ function guiChanged() {
         uniforms['sunPosition'].value.copy(sun);
 
         renderer.toneMappingExposure = effectController.exposure;
-
-        const waterUniforms = water.material.uniforms;
-     
-
-
 
         renderer.render(scene, camera);
 }
@@ -216,7 +207,18 @@ const physicalVariables = {
         horizontalRudder: 0
 };
 
-makeGui(waterUniforms,effectController, guiChanged, physicalVariables);
+const output = {
+        Weight: new THREE.Vector3(0, 0, 0),
+        Buoyancy: new THREE.Vector3(0, 0, 0),
+        Drag: new THREE.Vector3(0, 0, 0),
+        Thrust: new THREE.Vector3(0, 0, 0),
+        Wind: new THREE.Vector3(0, 0, 0),
+        Acceleration: new THREE.Vector3(0, 0, 0),
+        Velocity: new THREE.Vector3(0, 0, 0),
+        Position: new THREE.Vector3(0, 0, 0),
+};
+
+makeGui(waterUniforms, effectController, guiChanged, physicalVariables);
 guiChanged();
 
 
@@ -248,28 +250,28 @@ function animate() {
         const elapsedTime = clock.getElapsedTime();
         const deltaTime = elapsedTime - oldElapsedTime;
         oldElapsedTime = elapsedTime;
-      
+
         if (blimp.isReady) {
                 if (blimp.position.y < -10) {
-                        blimp.position.y = blimp.position.y -0.1; 
-                       
-                        physicalVariables.start = false;  
-                    }
-                if (blimp.position.y < minAllowedY) {
-                    blimp.position.setY(minAllowedY);         
+                        blimp.position.y = blimp.position.y - 0.1;
+
+                        physicalVariables.start = false;
                 }
-            }
+                if (blimp.position.y < minAllowedY) {
+                        blimp.position.setY(minAllowedY);
+                }
+        }
         //     if (camera.position.y < -7) {
         //         camera.position.setY(-7);
         //     }
         physicsWorld.update(deltaTime);
         controls.update();
-              
-  
+
+
         render();
         stats.update();
         clouds.rotation.y += 0.001;
-     
+
 
         renderer.render(scene, camera);
         stats.end()

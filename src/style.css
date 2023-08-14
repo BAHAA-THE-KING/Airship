@@ -1,7 +1,12 @@
 body {
-   width:100%;
-   height:100vh;
-   margin:0;
-   padding:0;
-   position:fixed;
-   }
+   width: 100%;
+   height: 100vh;
+   margin: 0;
+   padding: 0;
+   position: fixed;
+}
+
+.output_fps {
+   position: fixed;
+   bottom: 0;
+}
