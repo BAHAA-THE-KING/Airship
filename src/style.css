@@ -7,6 +7,6 @@ body {
 }
 
 .output_fps {
-   position: fixed;
+   top: unset !important;
    bottom: 0;
 }

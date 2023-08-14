@@ -152,6 +152,7 @@ updateSun();
 
 const stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.dom.classList.add("output_fps");
 document.body.appendChild(stats.dom);
 
 /**
@@ -233,47 +234,58 @@ const physicalVariables = {
   horizontalRudder: 0,
 };
 
-function timeChange(){
-        if (selectedTime.MorningTime){
-                selectedTime.NightTime=MorningTime.NightTime;
-                selectedTime.afterNoon=MorningTime.afterNoon;
-                selectedTime.azimuth=MorningTime.azimuth;
-                selectedTime.MorningTime=MorningTime.MorningTime;
-                selectedTime.elevation=MorningTime.elevation;
-                selectedTime.exposure=MorningTime.exposure;
-                selectedTime.mieCoefficient=MorningTime.mieCoefficient;
-                selectedTime.mieDirectionalG=MorningTime.mieDirectionalG;
-                selectedTime.rayleigh=MorningTime.rayleigh;
-                selectedTime.turbidity=MorningTime.turbidity;
-        }
-        if (selectedTime.NightTime){
-                selectedTime.NightTime=NightTime.NightTime;
-                selectedTime.afterNoon=NightTime.afterNoon;
-                selectedTime.azimuth=NightTime.azimuth;
-                selectedTime.MorningTime=NightTime.MorningTime;
-                selectedTime.elevation=NightTime.elevation;
-                selectedTime.exposure=NightTime.exposure;
-                selectedTime.mieCoefficient=NightTime.mieCoefficient;
-                selectedTime.mieDirectionalG=NightTime.mieDirectionalG;
-                selectedTime.rayleigh=NightTime.rayleigh;
-                selectedTime.turbidity=NightTime.turbidity;
-        }
-        if (selectedTime.afterNoon){
-                selectedTime.NightTime=afterNoon.NightTime;
-                selectedTime.afterNoon=afterNoon.afterNoon;
-                selectedTime.MorningTime=afterNoon.MorningTime;
-                selectedTime.azimuth=afterNoon.azimuth;
-                selectedTime.elevation=afterNoon.elevation;
-                selectedTime.exposure=afterNoon.exposure;
-                selectedTime.mieCoefficient=afterNoon.mieCoefficient;
-                selectedTime.mieDirectionalG=afterNoon.mieDirectionalG;
-                selectedTime.rayleigh=afterNoon.rayleigh;
-                selectedTime.turbidity=afterNoon.turbidity;
-        }
-        guiChanged();
+const output = {
+  Weight: new THREE.Vector3(0, 0, 0),
+  Buoyancy: new THREE.Vector3(0, 0, 0),
+  Drag: new THREE.Vector3(0, 0, 0),
+  Thrust: new THREE.Vector3(0, 0, 0),
+  Wind: new THREE.Vector3(0, 0, 0),
+  Acceleration: new THREE.Vector3(0, 0, 0),
+  Velocity: new THREE.Vector3(0, 0, 0),
+  Position: new THREE.Vector3(0, 0, 0),
+};
+
+function timeChange() {
+  if (selectedTime.MorningTime) {
+    selectedTime.NightTime = MorningTime.NightTime;
+    selectedTime.afterNoon = MorningTime.afterNoon;
+    selectedTime.azimuth = MorningTime.azimuth;
+    selectedTime.MorningTime = MorningTime.MorningTime;
+    selectedTime.elevation = MorningTime.elevation;
+    selectedTime.exposure = MorningTime.exposure;
+    selectedTime.mieCoefficient = MorningTime.mieCoefficient;
+    selectedTime.mieDirectionalG = MorningTime.mieDirectionalG;
+    selectedTime.rayleigh = MorningTime.rayleigh;
+    selectedTime.turbidity = MorningTime.turbidity;
+  }
+  if (selectedTime.NightTime) {
+    selectedTime.NightTime = NightTime.NightTime;
+    selectedTime.afterNoon = NightTime.afterNoon;
+    selectedTime.azimuth = NightTime.azimuth;
+    selectedTime.MorningTime = NightTime.MorningTime;
+    selectedTime.elevation = NightTime.elevation;
+    selectedTime.exposure = NightTime.exposure;
+    selectedTime.mieCoefficient = NightTime.mieCoefficient;
+    selectedTime.mieDirectionalG = NightTime.mieDirectionalG;
+    selectedTime.rayleigh = NightTime.rayleigh;
+    selectedTime.turbidity = NightTime.turbidity;
+  }
+  if (selectedTime.afterNoon) {
+    selectedTime.NightTime = afterNoon.NightTime;
+    selectedTime.afterNoon = afterNoon.afterNoon;
+    selectedTime.MorningTime = afterNoon.MorningTime;
+    selectedTime.azimuth = afterNoon.azimuth;
+    selectedTime.elevation = afterNoon.elevation;
+    selectedTime.exposure = afterNoon.exposure;
+    selectedTime.mieCoefficient = afterNoon.mieCoefficient;
+    selectedTime.mieDirectionalG = afterNoon.mieDirectionalG;
+    selectedTime.rayleigh = afterNoon.rayleigh;
+    selectedTime.turbidity = afterNoon.turbidity;
+  }
+  guiChanged();
 }
 
-makeGui(waterUniforms, selectedTime, guiChanged, physicalVariables,timeChange);
+makeGui(waterUniforms, selectedTime, guiChanged, physicalVariables, timeChange);
 guiChanged();
 
 /**
