@@ -1,7 +1,7 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 function addOrbitControls(camera, renderer) {
-  const minAllowedY= -8;
+  const minAllowedY= 3;
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
