@@ -6,6 +6,33 @@ body {
    position: fixed;
 }
 
+.lil-gui {
+   background-color: transparent;
+}
+
+.lil-gui .title {
+   background-color: #111111;
+}
+
+.lil-gui .children {
+   background-color: #42424266;
+}
+
+.output {
+   right: unset;
+   left: 15px;
+}
+
+.output input[aria-labelledby=lil-gui-name-33],
+.output input[aria-labelledby=lil-gui-name-40],
+.output input[aria-labelledby=lil-gui-name-44] {
+   color: lime !important;
+}
+
+.lil-gui .controller.disabled {
+   opacity: 1;
+}
+
 .output_fps {
    top: unset !important;
    bottom: 0;

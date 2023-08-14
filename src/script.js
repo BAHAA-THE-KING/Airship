@@ -159,46 +159,46 @@ document.body.appendChild(stats.dom);
  * GUI Variables
  */
 
-const afterNoon = {
+const Morning = {
   turbidity: 10,
   rayleigh: 4,
   mieCoefficient: 0.1,
   mieDirectionalG: 1.0,
   elevation: 90,
   azimuth: 180,
-  afterNoon: true,
-  NightTime: false,
-  MorningTime: false,
+  Morning: true,
+  Night: false,
+  Evning: false,
   exposure: renderer.toneMappingExposure,
 };
-const MorningTime = {
+const Evning = {
   turbidity: 3,
   rayleigh: 3,
   mieCoefficient: 0.096,
   mieDirectionalG: 0.607,
   elevation: 0,
   azimuth: 180,
-  afterNoon: false,
-  NightTime: false,
-  MorningTime: true,
+  Morning: false,
+  Night: false,
+  Evning: true,
   exposure: renderer.toneMappingExposure,
 };
-const NightTime = {
+const Night = {
   turbidity: 20,
   rayleigh: 0.5,
   mieCoefficient: 0.1,
   mieDirectionalG: 1.0,
   elevation: 30,
   azimuth: 180,
-  afterNoon: false,
-  NightTime: true,
-  MorningTime: false,
+  Morning: false,
+  Night: true,
+  Evning: false,
   exposure: renderer.toneMappingExposure,
 };
 
 const waterUniforms = water.material.uniforms;
 let selectedTime = {
-  ...afterNoon,
+  ...Morning,
 };
 function guiChanged() {
   const uniforms = sky.material.uniforms;
@@ -235,57 +235,83 @@ const physicalVariables = {
 };
 
 const output = {
-  Weight: new THREE.Vector3(0, 0, 0),
-  Buoyancy: new THREE.Vector3(0, 0, 0),
-  Drag: new THREE.Vector3(0, 0, 0),
-  Thrust: new THREE.Vector3(0, 0, 0),
-  Wind: new THREE.Vector3(0, 0, 0),
-  Acceleration: new THREE.Vector3(0, 0, 0),
-  Velocity: new THREE.Vector3(0, 0, 0),
-  Position: new THREE.Vector3(0, 0, 0),
+  WeightX: 0,
+  WeightY: 0,
+  WeightZ: 0,
+
+  BuoyancyX: 0,
+  BuoyancyY: 0,
+  BuoyancyZ: 0,
+
+  DragX: 0,
+  DragY: 0,
+  DragZ: 0,
+
+  ThrustX: 0,
+  ThrustY: 0,
+  ThrustZ: 0,
+  Thrust: 0,
+
+  WindX: 0,
+  WindY: 0,
+  WindZ: 0,
+
+  AccelerationX: 0,
+  AccelerationY: 0,
+  AccelerationZ: 0,
+  Acceleration: 0,
+
+  VelocityX: 0,
+  VelocityY: 0,
+  VelocityZ: 0,
+  Velocity: 0,
+
+  PositionX: 0,
+  PositionY: 0,
+  PositionZ: 0,
 };
 
 function timeChange() {
-  if (selectedTime.MorningTime) {
-    selectedTime.NightTime = MorningTime.NightTime;
-    selectedTime.afterNoon = MorningTime.afterNoon;
-    selectedTime.azimuth = MorningTime.azimuth;
-    selectedTime.MorningTime = MorningTime.MorningTime;
-    selectedTime.elevation = MorningTime.elevation;
-    selectedTime.exposure = MorningTime.exposure;
-    selectedTime.mieCoefficient = MorningTime.mieCoefficient;
-    selectedTime.mieDirectionalG = MorningTime.mieDirectionalG;
-    selectedTime.rayleigh = MorningTime.rayleigh;
-    selectedTime.turbidity = MorningTime.turbidity;
+  if (selectedTime.Evning) {
+    selectedTime.Night = Evning.Night;
+    selectedTime.Morning = Evning.Morning;
+    selectedTime.azimuth = Evning.azimuth;
+    selectedTime.Evning = Evning.Evning;
+    selectedTime.elevation = Evning.elevation;
+    selectedTime.exposure = Evning.exposure;
+    selectedTime.mieCoefficient = Evning.mieCoefficient;
+    selectedTime.mieDirectionalG = Evning.mieDirectionalG;
+    selectedTime.rayleigh = Evning.rayleigh;
+    selectedTime.turbidity = Evning.turbidity;
   }
-  if (selectedTime.NightTime) {
-    selectedTime.NightTime = NightTime.NightTime;
-    selectedTime.afterNoon = NightTime.afterNoon;
-    selectedTime.azimuth = NightTime.azimuth;
-    selectedTime.MorningTime = NightTime.MorningTime;
-    selectedTime.elevation = NightTime.elevation;
-    selectedTime.exposure = NightTime.exposure;
-    selectedTime.mieCoefficient = NightTime.mieCoefficient;
-    selectedTime.mieDirectionalG = NightTime.mieDirectionalG;
-    selectedTime.rayleigh = NightTime.rayleigh;
-    selectedTime.turbidity = NightTime.turbidity;
+  if (selectedTime.Night) {
+    selectedTime.Night = Night.Night;
+    selectedTime.Morning = Night.Morning;
+    selectedTime.azimuth = Night.azimuth;
+    selectedTime.Evning = Night.Evning;
+    selectedTime.elevation = Night.elevation;
+    selectedTime.exposure = Night.exposure;
+    selectedTime.mieCoefficient = Night.mieCoefficient;
+    selectedTime.mieDirectionalG = Night.mieDirectionalG;
+    selectedTime.rayleigh = Night.rayleigh;
+    selectedTime.turbidity = Night.turbidity;
   }
-  if (selectedTime.afterNoon) {
-    selectedTime.NightTime = afterNoon.NightTime;
-    selectedTime.afterNoon = afterNoon.afterNoon;
-    selectedTime.MorningTime = afterNoon.MorningTime;
-    selectedTime.azimuth = afterNoon.azimuth;
-    selectedTime.elevation = afterNoon.elevation;
-    selectedTime.exposure = afterNoon.exposure;
-    selectedTime.mieCoefficient = afterNoon.mieCoefficient;
-    selectedTime.mieDirectionalG = afterNoon.mieDirectionalG;
-    selectedTime.rayleigh = afterNoon.rayleigh;
-    selectedTime.turbidity = afterNoon.turbidity;
+  if (selectedTime.Morning) {
+    selectedTime.Night = Morning.Night;
+    selectedTime.Morning = Morning.Morning;
+    selectedTime.Evning = Morning.Evning;
+    selectedTime.azimuth = Morning.azimuth;
+    selectedTime.elevation = Morning.elevation;
+    selectedTime.exposure = Morning.exposure;
+    selectedTime.mieCoefficient = Morning.mieCoefficient;
+    selectedTime.mieDirectionalG = Morning.mieDirectionalG;
+    selectedTime.rayleigh = Morning.rayleigh;
+    selectedTime.turbidity = Morning.turbidity;
   }
   guiChanged();
 }
 
-makeGui(waterUniforms, selectedTime, guiChanged, physicalVariables, timeChange);
+const outputFolder = makeGui(waterUniforms, selectedTime, guiChanged, physicalVariables, timeChange, output);
 guiChanged();
 
 /**
@@ -304,7 +330,7 @@ const blimp = new Blimp(scene);
 /**
  * Create Physic Emulator
  */
-const physicsWorld = new PhysicsWorld(blimp, physicalVariables, controls);
+const physicsWorld = new PhysicsWorld(blimp, physicalVariables, controls, output, outputFolder);
 
 /**
  * Animate
@@ -316,36 +342,6 @@ function animate() {
   stats.begin();
   const elapsedTime = clock.getElapsedTime(); // Make sure you have a clock instance
 
-  // daytime += 0.01;
-  // console.log("1",selectedTime.elevation)
-  // console.log("2",(MorningTime.elevation - afterNoon.elevation) / 100)
-  // if (0 <= daytime && daytime < 1) {
-  //         selectedTime.turbidity += (MorningTime.turbidity - afterNoon.turbidity) / 100;
-  //         selectedTime.rayleigh += (MorningTime.rayleigh - afterNoon.rayleigh) / 100;
-  //         selectedTime.mieCoefficient += (MorningTime.mieCoefficient - afterNoon.mieCoefficient) / 100;
-  //         selectedTime.mieDirectionalG += (MorningTime.mieDirectionalG - afterNoon.mieDirectionalG) / 100;
-  //         selectedTime.elevation += (MorningTime.elevation - afterNoon.elevation) / 100;
-  //         guiChanged();
-  //         updateSun();
-  // }else if (1 <= daytime && daytime < 2) {
-  //         selectedTime.turbidity += (NightTime.turbidity - MorningTime.turbidity) / 100;
-  //         selectedTime.rayleigh += (NightTime.rayleigh - MorningTime.rayleigh) / 100;
-  //         selectedTime.mieCoefficient += (NightTime.mieCoefficient - MorningTime.mieCoefficient) / 100;
-  //         selectedTime.mieDirectionalG += (NightTime.mieDirectionalG - MorningTime.mieDirectionalG) / 100;
-  //         selectedTime.elevation += (NightTime.elevation - MorningTime.elevation) / 100;
-  //         guiChanged();
-  //         updateSun();
-  // }else if (2 <= daytime && daytime < 3) {
-  //         selectedTime.turbidity += (afterNoon.turbidity - NightTime.turbidity) / 100;
-  //         selectedTime.rayleigh += (afterNoon.rayleigh - NightTime.rayleigh) / 100;
-  //         selectedTime.mieCoefficient += (afterNoon.mieCoefficient - NightTime.mieCoefficient) / 100;
-  //         selectedTime.mieDirectionalG += (afterNoon.mieDirectionalG - NightTime.mieDirectionalG) / 100;
-  //         selectedTime.elevation += (afterNoon.elevation - NightTime.elevation) / 100;
-  //         guiChanged();
-  //             updateSun();
-  // }
-  // if (daytime>=3)daytime=0;
-  // console.log(daytime);
   const deltaTime = elapsedTime - oldElapsedTime;
   oldElapsedTime = elapsedTime;
 

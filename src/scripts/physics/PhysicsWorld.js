@@ -10,10 +10,12 @@ import hYaw from './Torques/hYaw';
 import vYaw from './Torques/vYaw';
 
 class PhysicsWorld {
-  constructor(target, physicalVariables, controls) {
+  constructor(target, physicalVariables, controls, output, outputFolder) {
     this.target = target;
     this.physicalVariables = physicalVariables;
     this.controls = controls;
+    this.output = output;
+    this.outputFolder = outputFolder;
 
     this.acceleration = new Vector3();
     this.velocity = new Vector3();
@@ -64,6 +66,8 @@ class PhysicsWorld {
 
   target;
   physicalVariables;
+  output;
+  outputFolder;
 
   acceleration;
   velocity;
@@ -260,11 +264,26 @@ class PhysicsWorld {
     const T = this.forces.T.calculate(rpm, diameter, pitch, velocityLength, this.angleY, this.angleZ).multiplyScalar(2);
     const Wi = this.forces.Wi.calculate(cd, area, density, windVelocityLength, windVelocityDirection);
 
-    console.log("Weight = ", W);
-    console.log("Buoyancy = ", B);
-    console.log("Drag = ", D);
-    console.log("Thrust = ", T);
-    console.log("Wind = ", Wi);
+    //this.output.WeightX = W.x.toFixed(4)+" N";
+    this.output.WeightY = W.y.toFixed(4) + " N";
+    //this.output.WeightZ = W.z.toFixed(4)+" N";
+
+    //this.output.BuoyancyX = B.x.toFixed(4)+" N";
+    this.output.BuoyancyY = B.y.toFixed(4) + " N";
+    //this.output.BuoyancyZ = B.z.toFixed(4)+" N";
+
+    this.output.DragX = D.x.toFixed(4) + " N";
+    this.output.DragY = D.y.toFixed(4) + " N";
+    this.output.DragZ = D.z.toFixed(4) + " N";
+
+    this.output.ThrustX = T.x.toFixed(4) + " N";
+    this.output.ThrustY = T.y.toFixed(4) + " N";
+    this.output.ThrustZ = T.z.toFixed(4) + " N";
+    this.output.Thrust = T.length().toFixed(4) + " N";
+
+    this.output.WindX = Wi.x.toFixed(4) + " N";
+    this.output.WindY = Wi.y.toFixed(4) + " N";
+    this.output.WindZ = Wi.z.toFixed(4) + " N";
 
     const Sigma = new Vector3().addVectors(
       W,
@@ -289,8 +308,11 @@ class PhysicsWorld {
 
     const a = sigma.divideScalar(m);
 
-    console.log("a = ", a);
-    console.log("m = ", m);
+    this.output.AccelerationX = a.x.toFixed(4) + "m.s⁻²";
+    this.output.AccelerationY = a.y.toFixed(4) + "m.s⁻²";
+    this.output.AccelerationZ = a.z.toFixed(4) + "m.s⁻²";
+    this.output.Acceleration = a.length().toFixed(4) + "m.s⁻²";
+
 
     return a;
   }
@@ -303,7 +325,11 @@ class PhysicsWorld {
     const v = new Vector3().addVectors(v0, a.clone().multiplyScalar(t));
 
     this.velocity = v.clone();
-    console.log("v = ", v);
+
+    this.output.VelocityX = v.x.toFixed(4) + "m.s⁻¹"
+    this.output.VelocityY = v.y.toFixed(4) + "m.s⁻¹"
+    this.output.VelocityZ = v.z.toFixed(4) + "m.s⁻¹"
+    this.output.Velocity = v.length().toFixed(4) + "m.s⁻¹"
 
     return v;
   }
@@ -332,7 +358,7 @@ class PhysicsWorld {
     if (!hAlpha) hD.y = 0;
     const hY = this.torques.H.calculate(vAlpha, -vAlpha, hD.length());
 
-    this.angleZ = this.angleZ + (hAlpha / 10 * 30 - this.angleZ) / 1000;
+    this.angleZ = this.angleZ + (hAlpha / 10 * 30 - this.angleZ) / 400;
 
     if (vAlpha)
       this.angularVelocityY = hY * deltaTime;
@@ -365,8 +391,14 @@ class PhysicsWorld {
     this.calculateRotation(deltaTime);
     this.rotate(this.angleY, this.angleZ);
 
-    this.controls.target = this.target.position.clone();
+    //this.controls.target = this.target.position.clone();
     this.controls.object.position.add(d);
+
+    this.output.PositionX = this.target.position.x.toFixed(4) + "m";
+    this.output.PositionY = this.target.position.y.toFixed(4) + "m";
+    this.output.PositionZ = this.target.position.z.toFixed(4) + "m";
+
+    this.outputFolder.children.map(e => e.updateDisplay());
   }
 }
 

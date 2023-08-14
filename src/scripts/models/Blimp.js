@@ -12,53 +12,27 @@ class Blimp {
    constructor(scene) {
       this.isReady = false;
       ModelManager.loadModel("/models/good_year_blimp/good year blimp.gltf")
-        .then((model) => {
-          this.setupBlimp(model, scene);
-          // After setting up the blimp, you can access its position
-         //  const blimpPosition = this.position;
-         //  console.log('Blimp Position:', blimpPosition);
-        });
-    }
-   // constructor(scene) {
-   //    this.isReady = false;
-   //    ModelManager.loadModel("/models/good_year_blimp/good year blimp.gltf")
-   //       .then((model) => {
-   //          this.blimp = model.scene;
-   //          this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
-   //          this.moveTo(600, 0, 200);
-   //          this.blimp.rotation.order = "YXZ";
-   //          scene.add(this.blimp);
+         .then((model) => {
+            this.blimp = model.scene;
+            this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
+            this.moveTo(600, 0, 200);
+            this.blimp.rotation.order = "YXZ";
+            scene.add(this.blimp);
 
-   //          this.rightFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_fan")[0];
-   //          this.leftFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_fan")[0];
+            this.rightFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_fan")[0];
+            this.leftFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_fan")[0];
 
-   //          this.rightRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_rudder")[0];
-   //          this.leftRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_rudder")[0];
-   //          this.topRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "top_rudder")[0];
-   //          this.bottomRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "bottom_rudder")[0];
+            this.rightRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_rudder")[0];
+            this.leftRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_rudder")[0];
+            this.topRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "top_rudder")[0];
+            this.bottomRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "bottom_rudder")[0];
 
-   //          this.isReady = true;
-   //       });
-   // }
-   setupBlimp(model, scene) {
-      this.blimp = model.scene;
-      this.blimp.scale.set(53 / 10, 53 / 10, 53 / 10);
-      this.moveTo(600, 0, 200);
-      this.blimp.rotation.order = "YXZ";
-      scene.add(this.blimp);
-  
-      // Assign other properties here
-      this.rightFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_fan")[0];
-      this.leftFan = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_fan")[0];
-      this.rightRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "right_rudder")[0];
-      this.leftRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "left_rudder")[0];
-      this.topRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "top_rudder")[0];
-      this.bottomRudder = model.scene.children[0].children[0].children[0].children[0].children.filter(e => e.name === "bottom_rudder")[0];
-  
-      this.isReady = true;
-    }
+            this.isReady = true;
+         });
+   }
+
    get position() {
-      return this.blimp.position;
+      return this.blimp?.position;
    }
 
    move(dx, dy, dz) {

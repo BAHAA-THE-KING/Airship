@@ -37,7 +37,7 @@ function makeText(scene) {
             bevelSegments: 5
         });
 
-        const textGeometry3 = new TextGeometry('Abdulrahman Khazoum', {
+        const textGeometry3 = new TextGeometry('Mohmoud ElKhayat', {
             font: font,
             size: 20,
             height: 10, // Increase depth
@@ -49,7 +49,7 @@ function makeText(scene) {
             bevelSegments: 5
         });
 
-        const textGeometry4 = new TextGeometry('Abdulla Musa', {
+        const textGeometry4 = new TextGeometry('Abdullah Rahmoun', {
             font: font,
             size: 20,
             height: 10, // Increase depth
@@ -60,7 +60,7 @@ function makeText(scene) {
             bevelOffset: 0,
             bevelSegments: 5
         });
-        const textGeometry5 = new TextGeometry('Abdullah Rahmoun', {
+        const textGeometry5 = new TextGeometry('Alaa Shibany', {
             font: font,
             size: 20,
             height: 10, // Increase depth
@@ -71,7 +71,7 @@ function makeText(scene) {
             bevelOffset: 0,
             bevelSegments: 5
         });
-        const textGeometry6 = new TextGeometry('Alaa Shibany', {
+        const textGeometry6 = new TextGeometry('Abdulla Musa', {
             font: font,
             size: 20,
             height: 10, // Increase depth
@@ -82,7 +82,7 @@ function makeText(scene) {
             bevelOffset: 0,
             bevelSegments: 5
         });
-        const textGeometry7 = new TextGeometry('Mohmoud ElKhayat', {
+        const textGeometry7 = new TextGeometry('Abdulrahman Khazoum', {
             font: font,
             size: 20,
             height: 10, // Increase depth
@@ -108,26 +108,26 @@ function makeText(scene) {
         const textMesh7 = new THREE.Mesh(textGeometry7, textMaterial);
 
         textMesh.rotateY(Math.PI / 2);
-        textMesh.rotateY(-Math.PI / 6);
+        textMesh.rotateY(-Math.PI /3);
 
         textMesh2.rotateY(Math.PI / 2);
-        textMesh2.rotateY(-Math.PI / 6);
+        textMesh2.rotateY(-Math.PI /3);
 
         textMesh3.rotateY(Math.PI / 2);
-        textMesh3.rotateY(-Math.PI / 6);
+        textMesh3.rotateY(-Math.PI /3);
 
         textMesh4.rotateY(Math.PI / 2);
-        textMesh4.rotateY(-Math.PI / 6);
+        textMesh4.rotateY(-Math.PI /3);
 
         textMesh5.rotateY(Math.PI / 2);
-        textMesh5.rotateY(-Math.PI / 6);
+        textMesh5.rotateY(-Math.PI /3);
 
         textMesh6.rotateY(Math.PI / 2);
-        textMesh6.rotateY(-Math.PI / 6);
+        textMesh6.rotateY(-Math.PI /3);
 
 
         textMesh7.rotateY(Math.PI / 2);
-        textMesh7.rotateY(-Math.PI / 6);
+        textMesh7.rotateY(-Math.PI /3);
 
 
 
