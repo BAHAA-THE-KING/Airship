@@ -19,6 +19,8 @@ class PhysicsWorld {
     this.velocity = new Vector3();
     this.movement = new Vector3();
     this.height = 0;
+    this.angularVelocityY = 0;
+    this.angularVelocityZ = 0;
     this.angleY = 0;
     this.angleZ = 0;
 
@@ -30,7 +32,7 @@ class PhysicsWorld {
     this.editableConstants = {
       airMolarMass: 0.02897,
       heliumMolarMass: 0.004003,
-      diameter: 120,
+      diameter: 140,
       pitch: 30
     };
 
@@ -109,10 +111,10 @@ class PhysicsWorld {
   };
 
   calculate_heliumDensity() {
-    const pressure = this.calculate_pressure();
+    const pressure = this.beginValues.pressure;
     const heliumMolarMass = this.editableConstants.heliumMolarMass;
     const R = this.constants.R;
-    const temperature = this.calculate_temperature();
+    const temperature = this.beginValues.temperature;
 
     const density = (pressure * heliumMolarMass) / (R * temperature);
 
@@ -326,21 +328,18 @@ class PhysicsWorld {
     const vAlpha = this.calculateVAlpha();
     const hAlpha = this.calculateHAlpha();
 
-    const D = this.forces.D.calculate(cd, dragArea, density, velocityLength, movement);
-    const hY = this.torques.H.calculate(vAlpha, -vAlpha, D.length());
-    const vY = this.torques.V.calculate(hAlpha, -hAlpha, D.length());
+    const hD = this.forces.D.calculate(cd, dragArea, density, velocityLength, movement);
+    if (!hAlpha) hD.y = 0;
+    const hY = this.torques.H.calculate(vAlpha, -vAlpha, hD.length());
 
+    this.angleZ = this.angleZ + (hAlpha / 10 * 30 - this.angleZ) / 1000;
 
-    this.angleZ =
-      (this.angleZ + vY * deltaTime > Math.PI / 6) ?
-        Math.PI / 6 :
-        (
-          (this.angleZ + vY * deltaTime < -Math.PI / 6) ?
-            -Math.PI / 6
-            : this.angleZ + vY * deltaTime
-        )
-      ;
-    this.angleY += hY * deltaTime;
+    if (vAlpha)
+      this.angularVelocityY = hY * deltaTime;
+    else
+      this.angularVelocityY = Math.sign(this.angularVelocityY) * Math.max(Math.abs(this.angularVelocityY) - 0.01, 0);
+
+    this.angleY += this.angularVelocityY;
   }
 
   move(d) {
@@ -361,6 +360,8 @@ class PhysicsWorld {
     const d = this.calculateMovement(deltaTime);
 
     this.move(d);
+    this.height = this.target.position.y;
+
     this.calculateRotation(deltaTime);
     this.rotate(this.angleY, this.angleZ);
 
