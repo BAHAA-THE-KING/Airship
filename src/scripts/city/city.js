@@ -36,7 +36,7 @@ rectangle.rotation.x = Math.PI /2 ;
   //Load Models
   const modelPaths = [
     //Airport
-    "/models/airport_on_island/scene.gltf",
+    "/models/airport_on_island/platform.gltf",
     //Football Stadium
     "/textures/city/models/football_stadium/scene.gltf",
     //Extra building
