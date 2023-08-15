@@ -58,7 +58,7 @@ function makeGround(scene) {
 
 
    // Load the texture for the ground
-   TextureManager.loadTexture("/textures/city/sand3.jpg")
+   TextureManager.loadTexture("/textures/city/sand3.png")
       .then((texture) => {
          // Scale the texture to fit the ground plane
          texture.repeat.set(5, 1);
@@ -86,7 +86,7 @@ function makeGround(scene) {
       });
 
    // Load the texture for the ground
-   TextureManager.loadTexture("/textures/city/sand3.jpg")
+   TextureManager.loadTexture("/textures/city/sand3.png")
       .then((texture) => {
          // Scale the texture to fit the ground plane
          texture.repeat.set(5, 1);
@@ -98,10 +98,10 @@ function makeGround(scene) {
          MaterialManager.save("ground", groundMaterial);
 
          // Create a plane for the ground
-         const groundGeometry = new THREE.PlaneGeometry(2700, 500);
+         const groundGeometry = new THREE.PlaneGeometry(4000, 500);
 
          const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-         groundMesh.position.x = -10;
+         groundMesh.position.x = -630;
          groundMesh.position.z = -1600;
          groundMesh.position.y = 0;
 
@@ -114,7 +114,7 @@ function makeGround(scene) {
          scene.add(groundMesh);
       });
    // Load the texture for the ground
-   TextureManager.loadTexture("/textures/city/sand3.jpg")
+   TextureManager.loadTexture("/textures/city/sand3.png")
       .then((texture) => {
          // Scale the texture to fit the ground plane
          texture.repeat.set(5, 1);
@@ -126,10 +126,10 @@ function makeGround(scene) {
          MaterialManager.save("ground", groundMaterial);
 
          // Create a plane for the ground
-         const groundGeometry = new THREE.PlaneGeometry(2700, 500);
+         const groundGeometry = new THREE.PlaneGeometry(4000, 500);
 
          const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-         groundMesh.position.x = 30;
+         groundMesh.position.x = -630;
          groundMesh.position.z = 1700;
          groundMesh.position.y = 2;
 
@@ -142,34 +142,63 @@ function makeGround(scene) {
 
          scene.add(groundMesh);
       });
-   // // Load the texture for the ground
-   // TextureManager.loadTexture("/textures/city/sand3.jpg")
-   // .then((texture) => {
-   //    // Scale the texture to fit the ground plane
-   //    texture.repeat.set(1, 1);
-   //    texture.wrapS = THREE.RepeatWrapping;
-   //    texture.wrapT = THREE.RepeatWrapping;
+   // Load the texture for the ground
+   TextureManager.loadTexture("/textures/city/sandside.png")
+   .then((texture) => {
+      // Scale the texture to fit the ground plane
+      texture.repeat.set(1, 1);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
 
-   //    // Create a material with the texture and apply it to the ground plane
-   //    const groundMaterial = new THREE.MeshStandardMaterial({ map: texture });
-   //    MaterialManager.save("ground", groundMaterial);
+      // Create a material with the texture and apply it to the ground plane
+      const groundMaterial = new THREE.MeshStandardMaterial({ map: texture });
+      MaterialManager.save("ground", groundMaterial);
 
-   //    // Create a plane for the ground
-   //    const groundGeometry = new THREE.PlaneGeometry(350, 450);
+      // Create a plane for the ground
+      const groundGeometry = new THREE.PlaneGeometry(450, 380);
 
-   //    const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-   //    groundMesh.position.x = 1550;
-   //    groundMesh.position.z = 1700;
-   //    groundMesh.position.y = 2;
+      const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+      groundMesh.position.x = 1558;
+      groundMesh.position.z = 1723.5;
+      groundMesh.position.y = 2;
 
-   //    groundMesh.rotation.x = -Math.PI / 2 ;
-   //    groundMesh.rotation.z = Math.PI *2 ;
+      groundMesh.rotation.x = -Math.PI / 2 ;
+      groundMesh.rotation.z = Math.PI /2 ;
 
-   //    groundMesh.receiveShadow = true;
-   //    groundMesh.castShadow = true;
+      groundMesh.receiveShadow = true;
+      groundMesh.castShadow = true;
 
-   //    scene.add(groundMesh);
-   // });
+      scene.add(groundMesh);
+   });
+
+      // Load the texture for the ground
+      TextureManager.loadTexture("/textures/city/sandside2.png")
+      .then((texture) => {
+         // Scale the texture to fit the ground plane
+         texture.repeat.set(1, 1);
+         texture.wrapS = THREE.RepeatWrapping;
+         texture.wrapT = THREE.RepeatWrapping;
+   
+         // Create a material with the texture and apply it to the ground plane
+         const groundMaterial = new THREE.MeshStandardMaterial({ map: texture });
+         MaterialManager.save("ground", groundMaterial);
+   
+         // Create a plane for the ground
+         const groundGeometry = new THREE.PlaneGeometry(360, 380);
+   
+         const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+         groundMesh.position.x = 1558;
+         groundMesh.position.z = -1670;
+         groundMesh.position.y = 2;
+   
+         groundMesh.rotation.x = -Math.PI / 2 ;
+         groundMesh.rotation.z = Math.PI /2 ;
+   
+         groundMesh.receiveShadow = true;
+         groundMesh.castShadow = true;
+   
+         scene.add(groundMesh);
+      });
 
 
 }
