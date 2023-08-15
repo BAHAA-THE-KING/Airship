@@ -23,34 +23,42 @@ body {
    left: 15px;
 }
 
+.weight,
 .weight input {
    color: aquamarine !important;
 }
 
+.buoyancy,
 .buoyancy input {
    color: yellowgreen !important;
 }
 
+.drag,
 .drag input {
    color: deeppink !important;
 }
 
+.thrust,
 .thrust input {
    color: lime !important;
 }
 
+.wind,
 .wind input {
    color: gold !important;
 }
 
+.acceleration,
 .acceleration input {
    color: aqua !important;
 }
 
+.velocity,
 .velocity input {
    color: orange !important;
 }
 
+.position,
 .position input {
    color: yellow !important;
 }

@@ -23,7 +23,7 @@ class Yaw extends Torque {
     return M;
   };
 
-  calculateMInverse(AlphaInverse) {
+  calculateMInverse(AlphaInverse, F) {
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
