@@ -91,6 +91,8 @@ class PhysicsWorld {
   torques;
 
   calculate_pressure() {
+    //P = P0 - 9.45 * height
+
     const H = this.height;
 
     const P = this.beginValues.pressure - 9.45 * H;
@@ -99,6 +101,8 @@ class PhysicsWorld {
   }
 
   calculate_temperature() {
+    //T = T0 + 0.0065 * height
+
     const H = this.height;
 
     const T = this.beginValues.temperature - 6.5 * (10 ** -3) * H;
@@ -107,6 +111,8 @@ class PhysicsWorld {
   }
 
   calculate_airDensity() {
+    //rho = (pressure * airMolarMass) / (R * temperature)
+
     const pressure = this.calculate_pressure();
     const airMolarMass = this.editableConstants.airMolarMass;
     const R = this.constants.R;
@@ -118,6 +124,8 @@ class PhysicsWorld {
   };
 
   calculate_heliumDensity() {
+    //rho = (pressure * heliumMolarMass) / (R * temperature)
+
     const pressure = this.beginValues.pressure;
     const heliumMolarMass = this.editableConstants.heliumMolarMass;
     const R = this.constants.R;
@@ -129,6 +137,8 @@ class PhysicsWorld {
   };
 
   calculate_mass() {
+    //totalMass = loadMass + heliumMass + airMass
+
     const loadMass = this.physicalVariables.loadMass;
     const heliumVolume = this.physicalVariables.maxVolume - this.physicalVariables.airVolume;
     const airVolume = this.physicalVariables.airVolume;
@@ -148,6 +158,8 @@ class PhysicsWorld {
   };
 
   calculate_volume() {
+    //volume = heliumVolume + airVolume
+
     const heliumVolume = this.physicalVariables.maxVolume - this.physicalVariables.airVolume;
     const airVolume = this.physicalVariables.airVolume;
 
@@ -157,6 +169,8 @@ class PhysicsWorld {
   };
 
   calculate_dragArea(angleZ) {
+    //projection
+
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
@@ -190,6 +204,8 @@ class PhysicsWorld {
   };
 
   calculate_area(angleY) {
+    //projection
+
     /**
     Length: 75 meters (246 feet)
     Height: 18.9 meters (62 feet)
@@ -207,6 +223,8 @@ class PhysicsWorld {
   };
 
   calculate_rudderArea() {
+    //projection
+
     const width = this.sizes.rudderWidth;
     const height = this.sizes.rudderHeight;
 
@@ -246,6 +264,8 @@ class PhysicsWorld {
   }
 
   calculate_sigma() {
+    //Sigma = Sum Of Forces
+
     const mass = this.calculate_mass();
     const gravity = this.calculate_gravity();
     const density = this.calculate_airDensity();
@@ -306,6 +326,8 @@ class PhysicsWorld {
   }
 
   calculate_acceleration() {
+    //a = sigma / m
+
     const sigma = this.calculate_sigma();
     const m = this.calculate_mass();
 
@@ -321,6 +343,8 @@ class PhysicsWorld {
   }
 
   calculate_velocity(deltaTime) {
+    //v = a * t + v0
+
     const v0 = this.velocity;
     const t = deltaTime;
     const a = this.calculate_acceleration();
@@ -338,10 +362,13 @@ class PhysicsWorld {
   }
 
   calculateMovement(deltaTime) {
+    //delta position = 0.5 * a * t ^ 2 + v * t
+
     const t = deltaTime;
     const v = this.calculate_velocity(t);
+    const a = this.calculate_acceleration();
 
-    const d = v.clone().multiplyScalar(t);
+    const d = new Vector3().addVectors(a.clone().multiplyScalar(0.5 * t ** 2), v.clone().multiplyScalar(t));
 
     this.movement = d.clone();
 
@@ -349,6 +376,8 @@ class PhysicsWorld {
   }
 
   calculateRotation(deltaTime) {
+    //Calculate Angles From Torques
+
     const density = this.calculate_airDensity();
     const cd = this.constants.cd;
     const dragArea = this.calculate_rudderArea();
@@ -372,6 +401,8 @@ class PhysicsWorld {
   }
 
   move(d) {
+    //ChecK For Collision And Move
+
     if (this.physicalVariables.collide) {
       let bdistance = -1;
       let boundingBox = this.target.box;
@@ -528,10 +559,14 @@ class PhysicsWorld {
   }
 
   rotate(h, v) {
+    //Rotate
+
     this.target.rotateTo(0, h, v);
   }
 
   update(deltaTime) {
+    //Run All Above Functions And Simulate The Physics
+
     if (!this.target.isReady) return;
     this.target.rotateRudderTo(this.calculateHAlpha(), this.calculateVAlpha());
 
