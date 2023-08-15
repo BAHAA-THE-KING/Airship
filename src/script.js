@@ -19,9 +19,6 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 
 let sun, water;
-// Define global variables for time and day-night cycle
-let currentTime = 0; // Initial time
-const dayDuration = 600; // Duration of one day in seconds
 
 const can = document.querySelector("#can");
 
@@ -96,7 +93,10 @@ water = new Water(waterGeometry, {
 });
 water.rotation.x = -Math.PI / 2;
 water.position.y = -10;
-const minAllowedY = -33;
+
+water.receiveShadow = true;
+water.castShadow = true;
+
 scene.add(water);
 
 const audioListener = new THREE.AudioListener();
@@ -274,7 +274,7 @@ const timeControl = {
     directionalLight.position.set(0, 1000, 0);
     directionalLight.color = new THREE.Color("white");
     directionalLight.intensity = 0.5;
-    directionalLight.castShadow = false
+    directionalLight.castShadow = true
 
     guiChanged();
   },
