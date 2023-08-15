@@ -333,11 +333,12 @@ class PhysicsWorld {
 
     const a = sigma.divideScalar(m);
 
-    this.output.AccelerationX = a.x.toFixed(4) + "m.s⁻²";
-    this.output.AccelerationY = a.y.toFixed(4) + "m.s⁻²";
-    this.output.AccelerationZ = a.z.toFixed(4) + "m.s⁻²";
-    this.output.Acceleration = a.length().toFixed(4) + "m.s⁻²";
+    this.acceleration = a.clone();
 
+    this.output.AccelerationX = a.x.toFixed(4) + " m.s⁻²";
+    this.output.AccelerationY = a.y.toFixed(4) + " m.s⁻²";
+    this.output.AccelerationZ = a.z.toFixed(4) + " m.s⁻²";
+    this.output.Acceleration = a.length().toFixed(4) + " m.s⁻²";
 
     return a;
   }
@@ -353,10 +354,10 @@ class PhysicsWorld {
 
     this.velocity = v.clone();
 
-    this.output.VelocityX = v.x.toFixed(4) + "m.s⁻¹"
-    this.output.VelocityY = v.y.toFixed(4) + "m.s⁻¹"
-    this.output.VelocityZ = v.z.toFixed(4) + "m.s⁻¹"
-    this.output.Velocity = v.length().toFixed(4) + "m.s⁻¹"
+    this.output.VelocityX = v.x.toFixed(4) + " m.s⁻¹"
+    this.output.VelocityY = v.y.toFixed(4) + " m.s⁻¹"
+    this.output.VelocityZ = v.z.toFixed(4) + " m.s⁻¹"
+    this.output.Velocity = v.length().toFixed(4) + " m.s⁻¹"
 
     return v;
   }
@@ -366,7 +367,7 @@ class PhysicsWorld {
 
     const t = deltaTime;
     const v = this.calculate_velocity(t);
-    const a = this.calculate_acceleration();
+    const a = this.acceleration;
 
     const d = new Vector3().addVectors(a.clone().multiplyScalar(0.5 * t ** 2), v.clone().multiplyScalar(t));
 
@@ -520,6 +521,16 @@ class PhysicsWorld {
         }
       ];
 
+      if (this.target.position.y < -3) {
+        this.target.move(-d.x, -d.y, -d.z);
+        this.controls.target = this.controls.target.sub(d);
+        this.controls.object.position.sub(d);
+        warning.classList.add("warning");
+        return;
+      } else {
+        warning.classList.remove("warning");
+      }
+
       if (
         collisions.find(
           sphere =>
@@ -541,7 +552,7 @@ class PhysicsWorld {
           )
         )
       ) {
-        if (adistance === -1 || adistance < bdistance) {
+        if (adistance === -1 || adistance < bdistance || this.height < -3) {
           this.target.move(-d.x, -d.y, -d.z);
           this.controls.target = this.controls.target.sub(d);
           this.controls.object.position.sub(d);
@@ -581,9 +592,9 @@ class PhysicsWorld {
     this.calculateRotation(deltaTime);
     this.rotate(this.angleY, this.angleZ);
 
-    this.output.PositionX = this.target.position.x.toFixed(4) + "m";
-    this.output.PositionY = this.target.position.y.toFixed(4) + "m";
-    this.output.PositionZ = this.target.position.z.toFixed(4) + "m";
+    this.output.PositionX = this.target.position.x.toFixed(4) + " m";
+    this.output.PositionY = this.target.position.y.toFixed(4) + " m";
+    this.output.PositionZ = this.target.position.z.toFixed(4) + " m";
 
     this.outputFolder.children.map(e => e.updateDisplay());
   }
