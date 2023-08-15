@@ -330,7 +330,7 @@ guiChanged();
  * Load city by calling 'createCity' function
  *
  */
-//createCity(scene);
+createCity(scene);
 makeMountain(scene);
 makeText(scene);
 const spheres = makeSpheres();
