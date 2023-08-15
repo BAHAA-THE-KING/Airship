@@ -6,6 +6,39 @@ body {
    position: fixed;
 }
 
+#warning {
+   display: none;
+}
+
+.warning {
+   display: block !important;
+   color: red;
+   font-size: 50px;
+   position: absolute;
+   top: 0;
+   left: 50%;
+   transform: translateX(-50%);
+   background-color: black;
+   padding: 10px;
+   border-radius: 100000px;
+   border: orange 10px double;
+   animation: strob 1.5s cubic-bezier(0, 5, 1, 5) infinite;
+}
+
+@keyframes strob {
+   0% {
+      opacity: 1;
+   }
+
+   50% {
+      opacity: 0;
+   }
+
+   100% {
+      opacity: 1;
+   }
+}
+
 .lil-gui {
    background-color: transparent;
 }

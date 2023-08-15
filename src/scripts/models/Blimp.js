@@ -1,3 +1,4 @@
+import { Box3 } from "three";
 import ModelManager from "../utils/ModelManager";
 
 class Blimp {
@@ -32,6 +33,12 @@ class Blimp {
 
    get position() {
       return this.blimp?.position;
+   }
+
+   get box() {
+      if (this.blimp)
+         return new Box3().setFromObject(this.blimp);
+      return undefined;
    }
 
    move(dx, dy, dz) {

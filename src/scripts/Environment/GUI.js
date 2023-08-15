@@ -1,7 +1,7 @@
 import { GUI } from 'lil-gui';
 
 
-function makeGui(timeController, physicalVariables, output) {
+function makeGui(timeController, cameraControl, physicalVariables, output, showCollision) {
 
    const gui = new GUI();
 
@@ -10,25 +10,36 @@ function makeGui(timeController, physicalVariables, output) {
    timeControlFolder.add(timeController, "Evning");
    timeControlFolder.add(timeController, "Night");
 
+   const cameraFolder = gui.addFolder("Camera");
+   cameraFolder.add(cameraControl, "lookAtBlimp");
+   cameraFolder.add(cameraControl, "autoLookAtBlimp");
+   cameraFolder.add(cameraControl, "goToBlimp");
+   cameraFolder.close();
+
    const physicsFolder = gui.addFolder("Physics");
    physicsFolder.add(physicalVariables, 'start');
+   physicsFolder.add(physicalVariables, 'showCollision').onChange(showCollision);
+   physicsFolder.add(physicalVariables, 'collide');
 
    const staticPhysicsFolder = physicsFolder.addFolder("Static");
    staticPhysicsFolder.add(physicalVariables, 'gravity').min(0).max(1000);
    staticPhysicsFolder.add(physicalVariables, 'loadMass').min(5400).max(5824);
    staticPhysicsFolder.add(physicalVariables, 'maxVolume').min(5300).max(5740);
+   staticPhysicsFolder.close();
 
    const drivePhysicsFolder = physicsFolder.addFolder("Drive");
    drivePhysicsFolder.add(physicalVariables, 'currentRPM').min(0).max(3000);
    drivePhysicsFolder.add(physicalVariables, 'airVolume').min(0).max(800);
    drivePhysicsFolder.add(physicalVariables, 'verticalRudder').min(-10).max(10).step(0.5);
    drivePhysicsFolder.add(physicalVariables, 'horizontalRudder').min(-10).max(10).step(0.5);
+   drivePhysicsFolder.open();
 
    const windPhysicsFolder = physicsFolder.addFolder("Wind");
    windPhysicsFolder.add(physicalVariables, 'windVelocity').min(0).max(30);
    windPhysicsFolder.add(physicalVariables.windDirection, 'x').min(-1).max(1);
    windPhysicsFolder.add(physicalVariables.windDirection, 'y').min(-1).max(1);
    windPhysicsFolder.add(physicalVariables.windDirection, 'z').min(-1).max(1);
+   windPhysicsFolder.close();
 
    physicsFolder.open();
 

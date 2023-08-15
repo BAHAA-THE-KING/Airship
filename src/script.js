@@ -12,7 +12,7 @@ import { Water } from "three/examples/jsm/objects/Water.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import makeMountain from "./scripts/Environment/mountain.js";
 import makeText from "./scripts/Environment/text.js";
-import makeSpheres from "./scripts/Environment/spheres";
+import { makeSpheres } from "./scripts/Environment/spheres";
 
 //Initiate Renderer
 let width = window.innerWidth;
@@ -215,6 +215,8 @@ function guiChanged() {
 
 const physicalVariables = {
   start: false,
+  showCollision: false,
+  collide: true,
   gravity: 9.8,
   currentRPM: 0,
   loadMass: 5400,
@@ -266,47 +268,72 @@ const output = {
 const timeControl = {
   Morning: () => {
     selectedTime = { ...Morning };
+
     ambientLight.intensity = 1;
     ambientLight.color = new THREE.Color("white");
     directionalLight.position.set(0, 1000, 0);
     directionalLight.color = new THREE.Color("white");
     directionalLight.intensity = 0.5;
     directionalLight.castShadow = false
+
     guiChanged();
   },
   Evning: () => {
     selectedTime = { ...Evning };
+
     ambientLight.intensity = 0.7;
     ambientLight.color = new THREE.Color("orange");
     directionalLight.position.set(0, 3000, -6000);
     directionalLight.color = new THREE.Color("orange");
     directionalLight.intensity = 1;
     directionalLight.castShadow = true;
+
     guiChanged();
   },
   Night: () => {
     selectedTime = { ...Night };
-    ambientLight.intensity = 0.2;
+
+    ambientLight.intensity = 0.1;
     ambientLight.color = new THREE.Color("white");
     directionalLight.position.set(0, 6000, -6000);
     directionalLight.color = new THREE.Color("white");
-    directionalLight.intensity = 0.7;
+    directionalLight.intensity = 0.1;
     directionalLight.castShadow = true;
+
     guiChanged();
   }
 };
 
-const outputFolder = makeGui(timeControl, physicalVariables, output);
+const cameraControl = {
+  lookAtBlimp: () => controls.target = blimp.position.clone(),
+  autoLookAtBlimp: false,
+  goToBlimp: function () {
+    this.lookAtBlimp();
+    const blimpPos = blimp.position.clone();
+    blimpPos.x += 329;
+    blimpPos.y += 252;
+    blimpPos.z += 328;
+    camera.position.set(blimpPos.x, blimpPos.y, blimpPos.z);
+  }
+};
+function showCollision(show) {
+  if (show) {
+    scene.add(...spheres);
+  } else {
+    scene.remove(...spheres);
+  }
+}
+const outputFolder = makeGui(timeControl, cameraControl, physicalVariables, output, showCollision);
 guiChanged();
 
 /**
  * Load city by calling 'createCity' function
  *
  */
-createCity(scene);
+//createCity(scene);
 makeMountain(scene);
 makeText(scene);
-makeSpheres(scene);
+const spheres = makeSpheres();
 /**
  * Load Blimp Model
  */
@@ -322,7 +349,6 @@ const physicsWorld = new PhysicsWorld(blimp, physicalVariables, controls, output
  */
 const clock = new THREE.Clock();
 let oldElapsedTime = 0;
-let daytime = 0;
 function animate() {
   stats.begin();
   const elapsedTime = clock.getElapsedTime(); // Make sure you have a clock instance
@@ -330,18 +356,8 @@ function animate() {
   const deltaTime = elapsedTime - oldElapsedTime;
   oldElapsedTime = elapsedTime;
 
-  if (blimp.isReady) {
-    if (blimp.position.y < -10) {
-      blimp.position.y = blimp.position.y - 0.1;
-
-      physicalVariables.start = false;
-    }
-    if (blimp.position.y < minAllowedY) {
-      blimp.position.setY(minAllowedY);
-    }
-  }
-
   physicsWorld.update(deltaTime);
+  if (cameraControl.autoLookAtBlimp) controls.target = blimp.position.clone();
   controls.update();
 
   render();

@@ -8,6 +8,7 @@ import WindForce from './Forces/WindForce';
 
 import hYaw from './Torques/hYaw';
 import vYaw from './Torques/vYaw';
+import { collisions } from "../Environment/spheres";
 
 class PhysicsWorld {
   constructor(target, physicalVariables, controls, output, outputFolder) {
@@ -16,6 +17,7 @@ class PhysicsWorld {
     this.controls = controls;
     this.output = output;
     this.outputFolder = outputFolder;
+    this.warning = document.querySelector("#warning");
 
     this.acceleration = new Vector3();
     this.velocity = new Vector3();
@@ -68,6 +70,7 @@ class PhysicsWorld {
   physicalVariables;
   output;
   outputFolder;
+  warning;
 
   acceleration;
   velocity;
@@ -369,7 +372,159 @@ class PhysicsWorld {
   }
 
   move(d) {
-    this.target.move(d.x, d.y, d.z);
+    if (this.physicalVariables.collide) {
+      let bdistance = -1;
+      let boundingBox = this.target.box;
+
+      let points = [
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.min.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.min.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.max.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.min.y,
+          z: boundingBox.max.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.max.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.min.y,
+          z: boundingBox.max.z
+        },
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.max.y,
+          z: boundingBox.max.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.max.y,
+          z: boundingBox.max.z
+        }
+      ];
+
+      collisions.find(
+        sphere =>
+        (
+          points.find(
+            point => {
+              const dist = (
+                (1 / sphere.scaleX * ((point.x - sphere.posX) ** 2)) +
+                (1 / sphere.scaleY * ((point.y - sphere.posY) ** 2)) +
+                (1 / sphere.scaleZ * ((point.z - sphere.posZ) ** 2))
+              );
+              if (dist <= (sphere.radius ** 2)) {
+                bdistance = dist;
+                return true;
+              }
+              return false;
+            }
+          )
+        )
+      );
+
+      let adistance = -1;
+      this.target.move(d.x, d.y, d.z);
+      this.controls.target = this.controls.target.add(d);
+      this.controls.object.position.add(d);
+
+      boundingBox = this.target.box;
+
+      points = [
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.min.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.min.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.max.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.min.y,
+          z: boundingBox.max.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.max.y,
+          z: boundingBox.min.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.min.y,
+          z: boundingBox.max.z
+        },
+        {
+          x: boundingBox.min.x,
+          y: boundingBox.max.y,
+          z: boundingBox.max.z
+        },
+        {
+          x: boundingBox.max.x,
+          y: boundingBox.max.y,
+          z: boundingBox.max.z
+        }
+      ];
+
+      if (
+        collisions.find(
+          sphere =>
+          (
+            points.find(
+              point => {
+                const dist = (
+                  ((1 / sphere.scaleX) * ((point.x - sphere.posX) ** 2)) +
+                  ((1 / sphere.scaleY) * ((point.y - sphere.posY) ** 2)) +
+                  ((1 / sphere.scaleZ) * ((point.z - sphere.posZ) ** 2))
+                );
+                if (dist <= (sphere.radius ** 2)) {
+                  adistance = dist;
+                  return true;
+                }
+                return false;
+              }
+            )
+          )
+        )
+      ) {
+        if (adistance === -1 || adistance < bdistance) {
+          this.target.move(-d.x, -d.y, -d.z);
+          this.controls.target = this.controls.target.sub(d);
+          this.controls.object.position.sub(d);
+          warning.classList.add("warning");
+        } else {
+          warning.classList.remove("warning");
+        }
+      }
+    } else {
+      this.target.move(d.x, d.y, d.z);
+      this.controls.target = this.controls.target.add(d);
+      this.controls.object.position.add(d);
+      warning.classList.remove("warning");
+    }
   }
 
   rotate(h, v) {
@@ -390,9 +545,6 @@ class PhysicsWorld {
 
     this.calculateRotation(deltaTime);
     this.rotate(this.angleY, this.angleZ);
-
-    this.controls.target = this.controls.target.add(d);
-    this.controls.object.position.add(d);
 
     this.output.PositionX = this.target.position.x.toFixed(4) + "m";
     this.output.PositionY = this.target.position.y.toFixed(4) + "m";
