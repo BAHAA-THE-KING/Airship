@@ -25,6 +25,10 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    staticPhysicsFolder.add(physicalVariables, 'gravity').min(0).max(1000);
    staticPhysicsFolder.add(physicalVariables, 'loadMass').min(5400).max(5824);
    staticPhysicsFolder.add(physicalVariables, 'maxVolume').min(5300).max(5740);
+   staticPhysicsFolder.add(physicalVariables, 'initialPressure').min(101300).max(1013000);
+   staticPhysicsFolder.add(physicalVariables, 'initialTemperature').min(288.15).max(2881.5);
+   staticPhysicsFolder.add(physicalVariables, 'airMolarMass').min(0).max(1);
+   staticPhysicsFolder.add(physicalVariables, 'heliumMolarMass').min(0).max(1);
    staticPhysicsFolder.close();
 
    const drivePhysicsFolder = physicsFolder.addFolder("Drive");
@@ -46,6 +50,7 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    const outgui = new GUI({ title: "Output" });
 
    outgui.domElement.classList.add("output");
+
    //outgui.add(output, "WeightX").disable().domElement.classList.add("weight");
    outgui.add(output, "WeightY").disable().domElement.classList.add("weight");
    //outgui.add(output, "WeightZ").disable().domElement.classList.add("weight");
@@ -61,7 +66,6 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    outgui.add(output, "ThrustX").disable().domElement.classList.add("thrust");
    outgui.add(output, "ThrustY").disable().domElement.classList.add("thrust");
    outgui.add(output, "ThrustZ").disable().domElement.classList.add("thrust");
-   outgui.add(output, "Thrust").disable().domElement.classList.add("thrust");
 
    outgui.add(output, "WindX").disable().domElement.classList.add("wind");
    outgui.add(output, "WindY").disable().domElement.classList.add("wind");
@@ -70,18 +74,29 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    outgui.add(output, "AccelerationX").disable().domElement.classList.add("acceleration");
    outgui.add(output, "AccelerationY").disable().domElement.classList.add("acceleration");
    outgui.add(output, "AccelerationZ").disable().domElement.classList.add("acceleration");
-   outgui.add(output, "Acceleration").disable().domElement.classList.add("acceleration");
 
    outgui.add(output, "VelocityX").disable().domElement.classList.add("velocity");
    outgui.add(output, "VelocityY").disable().domElement.classList.add("velocity");
    outgui.add(output, "VelocityZ").disable().domElement.classList.add("velocity");
-   outgui.add(output, "Velocity").disable().domElement.classList.add("velocity");
 
    outgui.add(output, "PositionX").disable().domElement.classList.add("position");
    outgui.add(output, "PositionY").disable().domElement.classList.add("position");
    outgui.add(output, "PositionZ").disable().domElement.classList.add("position");
 
-   return outgui;
+   const driveoutgui = new GUI({ title: "driveOutput" });
+
+   driveoutgui.domElement.classList.add("driveOutput");
+
+   driveoutgui.add(output, "Thrust").disable().domElement.classList.add("thrust");
+   driveoutgui.add(output, "Acceleration").disable().domElement.classList.add("acceleration");
+   driveoutgui.add(output, "Velocity").disable().domElement.classList.add("velocity");
+   driveoutgui.add(output, "Height").disable().domElement.classList.add("position");
+   driveoutgui.add(output, "Pressure").disable().domElement.classList.add("pressure");
+   driveoutgui.add(output, "Temperature").disable().domElement.classList.add("temperature");
+   driveoutgui.add(output, "AirDensity").disable().domElement.classList.add("airDensity");
+   driveoutgui.add(output, "HeliumDensity").disable().domElement.classList.add("heliumDensity");
+
+   return { outgui, driveoutgui };
 }
 
 export default makeGui;

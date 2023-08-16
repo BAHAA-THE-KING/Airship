@@ -39,7 +39,7 @@ export default function createCity(scene) {
   //Load Models
   const modelPaths = [
     //Airport
-    "/models/airport_on_island/platform.gltf",
+    "/models/airport_on_island/scene.gltf",
     //Football Stadium
     "/textures/city/models/football_stadium/scene.gltf",
     //Extra building

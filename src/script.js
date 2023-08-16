@@ -60,7 +60,7 @@ controls.target.set(600, 0, 200);
 /**
  * lights
  */
-const { ambientLight, directionalLight } = addLights(scene);
+const { ambientLight, directionalLight, platformLight1, platformLight2, platformLight3, platformLight4 } = addLights(scene);
 
 /**
  * Objects
@@ -191,7 +191,7 @@ const Night = {
   exposure: renderer.toneMappingExposure,
 };
 
-let selectedTime = { ...Evning };
+let selectedTime = { ...Night };
 function guiChanged() {
   const uniforms = sky.material.uniforms;
   // Set properties based on the selected time of day or lighting condition
@@ -217,15 +217,22 @@ const physicalVariables = {
   start: false,
   showCollision: false,
   collide: true,
+
   gravity: 9.8,
-  currentRPM: 0,
   loadMass: 5400,
   maxVolume: 5300,
+  initialPressure: 101300,
+  initialTemperature: 288.15,
+  airMolarMass: 0.02897,
+  heliumMolarMass: 0.004003,
+
+  currentRPM: 0,
   airVolume: 0,
-  windVelocity: 0,
-  windDirection: { x: 0, y: 0, z: 0 },
   verticalRudder: 0,
   horizontalRudder: 0,
+
+  windVelocity: 0,
+  windDirection: { x: 0, y: 0, z: 0 },
 };
 
 const output = {
@@ -253,16 +260,22 @@ const output = {
   AccelerationX: 0,
   AccelerationY: 0,
   AccelerationZ: 0,
-  Acceleration: 0,
 
   VelocityX: 0,
   VelocityY: 0,
   VelocityZ: 0,
-  Velocity: 0,
 
   PositionX: 0,
   PositionY: 0,
   PositionZ: 0,
+
+  Pressure: 0,
+  Temperature: 0,
+  Height: 0,
+  Acceleration: 0,
+  Velocity: 0,
+  AirDensity: 0,
+  HeliumDensity: 0,
 };
 
 const timeControl = {
@@ -271,10 +284,20 @@ const timeControl = {
 
     ambientLight.intensity = 1;
     ambientLight.color = new THREE.Color("white");
+
     directionalLight.position.set(0, 1000, 0);
     directionalLight.color = new THREE.Color("white");
     directionalLight.intensity = 0.5;
     directionalLight.castShadow = true
+
+    platformLight1.intensity = 0;
+    platformLight1.castShadow = false;
+    platformLight2.intensity = 0;
+    platformLight2.castShadow = false;
+    platformLight3.intensity = 0;
+    platformLight3.castShadow = false;
+    platformLight4.intensity = 0;
+    platformLight4.castShadow = false;
 
     guiChanged();
   },
@@ -283,10 +306,20 @@ const timeControl = {
 
     ambientLight.intensity = 0.7;
     ambientLight.color = new THREE.Color("orange");
+
     directionalLight.position.set(0, 3000, -6000);
     directionalLight.color = new THREE.Color("orange");
     directionalLight.intensity = 1;
     directionalLight.castShadow = true;
+
+    platformLight1.intensity = 0;
+    platformLight1.castShadow = false;
+    platformLight2.intensity = 0;
+    platformLight2.castShadow = false;
+    platformLight3.intensity = 0;
+    platformLight3.castShadow = false;
+    platformLight4.intensity = 0;
+    platformLight4.castShadow = false;
 
     guiChanged();
   },
@@ -294,11 +327,21 @@ const timeControl = {
     selectedTime = { ...Night };
 
     ambientLight.intensity = 0.1;
-    ambientLight.color = new THREE.Color("white");
+    ambientLight.color = new THREE.Color("gray");
+
     directionalLight.position.set(0, 6000, -6000);
-    directionalLight.color = new THREE.Color("white");
-    directionalLight.intensity = 0.1;
+    directionalLight.color = new THREE.Color("gray");
+    directionalLight.intensity = 0.01;
     directionalLight.castShadow = true;
+
+    platformLight1.intensity = 1;
+    platformLight1.castShadow = true;
+    platformLight2.intensity = 1;
+    platformLight2.castShadow = true;
+    platformLight3.intensity = 1;
+    platformLight3.castShadow = true;
+    platformLight4.intensity = 1;
+    platformLight4.castShadow = true;
 
     guiChanged();
   }
@@ -323,7 +366,7 @@ function showCollision(show) {
     scene.remove(...spheres);
   }
 }
-const outputFolder = makeGui(timeControl, cameraControl, physicalVariables, output, showCollision);
+const { outgui: outputFolder, driveoutgui: driveOutputFolder } = makeGui(timeControl, cameraControl, physicalVariables, output, showCollision);
 guiChanged();
 
 /**
@@ -342,7 +385,7 @@ const blimp = new Blimp(scene);
 /**
  * Create Physic Emulator
  */
-const physicsWorld = new PhysicsWorld(blimp, physicalVariables, controls, output, outputFolder);
+const physicsWorld = new PhysicsWorld(blimp, physicalVariables, controls, output, outputFolder, driveOutputFolder);
 
 /**
  * Animate

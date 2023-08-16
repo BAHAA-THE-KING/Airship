@@ -11,12 +11,13 @@ import vYaw from './Torques/vYaw';
 import { collisions } from "../Environment/spheres";
 
 class PhysicsWorld {
-  constructor(target, physicalVariables, controls, output, outputFolder) {
+  constructor(target, physicalVariables, controls, output, outputFolder, driveOutputFolder) {
     this.target = target;
     this.physicalVariables = physicalVariables;
     this.controls = controls;
     this.output = output;
     this.outputFolder = outputFolder;
+    this.driveOutputFolder = driveOutputFolder;
     this.warning = document.querySelector("#warning");
 
     this.acceleration = new Vector3();
@@ -34,8 +35,6 @@ class PhysicsWorld {
     };
 
     this.editableConstants = {
-      airMolarMass: 0.02897,
-      heliumMolarMass: 0.004003,
       diameter: 140,
       pitch: 30
     };
@@ -46,11 +45,6 @@ class PhysicsWorld {
       width: 18.2,
       rudderWidth: 2,
       rudderHeight: 5
-    };
-
-    this.beginValues = {
-      pressure: 101300,
-      temperature: 288.15
     };
 
     this.forces = {
@@ -70,6 +64,7 @@ class PhysicsWorld {
   physicalVariables;
   output;
   outputFolder;
+  driveOutputFolder;
   warning;
 
   acceleration;
@@ -85,8 +80,6 @@ class PhysicsWorld {
 
   sizes;
 
-  beginValues;
-
   forces;
   torques;
 
@@ -95,7 +88,10 @@ class PhysicsWorld {
 
     const H = this.height;
 
-    const P = this.beginValues.pressure - 9.45 * H;
+    const P0 = this.physicalVariables.initialPressure;
+    const P = P0 - 9.45 * H;
+
+    this.output.Pressure = P.toFixed(4) + " Pa";
 
     return P;
   }
@@ -105,7 +101,10 @@ class PhysicsWorld {
 
     const H = this.height;
 
-    const T = this.beginValues.temperature - 6.5 * (10 ** -3) * H;
+    const T0 = this.physicalVariables.initialTemperature;
+    const T = T0 - 6.5 * (10 ** -3) * H;
+
+    this.output.Temperature = T.toFixed(4) + " k";
 
     return T;
   }
@@ -114,11 +113,13 @@ class PhysicsWorld {
     //rho = (pressure * airMolarMass) / (R * temperature)
 
     const pressure = this.calculate_pressure();
-    const airMolarMass = this.editableConstants.airMolarMass;
+    const airMolarMass = this.physicalVariables.airMolarMass;
     const R = this.constants.R;
     const temperature = this.calculate_temperature();
 
     const density = (pressure * airMolarMass) / (R * temperature);
+
+    this.output.AirDensity = density.toFixed(4) + " Kg.m⁻³";
 
     return density;
   };
@@ -126,12 +127,14 @@ class PhysicsWorld {
   calculate_heliumDensity() {
     //rho = (pressure * heliumMolarMass) / (R * temperature)
 
-    const pressure = this.beginValues.pressure;
-    const heliumMolarMass = this.editableConstants.heliumMolarMass;
+    const pressure = this.physicalVariables.initialPressure;
+    const heliumMolarMass = this.physicalVariables.heliumMolarMass;
     const R = this.constants.R;
-    const temperature = this.beginValues.temperature;
+    const temperature = this.physicalVariables.initialTemperature;
 
     const density = (pressure * heliumMolarMass) / (R * temperature);
+
+    this.output.HeliumDensity = density.toFixed(4) + " Kg.m⁻³";
 
     return density;
   };
@@ -523,8 +526,13 @@ class PhysicsWorld {
 
       if (this.target.position.y < -3) {
         this.target.move(-d.x, -d.y, -d.z);
+
         this.controls.target = this.controls.target.sub(d);
         this.controls.object.position.sub(d);
+
+        this.velocity.y = Math.max(this.velocity.y, 0);
+        this.acceleration.y = Math.max(this.acceleration.y, 0);
+
         warning.classList.add("warning");
         return;
       } else {
@@ -596,7 +604,10 @@ class PhysicsWorld {
     this.output.PositionY = this.target.position.y.toFixed(4) + " m";
     this.output.PositionZ = this.target.position.z.toFixed(4) + " m";
 
+    this.output.Height = this.target.position.y.toFixed(4) + " m";
+
     this.outputFolder.children.map(e => e.updateDisplay());
+    this.driveOutputFolder.children.map(e => e.updateDisplay());
   }
 }
 

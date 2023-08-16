@@ -56,6 +56,11 @@ body {
    left: 15px;
 }
 
+.driveOutput {
+   right: unset;
+   left: 260px;
+}
+
 .weight,
 .weight input {
    color: aquamarine !important;
@@ -94,6 +99,26 @@ body {
 .position,
 .position input {
    color: yellow !important;
+}
+
+.pressure,
+.pressure input {
+   color: bisque !important;
+}
+
+.temperature,
+.temperature input {
+   color: #a0d2db !important;
+}
+
+.airDensity,
+.airDensity input {
+   color: #9B9ECE !important;
+}
+
+.heliumDensity,
+.heliumDensity input {
+   color: #ea638c !important;
 }
 
 .lil-gui .controller.disabled {
