@@ -134,8 +134,6 @@ class PhysicsWorld {
 
     const density = (pressure * heliumMolarMass) / (R * temperature);
 
-    this.output.HeliumDensity = density.toFixed(4) + " Kg.m⁻³";
-
     return density;
   };
 

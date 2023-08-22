@@ -17,7 +17,7 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    cameraFolder.close();
 
    const physicsFolder = gui.addFolder("Physics");
-   physicsFolder.add(physicalVariables, 'start');
+   const start = physicsFolder.add(physicalVariables, 'start');
    physicsFolder.add(physicalVariables, 'showCollision').onChange(showCollision);
    physicsFolder.add(physicalVariables, 'collide');
 
@@ -32,10 +32,10 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    staticPhysicsFolder.close();
 
    const drivePhysicsFolder = physicsFolder.addFolder("Drive");
-   drivePhysicsFolder.add(physicalVariables, 'currentRPM').min(0).max(3000);
-   drivePhysicsFolder.add(physicalVariables, 'airVolume').min(0).max(800);
-   drivePhysicsFolder.add(physicalVariables, 'verticalRudder').min(-10).max(10).step(0.5);
-   drivePhysicsFolder.add(physicalVariables, 'horizontalRudder').min(-10).max(10).step(0.5);
+   const currentRPM = drivePhysicsFolder.add(physicalVariables, 'currentRPM').min(0).max(3000);
+   const airVolume = drivePhysicsFolder.add(physicalVariables, 'airVolume').min(0).max(800);
+   const verticalRudder = drivePhysicsFolder.add(physicalVariables, 'verticalRudder').min(-10).max(10).step(0.5);
+   const horizontalRudder = drivePhysicsFolder.add(physicalVariables, 'horizontalRudder').min(-10).max(10).step(0.5);
    drivePhysicsFolder.open();
 
    const windPhysicsFolder = physicsFolder.addFolder("Wind");
@@ -94,7 +94,22 @@ function makeGui(timeController, cameraControl, physicalVariables, output, showC
    driveoutgui.add(output, "Pressure").disable().domElement.classList.add("pressure");
    driveoutgui.add(output, "Temperature").disable().domElement.classList.add("temperature");
    driveoutgui.add(output, "AirDensity").disable().domElement.classList.add("airDensity");
-   driveoutgui.add(output, "HeliumDensity").disable().domElement.classList.add("heliumDensity");
+
+   document.addEventListener("keydown", e => {
+      if (e.key === ' ') { physicalVariables.start = !physicalVariables.start; start.updateDisplay(); }
+
+      if (e.key === 'w' || e.key === 'W') { physicalVariables.currentRPM = Math.min(physicalVariables.currentRPM + 10, 3000); currentRPM.updateDisplay(); }
+      if (e.key === 's' || e.key === 'S') { physicalVariables.currentRPM = Math.max(physicalVariables.currentRPM - 10, 0); currentRPM.updateDisplay(); }
+
+      if (e.key === 'a' || e.key === 'A') { physicalVariables.verticalRudder = Math.min(physicalVariables.verticalRudder + 0.5, 10); verticalRudder.updateDisplay(); }
+      if (e.key === 'd' || e.key === 'D') { physicalVariables.verticalRudder = Math.max(physicalVariables.verticalRudder - 0.5, -10); verticalRudder.updateDisplay(); }
+
+      if (e.key === 'e' || e.key === 'E') { physicalVariables.horizontalRudder = Math.min(physicalVariables.horizontalRudder + 0.5, 10); horizontalRudder.updateDisplay(); }
+      if (e.key === 'q' || e.key === 'Q') { physicalVariables.horizontalRudder = Math.max(physicalVariables.horizontalRudder - 0.5, -10); horizontalRudder.updateDisplay(); }
+
+      if (e.key === 'f' || e.key === 'F') { physicalVariables.airVolume = Math.min(physicalVariables.airVolume + 10, 800); airVolume.updateDisplay(); }
+      if (e.key === 'r' || e.key === 'R') { physicalVariables.airVolume = Math.max(physicalVariables.airVolume - 10, 0); airVolume.updateDisplay(); }
+   });
 
    return { outgui, driveoutgui };
 }
